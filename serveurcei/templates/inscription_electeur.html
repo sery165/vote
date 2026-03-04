@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEI — Inscription Électeur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', Arial, sans-serif;
+            background: linear-gradient(to right, #FF8200 33%, white 33%, white 66%, #009E60 66%);
+            min-height: 100vh;
+            padding: 40px 16px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 5px solid #009E60;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 860px;
+            margin: 0 auto 40px;
+            border-radius: 12px;
+        }
+        .header-logo {
+            background: linear-gradient(135deg, #FF8200, #009E60);
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px; font-weight: 900;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 900; color: #1a1a1a;
+        }
+        .header-title p { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+        .tri-flag {
+            display: flex; width: 60px; height: 40px;
+            border-radius: 4px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .tri-flag .band { flex: 1; }
+        .tri-flag .b1 { background: #FF8200; }
+        .tri-flag .b2 { background: white; border-left: 1px solid #eee; border-right: 1px solid #eee; }
+        .tri-flag .b3 { background: #009E60; }
+
+        /* ===== CARD ===== */
+        .card {
+            background: white;
+            max-width: 860px;
+            margin: 0 auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #fff8f2;
+            border-bottom: 4px solid #FF8200;
+            padding: 28px 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .card-header-icon { font-size: 44px; }
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; font-weight: 900; color: #1a1a1a;
+        }
+        .card-header p { font-size: 14px; color: #888; margin-top: 4px; }
+
+        /* ===== FORM ===== */
+        form { padding: 32px 40px 40px; }
+
+        .section-label {
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: #bbb; border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px; margin: 0 0 20px;
+        }
+
+        .form-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
+        .form-group label {
+            font-size: 12px; font-weight: 700; color: #444;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .required { color: #e74c3c; }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px; color: #333;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%;
+            background: white;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #FF8200;
+            box-shadow: 0 0 0 3px rgba(255,130,0,0.1);
+        }
+        .form-group input::placeholder { color: #ccc; }
+
+        .form-section { margin-bottom: 28px; }
+
+        /* ===== BOUTON ===== */
+        .btn-submit {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 15px 40px; color: white;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700; font-size: 16px;
+            border: none; border-radius: 10px; cursor: pointer;
+            background: linear-gradient(135deg, #FF8200, #e07000);
+            box-shadow: 0 4px 16px rgba(255,130,0,0.35);
+            transition: all 0.25s ease;
+        }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,130,0,0.4); }
+        .btn-submit:active { transform: translateY(-1px); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* ===== MESSAGES ===== */
+        .msg {
+            display: none;
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .msg.success { background: #e6f7f0; border: 2px solid #009E60; color: #007a4a; }
+        .msg.error   { background: #fff0f0; border: 2px solid #e74c3c; color: #c0392b; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #999;
+        }
+        .footer span.o { color: #FF8200; font-weight: 700; }
+        .footer span.g { color: #009E60; font-weight: 700; }
+
+        @media (max-width: 600px) {
+            .header, form { padding: 20px; }
+            .card-header { padding: 20px; }
+            .form-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-logo">C</div>
+        <div class="header-title">
+            <h1>Commission Électorale Indépendante</h1>
+            <p>République de Côte d'Ivoire</p>
+        </div>
+        <div class="tri-flag">
+            <div class="band b1"></div>
+            <div class="band b2"></div>
+            <div class="band b3"></div>
+        </div>
+    </div>
+
+    <!-- CARTE FORMULAIRE -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-icon">📋</div>
+            <div>
+                <h2>Inscription Électeur</h2>
+                <p>Remplissez tous les champs pour vous inscrire sur la liste électorale nationale.</p>
+            </div>
+        </div>
+
+        <form id="formElecteur" onsubmit="return soumettre(event)">
+
+            <!-- SECTION IDENTITÉ -->
+            <div class="form-section">
+                <div class="section-label">👤 Identité</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom <span class="required">*</span></label>
+                        <input type="text" name="nom" placeholder="Ex : KOUASSI" required maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Prénom(s) <span class="required">*</span></label>
+                        <input type="text" name="prenom" placeholder="Ex : Jean-Marie" required maxlength="100">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date de naissance <span class="required">*</span></label>
+                        <input type="date" name="date_naissance" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Lieu de naissance <span class="required">*</span></label>
+                        <input type="text" name="lieu_naissance" placeholder="Ex : Abidjan" required maxlength="100">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION IDENTIFICATION -->
+            <div class="form-section">
+                <div class="section-label">🪪 Identification</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Numéro CNI <span class="required">*</span></label>
+                        <input type="text" name="numero_cni" placeholder="Ex : CI0012345678" required maxlength="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION COORDONNÉES -->
+            <div class="form-section">
+                <div class="section-label">📍 Coordonnées</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Domicile <span class="required">*</span></label>
+                        <input type="text" name="domicile" placeholder="Ex : Cocody, Rue des Jardins" required maxlength="150">
+                    </div>
+                    <div class="form-group">
+                        <label>Profession</label>
+                        <input type="text" name="profession" placeholder="Ex : Enseignant" maxlength="100">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Téléphone</label>
+                        <input type="tel" name="telephone" placeholder="Ex : +225 07 00 00 00 00" maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Ex : jean@email.com" maxlength="100">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOUMISSION -->
+            <div>
+                <button type="submit" class="btn-submit" id="btnSoumettre">
+                    ✅ Soumettre l'inscription
+                </button>
+            </div>
+
+            <div class="msg success" id="msg-success" style="display:none;">
+                <div style="font-size:18px;margin-bottom:12px;">🎉 Inscription réussie !</div>
+                <div style="font-size:14px;margin-bottom:16px;font-weight:600;color:#555;">
+                    Votre numéro électeur a été généré automatiquement.<br>
+                    <strong style="color:#c0392b;">Notez-le soigneusement, il est indispensable pour voter.</strong>
+                </div>
+                <!-- Encadré numéro électeur -->
+                <div id="bloc-numero" style="
+                    background: white;
+                    border: 3px solid #009E60;
+                    border-radius: 12px;
+                    padding: 20px 24px;
+                    margin: 0 auto;
+                    max-width: 380px;
+                ">
+                    <div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">
+                        Votre numéro électeur
+                    </div>
+                    <div id="numero-genere" style="
+                        font-family: 'Courier New', monospace;
+                        font-size: 28px;
+                        font-weight: 900;
+                        color: #009E60;
+                        letter-spacing: 3px;
+                        margin-bottom: 8px;
+                    "></div>
+                    <div id="nom-electeur-genere" style="font-size:14px;color:#555;margin-bottom:14px;"></div>
+                    <button onclick="copierNumero()" style="
+                        background: #009E60; color: white;
+                        border: none; border-radius: 6px;
+                        padding: 8px 18px; font-size: 13px;
+                        font-weight: 700; cursor: pointer;
+                        font-family: 'Nunito', sans-serif;
+                    ">📋 Copier le numéro</button>
+                </div>
+                <div style="font-size:12px;color:#888;margin-top:14px;">
+                    ⚠️ Ce numéro vous sera demandé lors du vote. Conservez-le précieusement.
+                </div>
+            </div>
+            <div class="msg error" id="msg-error"></div>
+
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 <span class="o">CEI</span> — Commission Électorale Indépendante de <span class="g">Côte d'Ivoire</span>
+    </div>
+
+    <script>
+        async function soumettre(e) {
+            e.preventDefault();
+            const form = document.getElementById('formElecteur');
+            const btn  = document.getElementById('btnSoumettre');
+
+            // ── Validation côté client ──
+            const champs = {
+                nom:            form.nom.value.trim(),
+                prenom:         form.prenom.value.trim(),
+                date_naissance: form.date_naissance.value,
+                lieu_naissance: form.lieu_naissance.value.trim(),
+                numero_cni:     form.numero_cni.value.trim(),
+                domicile:       form.domicile.value.trim(),
+            };
+
+            for (const [cle, val] of Object.entries(champs)) {
+                if (!val) {
+                    afficherErreur('Veuillez remplir tous les champs obligatoires (*).');
+                    return false;
+                }
+            }
+
+            if (champs.numero_cni.length < 5) {
+                afficherErreur('Le numéro CNI semble invalide (trop court).');
+                return false;
+            }
+
+            // ── Envoi vers Django ──
+            btn.textContent = '⏳ Envoi en cours…';
+            btn.disabled = true;
+
+            try {
+                const res  = await fetch('http://localhost:8000/api/inscrire-electeur/', {
+                    method: 'POST',
+                    body: new FormData(form)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    // Afficher le numéro électeur généré
+                    document.getElementById('numero-genere').textContent    = data.numero_electeur;
+                    document.getElementById('nom-electeur-genere').textContent = data.nom + ' ' + data.prenom;
+                    afficherSucces();
+                    form.reset();
+                } else {
+                    afficherErreur(data.message);
+                }
+            } catch {
+                afficherErreur('Erreur réseau. Vérifiez votre connexion et que le serveur Django est démarré.');
+            }
+
+            btn.textContent = '✅ Soumettre l\'inscription';
+            btn.disabled = false;
+            return false;
+        }
+
+        function afficherSucces() {
+            document.getElementById('msg-error').style.display = 'none';
+            // Le bloc reste visible indéfiniment pour que l'électeur note son numéro
+            document.getElementById('msg-success').style.display = 'block';
+        }
+
+        function copierNumero() {
+            const num = document.getElementById('numero-genere').textContent;
+            navigator.clipboard.writeText(num).then(() => {
+                const btn = document.querySelector('#bloc-numero button');
+                btn.textContent = '✅ Copié !';
+                setTimeout(() => btn.textContent = '📋 Copier le numéro', 2500);
+            }).catch(() => {
+                // Fallback : sélectionner le texte
+                const el = document.getElementById('numero-genere');
+                const range = document.createRange();
+                range.selectNode(el);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+            });
+        }
+
+        function afficherErreur(msg) {
+            document.getElementById('msg-success').style.display = 'none';
+            const e = document.getElementById('msg-error');
+            e.textContent = '⚠️ ' + msg;
+            e.style.display = 'block';
+            setTimeout(() => e.style.display = 'none', 7000);
+        }
+    </script>
+
+</body>
+</html>

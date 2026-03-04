@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2>Résultats en Temps Réel</h2>
+<canvas id="chart"></canvas>
+
+<script>
+fetch("/api-resultats/")
+.then(response => response.json())
+.then(data => {
+
+    const labels = data.map(item => item.nom);
+    const pourcentages = data.map(item => item.pourcentage);
+
+    new Chart(document.getElementById("chart"), {
+        type: "pie",
+        data: {
+            labels: labels,
+            datasets: [{
+                data: pourcentages,
+                backgroundColor: ["#FF8200", "#009E60", "#2c3e50"]
+            }]
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>

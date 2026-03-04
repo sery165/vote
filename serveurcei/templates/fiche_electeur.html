@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation CEI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5 text-center">
+        <div class="alert alert-success">
+            <h2>✅ Inscription Réussie !</h2>
+            <p>Le citoyen a été ajouté à la base de données officielle.</p>
+        </div>
+
+        <div class="card mx-auto" style="max-width: 400px;">
+            <div class="card-body">
+                <img src="{{ electeur.photo.url }}" class="img-thumbnail mb-3" style="height: 150px;">
+                <h4>{{ electeur.nom }} {{ electeur.prenom }}</h4>
+                <hr>
+                <p class="text-muted">NUMÉRO D'ÉLECTEUR À FOURNIR :</p>
+                <h2 class="text-primary font-monospace">{{ electeur.numero_electeur }}</h2>
+                <p class="small text-danger">⚠️ Ce numéro est unique et personnel.</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'inscription' %}" class="btn btn-outline-secondary">Nouvelle inscription</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

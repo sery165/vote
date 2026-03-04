@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CEI - Inscription Réussie</title>
+    <style>
+        body { font-family: Arial; text-align: center; background: #f4f4f4; padding: 50px; }
+        .card { background: white; padding: 30px; border-radius: 15px; border-top: 10px solid #009E60; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .numero { font-size: 30px; font-weight: bold; color: #FF8200; background: #eee; padding: 10px; border-radius: 5px; margin: 20px 0; }
+        .btn { background: #2c3e50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 style="color: #009E60;">FÉLICITATIONS !</h2>
+        <p>Monsieur/Madame <strong>{{ electeur.nom }} {{ electeur.prenoms }}</strong>,</p>
+        <p>Votre inscription sur la liste électorale est validée.</p>
+        <p>Voici votre numéro unique de vote :</p>
+        
+        <div class="numero">{{ electeur.numero_electeur }}</div>
+        
+        <p style="color: red;"><strong>Attention :</strong> Gardez précieusement ce numéro. <br> Il vous sera demandé pour vous connecter le jour du vote.</p>
+        <br>
+        <a href="/" class="btn">Retour à l'accueil</a>
+    </div>
+</body>
+</html>

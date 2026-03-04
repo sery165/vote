@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote Confirmé — CEI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family:'DM Sans',sans-serif; background:#060912; color:white;
+               display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; }
+        .card { background:rgba(255,255,255,0.04); border:1px solid rgba(0,158,96,0.3);
+                border-radius:24px; padding:60px 50px; text-align:center;
+                max-width:480px; box-shadow:0 30px 80px rgba(0,0,0,0.4); }
+        .icon { font-size:80px; display:block; margin-bottom:24px;
+                animation:pop 0.5s ease; }
+        @keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
+        h2 { font-family:'Cormorant Garamond',serif; font-size:36px; color:#6EE7B7; margin-bottom:14px; }
+        p  { font-size:16px; color:#8B92A5; line-height:1.7; margin-bottom:28px; }
+        a  { display:inline-block; padding:14px 32px; background:#009E60; color:white;
+             border-radius:12px; text-decoration:none; font-weight:700; transition:all .3s; }
+        a:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,158,96,.4); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <span class="icon">✅</span>
+        <h2>Vote Enregistré !</h2>
+        <p>Votre vote a été pris en compte avec succès.<br>
+           Merci de contribuer à la démocratie ivoirienne 🇨🇮</p>
+        <a href="{% url 'page_vote' %}">Retour à l'accueil</a>
+    </div>
+</body>
+</html>

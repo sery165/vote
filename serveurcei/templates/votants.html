@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEI — Voter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', Arial, sans-serif;
+            background: linear-gradient(to right, #FF8200 33%, white 33%, white 66%, #009E60 66%);
+            min-height: 100vh;
+            padding: 40px 16px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 5px solid #009E60;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: 0 auto 40px;
+            border-radius: 12px;
+            max-width: 860px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-logo {
+            background: linear-gradient(135deg, #FF8200, #009E60);
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px; font-weight: 900;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 900; color: #1a1a1a;
+        }
+        .header-title p { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+        .tri-flag {
+            display: flex; width: 60px; height: 40px;
+            border-radius: 4px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .tri-flag .band { flex: 1; }
+        .tri-flag .b1 { background: #FF8200; }
+        .tri-flag .b2 { background: white; border-left: 1px solid #eee; border-right: 1px solid #eee; }
+        .tri-flag .b3 { background: #009E60; }
+
+        /* ===== CARD ===== */
+        .card {
+            background: white;
+            max-width: 860px;
+            margin: 0 auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+            border-bottom: 4px solid #FF8200;
+            padding: 28px 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .card-header-icon { font-size: 44px; }
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; font-weight: 900; color: white;
+        }
+        .card-header p { font-size: 14px; color: #aaa; margin-top: 4px; }
+
+        /* ===== ÉTAPES ===== */
+        .etapes {
+            display: flex;
+            background: #f7f7f7;
+            border-bottom: 1px solid #eee;
+        }
+        .etape {
+            flex: 1; padding: 14px 10px;
+            text-align: center;
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 0.5px; text-transform: uppercase;
+            color: #ccc;
+            border-right: 1px solid #eee;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .etape:last-child { border-right: none; }
+        .etape.active { color: #FF8200; background: white; }
+        .etape.done   { color: #009E60; background: #f2faf6; }
+        .etape-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: #eee; color: #aaa;
+            font-size: 12px; font-weight: 900;
+            margin-right: 6px;
+        }
+        .etape.active .etape-num { background: #FF8200; color: white; }
+        .etape.done   .etape-num { background: #009E60; color: white; }
+
+        /* ===== FORM BODY ===== */
+        .form-body { padding: 32px 40px 40px; }
+
+        .section-label {
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: #bbb; border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px; margin: 0 0 20px;
+        }
+
+        .form-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
+
+        .form-group label {
+            font-size: 12px; font-weight: 700; color: #444;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .required { color: #e74c3c; }
+
+        .form-group input {
+            padding: 12px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px; color: #333;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%; background: white;
+        }
+        .form-group input:focus {
+            border-color: #2c3e50;
+            box-shadow: 0 0 0 3px rgba(44,62,80,0.1);
+        }
+        .form-group input::placeholder { color: #ccc; }
+
+        /* ===== BOUTON VÉRIFIER ===== */
+        .btn-verifier {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 13px 28px; color: white;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700; font-size: 14px;
+            border: none; border-radius: 8px; cursor: pointer;
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            box-shadow: 0 4px 12px rgba(44,62,80,0.3);
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-verifier:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(44,62,80,0.4); }
+        .btn-verifier:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* ===== RÉSULTAT ÉLECTEUR ===== */
+        .electeur-card {
+            display: none;
+            background: #f2faf6;
+            border: 2px solid #009E60;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            display: none;
+            align-items: center;
+            gap: 16px;
+        }
+        .electeur-card.visible { display: flex; }
+        .electeur-avatar {
+            width: 52px; height: 52px; flex-shrink: 0;
+            background: linear-gradient(135deg, #009E60, #007a4a);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; color: white; font-weight: 900;
+            font-family: 'Playfair Display', serif;
+        }
+        .electeur-nom { font-size: 17px; font-weight: 900; color: #1a1a1a; }
+        .electeur-meta { font-size: 13px; color: #666; margin-top: 3px; }
+        .electeur-badge {
+            margin-left: auto;
+            background: #009E60; color: white;
+            font-size: 12px; font-weight: 700;
+            padding: 4px 12px; border-radius: 20px;
+        }
+
+        /* ===== GRILLE CANDIDATS ===== */
+        .candidats-section { display: none; }
+        .candidats-section.visible { display: block; }
+
+        .candidats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .candidat-card {
+            border: 3px solid #e8e8e8;
+            border-radius: 14px;
+            padding: 20px 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            background: #fafafa;
+            user-select: none;
+            position: relative;
+        }
+        .candidat-card:hover {
+            border-color: #FF8200;
+            background: #fff8f2;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255,130,0,0.15);
+        }
+        .candidat-card.selected {
+            border-color: #009E60;
+            background: #f0faf5;
+            box-shadow: 0 0 0 4px rgba(0,158,96,0.15);
+        }
+        .candidat-check {
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 22px; height: 22px;
+            background: #009E60; border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            color: white; font-size: 13px; font-weight: 900;
+        }
+        .candidat-card.selected .candidat-check { display: flex; }
+
+        .candidat-num {
+            width: 52px; height: 52px;
+            background: linear-gradient(135deg, #FF8200, #e07000);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 22px; font-weight: 900;
+            margin: 0 auto 12px;
+            transition: background 0.2s;
+        }
+        .candidat-card.selected .candidat-num {
+            background: linear-gradient(135deg, #009E60, #007a4a);
+        }
+        .candidat-nom {
+            font-weight: 700; font-size: 14px; color: #1a1a1a;
+            margin-bottom: 4px; line-height: 1.3;
+        }
+        .candidat-parti {
+            font-size: 11px; color: #999;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* ===== RÉCAP SÉLECTION ===== */
+        .recap {
+            display: none;
+            background: #fff8f2;
+            border: 2px solid #FF8200;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #e07000;
+            margin-bottom: 20px;
+            align-items: center;
+            gap: 10px;
+        }
+        .recap.visible { display: flex; }
+
+        /* ===== BOUTON VOTER ===== */
+        .btn-voter {
+            display: none;
+            align-items: center; gap: 10px;
+            padding: 16px 44px; color: white;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700; font-size: 16px;
+            border: none; border-radius: 10px; cursor: pointer;
+            background: linear-gradient(135deg, #FF8200, #e07000);
+            box-shadow: 0 4px 16px rgba(255,130,0,0.35);
+            transition: all 0.25s ease;
+        }
+        .btn-voter.visible { display: inline-flex; }
+        .btn-voter:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,130,0,0.4); }
+        .btn-voter:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* ===== LOADING ===== */
+        .loading {
+            display: none;
+            font-size: 14px; color: #999;
+            font-style: italic; margin-bottom: 20px;
+        }
+        .loading.visible { display: block; }
+
+        /* ===== MESSAGES ===== */
+        .msg {
+            display: none; border-radius: 10px;
+            padding: 16px 20px; font-weight: 700;
+            font-size: 14px; margin-top: 20px; text-align: center;
+        }
+        .msg.success { background: #e6f7f0; border: 2px solid #009E60; color: #007a4a; }
+        .msg.error   { background: #fff0f0; border: 2px solid #e74c3c; color: #c0392b; }
+        .msg.warning { background: #fff8f2; border: 2px solid #FF8200; color: #e07000; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center; margin-top: 30px;
+            font-size: 13px; color: #999;
+        }
+        .footer span.o { color: #FF8200; font-weight: 700; }
+        .footer span.g { color: #009E60; font-weight: 700; }
+
+        @media (max-width: 600px) {
+            .header { padding: 16px; }
+            .form-body { padding: 20px; }
+            .card-header { padding: 20px; }
+            .etape span.etape-label { display: none; }
+            .candidats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-logo">C</div>
+        <div class="header-title">
+            <h1>Commission Électorale Indépendante</h1>
+            <p>République de Côte d'Ivoire</p>
+        </div>
+        <div class="tri-flag">
+            <div class="band b1"></div>
+            <div class="band b2"></div>
+            <div class="band b3"></div>
+        </div>
+    </div>
+
+    <!-- CARD VOTE -->
+    <div class="card">
+
+        <div class="card-header">
+            <div class="card-header-icon">☑️</div>
+            <div>
+                <h2>Voter</h2>
+                <p>Identifiez-vous, choisissez votre candidat et confirmez votre vote.</p>
+            </div>
+        </div>
+
+        <!-- ÉTAPES -->
+        <div class="etapes">
+            <div class="etape active" id="etape-1">
+                <span class="etape-num">1</span>
+                <span class="etape-label">Identification</span>
+            </div>
+            <div class="etape" id="etape-2">
+                <span class="etape-num">2</span>
+                <span class="etape-label">Choisir candidat</span>
+            </div>
+            <div class="etape" id="etape-3">
+                <span class="etape-num">3</span>
+                <span class="etape-label">Confirmer</span>
+            </div>
+        </div>
+
+        <div class="form-body">
+
+            <!-- ── ÉTAPE 1 : Identification électeur ── -->
+            <div class="section-label">🪪 Identification de l'électeur</div>
+
+            <div class="form-row" style="align-items:flex-end;">
+                <div class="form-group">
+                    <label>Numéro électeur <span class="required">*</span></label>
+                    <input type="text" id="inp-numero"
+                           placeholder="Ex : EL-2025-000001"
+                           maxlength="20"
+                           onkeydown="if(event.key==='Enter'){event.preventDefault();verifierElecteur();}">
+                </div>
+                <div style="flex:0 0 auto; padding-bottom:0;">
+                    <button class="btn-verifier" id="btn-verifier" onclick="verifierElecteur()">
+                        🔍 Vérifier
+                    </button>
+                </div>
+            </div>
+
+            <!-- Résultat électeur -->
+            <div class="electeur-card" id="electeur-card">
+                <div class="electeur-avatar" id="electeur-avatar"></div>
+                <div>
+                    <div class="electeur-nom" id="electeur-nom"></div>
+                    <div class="electeur-meta" id="electeur-meta"></div>
+                </div>
+                <div class="electeur-badge">✅ Vérifié</div>
+            </div>
+
+            <div class="msg warning" id="msg-warning"></div>
+            <div class="msg error"   id="msg-error"></div>
+
+            <!-- ── ÉTAPE 2 : Choix du candidat ── -->
+            <div class="candidats-section" id="candidats-section">
+                <div class="section-label" style="margin-top:24px;">🗳️ Choisissez votre candidat</div>
+
+                <div class="loading" id="loading">⏳ Chargement des candidats…</div>
+                <div class="candidats-grid" id="candidats-grid"></div>
+
+                <!-- Récapitulatif sélection -->
+                <div class="recap" id="recap">
+                    <span style="font-size:20px;">🗳️</span>
+                    <span id="recap-texte"></span>
+                </div>
+
+                <!-- ── ÉTAPE 3 : Confirmer ── -->
+                <button class="btn-voter" id="btn-voter" onclick="confirmerVote()">
+                    ☑️ Confirmer mon vote
+                </button>
+            </div>
+
+            <!-- Succès final -->
+            <div class="msg success" id="msg-success">
+                🎉 Votre vote a été enregistré avec succès ! Merci d'avoir participé à la démocratie.
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 <span class="o">CEI</span> — Commission Électorale Indépendante de <span class="g">Côte d'Ivoire</span>
+    </div>
+
+    <script>
+        // ─── État global ───
+        let electeurVerifie = null;   // { id, nom, prenom, numero_electeur, numero_cni, a_vote }
+        let candidatChoisi  = null;   // { id, nom, prenom, parti_politique }
+
+        // ─────────────────────────────────────────
+        //  ÉTAPE 1 — Vérifier l'électeur
+        //  GET /api/verifier-electeur/?numero=...
+        //  → utilise la table electeurs
+        // ─────────────────────────────────────────
+        async function verifierElecteur() {
+            const numero = document.getElementById('inp-numero').value.trim();
+            if (!numero) { afficherErreur('Entrez votre numéro électeur.'); return; }
+
+            // Réinitialiser
+            cacherTout();
+            electeurVerifie = null;
+            candidatChoisi  = null;
+
+            const btn = document.getElementById('btn-verifier');
+            btn.textContent = '⏳ Vérification…';
+            btn.disabled = true;
+
+            try {
+                const res  = await fetch(`http://localhost:8000/api/verifier-electeur/?numero=${encodeURIComponent(numero)}`);
+                const data = await res.json();
+
+                if (!data.success) {
+                    afficherErreur(data.message);
+                    return;
+                }
+
+                const e = data.electeur;
+
+                // Électeur déjà voté
+                if (e.a_vote) {
+                    afficherWarning('⚠️ Cet électeur a déjà voté. Chaque électeur ne peut voter qu\'une seule fois.');
+                    return;
+                }
+
+                // Afficher la carte électeur
+                electeurVerifie = e;
+                document.getElementById('electeur-avatar').textContent = e.nom.charAt(0).toUpperCase();
+                document.getElementById('electeur-nom').textContent    = e.nom + ' ' + e.prenom;
+                document.getElementById('electeur-meta').textContent   =
+                    'N° électeur : ' + e.numero_electeur + '  |  CNI : ' + e.numero_cni;
+                document.getElementById('electeur-card').classList.add('visible');
+
+                majEtape(2);
+                chargerCandidats();
+
+            } catch {
+                afficherErreur('Erreur réseau. Vérifiez que le serveur Django est démarré.');
+            } finally {
+                btn.textContent = '🔍 Vérifier';
+                btn.disabled = false;
+            }
+        }
+
+        // ─────────────────────────────────────────
+        //  ÉTAPE 2 — Charger les candidats
+        //  GET /api/candidats/
+        //  → utilise la table candidats
+        // ─────────────────────────────────────────
+        async function chargerCandidats() {
+            const section = document.getElementById('candidats-section');
+            const loading = document.getElementById('loading');
+            const grid    = document.getElementById('candidats-grid');
+
+            section.classList.add('visible');
+            loading.classList.add('visible');
+            grid.innerHTML = '';
+
+            try {
+                const res  = await fetch('http://localhost:8000/api/candidats/');
+                const data = await res.json();
+                loading.classList.remove('visible');
+
+                if (!data.success || !data.candidats.length) {
+                    afficherErreur('Aucun candidat disponible pour le moment.');
+                    return;
+                }
+
+                data.candidats.forEach((c, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'candidat-card';
+                    card.dataset.id = c.id;
+                    card.innerHTML = `
+                        <div class="candidat-check">✓</div>
+                        <div class="candidat-num">${i + 1}</div>
+                        <div class="candidat-nom">${c.nom} ${c.prenom}</div>
+                        <div class="candidat-parti">${c.parti_politique}</div>`;
+                    card.onclick = () => selectionnerCandidat(c, card);
+                    grid.appendChild(card);
+                });
+
+            } catch {
+                loading.classList.remove('visible');
+                afficherErreur('Impossible de charger les candidats.');
+            }
+        }
+
+        // ─────────────────────────────────────────
+        //  Sélectionner un candidat
+        // ─────────────────────────────────────────
+        function selectionnerCandidat(candidat, cardEl) {
+            // Désélectionner tout
+            document.querySelectorAll('.candidat-card').forEach(c => c.classList.remove('selected'));
+            // Sélectionner
+            cardEl.classList.add('selected');
+            candidatChoisi = candidat;
+
+            // Récapitulatif
+            const recap = document.getElementById('recap');
+            document.getElementById('recap-texte').textContent =
+                'Vous avez choisi : ' + candidat.nom + ' ' + candidat.prenom +
+                ' (' + candidat.parti_politique + ')';
+            recap.classList.add('visible');
+
+            // Afficher bouton confirmer
+            const btnVoter = document.getElementById('btn-voter');
+            btnVoter.classList.add('visible');
+
+            majEtape(3);
+        }
+
+        // ─────────────────────────────────────────
+        //  ÉTAPE 3 — Confirmer le vote
+        //  POST /api/voter/
+        //  → insère dans table votes : electeur_id + candidat_id + date_vote
+        //  → met a_vote = 1 dans electeurs
+        // ─────────────────────────────────────────
+        async function confirmerVote() {
+            if (!electeurVerifie) { afficherErreur('Identifiez-vous d\'abord.'); return; }
+            if (!candidatChoisi)  { afficherErreur('Choisissez un candidat.'); return; }
+
+            const btn = document.getElementById('btn-voter');
+            btn.textContent = '⏳ Enregistrement…';
+            btn.disabled = true;
+
+            const formData = new FormData();
+            // Champs table votes : electeur_id, candidat_id
+            formData.append('electeur_id', electeurVerifie.id);
+            formData.append('candidat_id', candidatChoisi.id);
+
+            try {
+                const res  = await fetch('http://localhost:8000/api/voter/', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    // Tout masquer, afficher succès
+                    document.getElementById('electeur-card').classList.remove('visible');
+                    document.getElementById('candidats-section').classList.remove('visible');
+                    document.getElementById('inp-numero').value = '';
+                    document.getElementById('msg-success').style.display = 'block';
+                    majEtape('done');
+                    electeurVerifie = null;
+                    candidatChoisi  = null;
+                } else {
+                    afficherErreur(data.message);
+                    btn.textContent = '☑️ Confirmer mon vote';
+                    btn.disabled = false;
+                }
+            } catch {
+                afficherErreur('Erreur réseau. Vérifiez votre connexion.');
+                btn.textContent = '☑️ Confirmer mon vote';
+                btn.disabled = false;
+            }
+        }
+
+        // ─────────────────────────────────────────
+        //  Utilitaires
+        // ─────────────────────────────────────────
+        function cacherTout() {
+            document.getElementById('electeur-card').classList.remove('visible');
+            document.getElementById('candidats-section').classList.remove('visible');
+            document.getElementById('recap').classList.remove('visible');
+            document.getElementById('btn-voter').classList.remove('visible');
+            document.getElementById('msg-error').style.display = 'none';
+            document.getElementById('msg-warning').style.display = 'none';
+            document.getElementById('msg-success').style.display = 'none';
+            document.getElementById('candidats-grid').innerHTML = '';
+        }
+
+        function afficherErreur(msg) {
+            const el = document.getElementById('msg-error');
+            el.textContent = '⚠️ ' + msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 7000);
+        }
+
+        function afficherWarning(msg) {
+            const el = document.getElementById('msg-warning');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function majEtape(num) {
+            document.querySelectorAll('.etape').forEach((el, i) => {
+                el.classList.remove('active', 'done');
+                if (num === 'done') {
+                    el.classList.add('done');
+                } else if (i + 1 < num) {
+                    el.classList.add('done');
+                } else if (i + 1 === num) {
+                    el.classList.add('active');
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

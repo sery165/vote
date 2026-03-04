@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEI — Vote Présidentiel 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #F97316;
+            --green: #009E60;
+            --dark: #060912;
+            --mid: #0d1528;
+            --gold: #D4A017;
+            --gold-light: #F5C842;
+            --gray: #8B92A5;
+            --border: rgba(255,255,255,0.08);
+            --card-bg: rgba(255,255,255,0.04);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:var(--dark); color:#fff; overflow-x:hidden; }
+
+        .bg-layer {
+            position:fixed; inset:0; z-index:0;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(249,115,22,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,158,96,0.12) 0%, transparent 55%),
+                linear-gradient(180deg,#060912 0%,#0d1528 50%,#060912 100%);
+        }
+        .bg-grid {
+            position:fixed; inset:0; z-index:0;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+                              linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+            background-size:60px 60px;
+        }
+
+        header {
+            position:sticky; top:0; z-index:50;
+            padding:18px 40px; display:flex; align-items:center; justify-content:space-between;
+            border-bottom:1px solid var(--border);
+            backdrop-filter:blur(20px); background:rgba(6,9,18,0.85);
+        }
+        .header-logo { display:flex; align-items:center; gap:14px; }
+        .logo-flag { width:50px; height:34px; border-radius:4px; overflow:hidden; display:flex; box-shadow:0 2px 12px rgba(0,0,0,0.5); }
+        .flag-o{flex:1;background:#F97316;} .flag-w{flex:1;background:#fff;} .flag-g{flex:1;background:#009E60;}
+        .header-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; }
+        .header-title span { display:block; font-size:11px; font-family:'DM Sans',sans-serif; color:var(--gray); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
+        .pulse-badge {
+            display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:50px;
+            border:1px solid rgba(249,115,22,0.3); background:rgba(249,115,22,0.08);
+            font-size:12px; font-weight:600; color:var(--orange); letter-spacing:1px;
+        }
+        .pulse { width:8px; height:8px; border-radius:50%; background:var(--orange); animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(249,115,22,0.5)} 50%{opacity:.7;box-shadow:0 0 0 6px rgba(249,115,22,0)} }
+
+        /* ══ MESSAGES DJANGO ══ */
+        .django-alerts { position:relative; z-index:10; max-width:680px; margin:20px auto 0; padding:0 30px; }
+        .alert {
+            display:flex; align-items:flex-start; gap:14px;
+            padding:16px 20px; border-radius:14px; margin-bottom:12px;
+            font-size:14px; font-weight:600; line-height:1.5;
+            animation:slideDown 0.4s ease;
+        }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+        .alert-error   { background:rgba(239,68,68,0.1);  border:1px solid rgba(239,68,68,0.3);  color:#F87171; }
+        .alert-success { background:rgba(0,158,96,0.12);  border:1px solid rgba(0,158,96,0.35);  color:#4ADE80; }
+        .alert-warning { background:rgba(234,179,8,0.1);  border:1px solid rgba(234,179,8,0.3);  color:#FBBF24; }
+        .alert-icon { font-size:22px; flex-shrink:0; }
+
+        .ai-guide-banner {
+            position:relative; z-index:10;
+            background: linear-gradient(135deg, rgba(0,158,96,0.15), rgba(0,100,60,0.08));
+            border-bottom: 1px solid rgba(0,158,96,0.3);
+        }
+        .ai-guide-inner {
+            max-width:1200px; margin:0 auto; padding:16px 40px;
+            display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+        }
+        .ai-guide-label {
+            display:flex; align-items:center; gap:10px;
+            font-size:13px; font-weight:700; color:#00E080; letter-spacing:1px; text-transform:uppercase;
+            white-space:nowrap;
+        }
+        .ai-icon-anim { font-size:22px; animation:bounce 2s infinite; }
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+        .lang-buttons { display:flex; gap:8px; flex-wrap:wrap; }
+        .lang-btn {
+            padding:8px 16px; border-radius:50px; cursor:pointer;
+            font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+            transition:all 0.25s; background:rgba(255,255,255,0.08); color:white;
+            border:1px solid rgba(255,255,255,0.12);
+        }
+        .lang-btn:hover { background:rgba(0,158,96,0.25); border-color:rgba(0,200,100,0.4); transform:translateY(-1px); }
+        .lang-btn.active { background:var(--green); border-color:var(--green); color:white; box-shadow:0 4px 14px rgba(0,158,96,0.4); }
+
+        .ai-guide-box { position:relative; z-index:10; max-width:1200px; margin:20px auto 10px; padding:0 30px; display:none; }
+        .ai-guide-box.visible { display:block; }
+        .ai-box-inner {
+            background:rgba(0,158,96,0.07); border:1px solid rgba(0,158,96,0.25);
+            border-radius:20px; padding:24px 28px; display:flex; align-items:flex-start; gap:18px;
+            animation:slideDown 0.3s ease;
+        }
+        .ai-avatar {
+            width:52px; height:52px; border-radius:50%; flex-shrink:0;
+            background:linear-gradient(135deg,var(--green),#004d28);
+            border:2px solid rgba(0,200,100,0.4);
+            display:flex; align-items:center; justify-content:center; font-size:24px;
+            box-shadow:0 0 20px rgba(0,158,96,0.3);
+        }
+        .ai-text-area { flex:1; }
+        .ai-lang-name { font-size:11px; font-weight:700; color:#00E080; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+        .ai-message { font-size:16px; line-height:1.7; color:#E8F5EE; min-height:28px; }
+        .ai-message.loading::after { content:''; display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); margin-left:6px; animation:blink 0.8s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+        .ai-speak-btn {
+            padding:8px 18px; background:rgba(0,158,96,0.2); border:1px solid rgba(0,158,96,0.4);
+            color:#00E080; border-radius:50px; cursor:pointer;
+            font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600;
+            transition:all 0.25s; margin-top:10px; display:inline-flex; align-items:center; gap:6px;
+        }
+        .ai-speak-btn:hover { background:var(--green); color:white; border-color:var(--green); }
+        .ai-speak-btn.speaking { background:var(--green); color:white; border-color:var(--green); animation:pulse-btn 1s infinite; }
+        @keyframes pulse-btn { 0%,100%{box-shadow:0 0 0 0 rgba(0,158,96,0.5)} 50%{box-shadow:0 0 0 8px rgba(0,158,96,0)} }
+
+        .hero { position:relative; z-index:5; text-align:center; padding:60px 20px 40px; }
+        .hero-eyebrow {
+            display:inline-flex; align-items:center; gap:10px; padding:6px 20px; border-radius:50px;
+            background:rgba(212,160,23,0.1); border:1px solid rgba(212,160,23,0.25);
+            color:var(--gold-light); font-size:11px; font-weight:600; letter-spacing:2.5px;
+            text-transform:uppercase; margin-bottom:24px;
+        }
+        .hero h1 {
+            font-family:'Cormorant Garamond',serif; font-size:clamp(36px,6vw,68px);
+            font-weight:700; line-height:1.05; margin-bottom:16px;
+            background:linear-gradient(135deg,#fff 0%,#D4A017 50%,#F97316 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        .hero p { font-size:16px; color:var(--gray); max-width:520px; margin:0 auto; line-height:1.7; }
+
+        .section-title { position:relative; z-index:5; text-align:center; margin:20px 0 40px; }
+        .section-title h2 { font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:700; margin-bottom:10px; }
+        .section-title p { font-size:13px; color:var(--gray); letter-spacing:1px; }
+        .title-line { width:60px; height:3px; background:linear-gradient(90deg,var(--orange),var(--gold)); margin:12px auto 0; border-radius:2px; }
+
+        .candidates-section { position:relative; z-index:5; max-width:1200px; margin:0 auto; padding:0 30px 70px; }
+        .candidates-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:22px; }
+
+        .candidate-card {
+            background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
+            overflow:hidden; transition:all 0.35s ease; cursor:pointer; position:relative;
+            opacity:0; animation:fadeUp 0.5s ease forwards;
+        }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(25px)} to{opacity:1;transform:translateY(0)} }
+        .candidate-card:nth-child(1){animation-delay:.05s} .candidate-card:nth-child(2){animation-delay:.10s}
+        .candidate-card:nth-child(3){animation-delay:.15s} .candidate-card:nth-child(4){animation-delay:.20s}
+        .candidate-card:nth-child(5){animation-delay:.25s} .candidate-card:nth-child(6){animation-delay:.30s}
+        .candidate-card:nth-child(7){animation-delay:.35s} .candidate-card:nth-child(8){animation-delay:.40s}
+        .candidate-card:hover { transform:translateY(-6px); border-color:rgba(249,115,22,0.4); box-shadow:0 20px 60px rgba(0,0,0,0.4),0 0 30px rgba(249,115,22,0.1); }
+        .candidate-card.selected { border-color:var(--orange); box-shadow:0 0 0 2px var(--orange),0 20px 60px rgba(249,115,22,0.2); }
+        .candidate-card.selected .card-check { opacity:1; transform:scale(1); }
+        .card-check {
+            position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%;
+            background:var(--orange); color:white; font-size:16px; font-weight:700;
+            display:flex; align-items:center; justify-content:center;
+            opacity:0; transform:scale(0.4); transition:all 0.3s; z-index:5;
+        }
+        .card-photo-wrap { position:relative; width:100%; aspect-ratio:3/3.5; overflow:hidden; }
+        .card-photo { width:100%; height:100%; object-fit:cover; object-position:top center; transition:transform 0.5s ease; display:block; }
+        .candidate-card:hover .card-photo { transform:scale(1.06); }
+        .card-photo-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:70px; background:linear-gradient(160deg,#1a2035,#0d1528); }
+        .card-overlay { position:absolute; bottom:0; left:0; right:0; height:60%; background:linear-gradient(to top,rgba(6,9,18,0.95),transparent); pointer-events:none; }
+        .card-body { padding:14px 16px 16px; border-top:1px solid var(--border); }
+        .card-name { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; line-height:1.2; margin-bottom:6px; }
+        .card-party { display:inline-flex; align-items:center; padding:4px 12px; border-radius:50px; font-size:11px; font-weight:600; letter-spacing:.5px; }
+        .party-rhdp{background:rgba(249,115,22,.15);color:#F97316;border:1px solid rgba(249,115,22,.3);}
+        .party-pdci{background:rgba(0,158,96,.15);color:#00C070;border:1px solid rgba(0,158,96,.3);}
+        .party-affi{background:rgba(139,92,246,.15);color:#A78BFA;border:1px solid rgba(139,92,246,.3);}
+        .party-fpi{background:rgba(239,68,68,.15);color:#F87171;border:1px solid rgba(239,68,68,.3);}
+        .party-upci{background:rgba(6,182,212,.15);color:#22D3EE;border:1px solid rgba(6,182,212,.3);}
+        .party-ind{background:rgba(100,116,139,.15);color:#94A3B8;border:1px solid rgba(100,116,139,.3);}
+
+        .divider { position:relative;z-index:5;display:flex;align-items:center;max-width:1200px;margin:0 auto 50px;padding:0 30px;gap:20px; }
+        .div-line{flex:1;height:1px;background:var(--border);}
+
+        .vote-section { position:relative;z-index:5;max-width:680px;margin:0 auto;padding:0 30px 80px; }
+        .vote-card { background:rgba(255,255,255,.03);border:1px solid rgba(249,115,22,.2);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4); }
+        .vote-card-header { padding:32px 40px 24px;border-bottom:1px solid var(--border);background:rgba(249,115,22,.04);text-align:center; }
+        .vote-card-header .icon{font-size:46px;display:block;margin-bottom:14px;}
+        .vote-card-header h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:8px;}
+        .vote-card-header p{font-size:14px;color:var(--gray);line-height:1.6;}
+        .vote-card-body { padding:32px 40px; }
+
+        .selected-preview { display:none;align-items:center;gap:14px;padding:14px 18px;border-radius:14px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);margin-bottom:22px; }
+        .selected-preview.visible{display:flex;}
+        .preview-photo-wrap{width:52px;height:52px;border-radius:50%;overflow:hidden;border:2px solid var(--orange);flex-shrink:0;background:#1a2035;display:flex;align-items:center;justify-content:center;}
+        .preview-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;}
+        .preview-emoji{font-size:26px;}
+        .selected-preview-info strong{display:block;font-size:15px;font-family:'Cormorant Garamond',serif;}
+        .selected-preview-info span{font-size:12px;color:var(--gray);}
+
+        .input-label{display:block;font-size:12px;font-weight:600;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+        .input-wrapper{position:relative;}
+        .input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
+        .vote-input{width:100%;padding:16px 16px 16px 50px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;color:white;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;letter-spacing:1px;outline:none;transition:border-color .3s,background .3s;}
+        .vote-input::placeholder{color:rgba(255,255,255,.2);}
+        .vote-input:focus{border-color:var(--orange);background:rgba(249,115,22,.06);}
+        .input-hint{margin-top:8px;font-size:12px;color:var(--gray);}
+        .input-group{margin-bottom:22px;}
+
+        .btn-vote{width:100%;padding:17px;background:linear-gradient(135deg,#F97316,#e05a00);color:white;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .3s;}
+        .btn-vote:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(249,115,22,.4);}
+
+        .vote-info-row{display:flex;gap:12px;margin-top:18px;}
+        .info-pill{flex:1;padding:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;text-align:center;font-size:11px;color:var(--gray);line-height:1.5;}
+        .info-pill strong{display:block;font-size:18px;margin-bottom:2px;}
+
+        footer{position:relative;z-index:5;text-align:center;padding:28px;border-top:1px solid var(--border);font-size:13px;color:var(--gray);}
+
+        .confetti-piece {
+            position:fixed; width:10px; height:10px; z-index:200;
+            animation:confettiFall 3s ease-in forwards; border-radius:2px;
+        }
+        @keyframes confettiFall {
+            0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
+            100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+        }
+
+        @media(max-width:768px){
+            header{padding:14px 18px;} .ai-guide-inner{padding:14px 18px;} .lang-btn{font-size:12px;padding:6px 12px;}
+            .candidates-grid{grid-template-columns:repeat(2,1fr);gap:14px;}
+            .vote-card-header,.vote-card-body{padding:22px 20px;} .vote-info-row{flex-wrap:wrap;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+
+<!-- HEADER -->
+<header>
+    <div class="header-logo">
+        <div class="logo-flag"><div class="flag-o"></div><div class="flag-w"></div><div class="flag-g"></div></div>
+        <div class="header-title">C.E.I <span>Commission Électorale Indépendante</span></div>
+    </div>
+    <div class="pulse-badge"><div class="pulse"></div>VOTE EN COURS</div>
+</header>
+
+<!-- ══ MESSAGES DJANGO — Erreurs et succès envoyés par views.py ══ -->
+{% if messages %}
+<div class="django-alerts">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <span class="alert-icon">
+                {% if message.tags == 'error' %}❌
+                {% elif message.tags == 'success' %}✅
+                {% else %}⚠️{% endif %}
+            </span>
+            <div>{{ message }}</div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- BANDEAU GUIDE IA -->
+<div class="ai-guide-banner">
+    <div class="ai-guide-inner">
+        <div class="ai-guide-label">
+            <span class="ai-icon-anim">🤖</span>
+            Guide IA — Choisir votre langue :
+        </div>
+        <div class="lang-buttons">
+            <button class="lang-btn" onclick="activerGuide('fr', this)">🇫🇷 Français</button>
+            <button class="lang-btn" onclick="activerGuide('dioula', this)">🥁 Dioula</button>
+            <button class="lang-btn" onclick="activerGuide('baoule', this)">🌿 Baoulé</button>
+            <button class="lang-btn" onclick="activerGuide('bete', this)">🔶 Bété</button>
+            <button class="lang-btn" onclick="activerGuide('nouchi', this)">🏙️ Nouchi</button>
+            <button class="lang-btn" onclick="activerGuide('attie', this)">🌾 Attié</button>
+        </div>
+    </div>
+</div>
+
+<!-- BOÎTE GUIDE IA -->
+<div class="ai-guide-box" id="aiGuideBox">
+    <div class="ai-box-inner">
+        <div class="ai-avatar">🤖</div>
+        <div class="ai-text-area">
+            <div class="ai-lang-name" id="aiLangName">GUIDE</div>
+            <div class="ai-message" id="aiMessage">Chargement...</div>
+            <button class="ai-speak-btn" id="aiSpeakBtn" onclick="lireTexte()">🔊 Écouter le guide</button>
+        </div>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-eyebrow">⚖️ &nbsp;Élection Présidentielle 2025</div>
+    <h1>Choisissez Votre<br>Candidat</h1>
+    <p>Exercez votre droit civique. Votre voix compte pour l'avenir de la Côte d'Ivoire.</p>
+</div>
+
+<!-- ══ CANDIDATS — Chargés depuis Django (base de données) ══ -->
+<div class="candidates-section">
+    <div class="section-title">
+        <h2>Les Candidats</h2>
+        <p>ÉLECTION PRÉSIDENTIELLE 2025 — CLIQUEZ POUR SÉLECTIONNER</p>
+        <div class="title-line"></div>
+    </div>
+    <div class="candidates-grid">
+
+        {% for candidat in candidats %}
+        {# ══ Candidats depuis la base de données Django ══ #}
+        <div class="candidate-card"
+             data-id="{{ candidat.id }}"
+             data-name="{{ candidat.nom }} {{ candidat.prenom }}"
+             data-party="{{ candidat.parti_politique }}"
+             data-photo="{% if candidat.photo %}{{ candidat.photo.url }}{% endif %}"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                {% if candidat.photo %}
+                    <img class="card-photo"
+                         src="{{ candidat.photo.url }}"
+                         alt="{{ candidat.nom }}"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                {% endif %}
+                <div class="card-photo-placeholder" {% if candidat.photo %}style="display:none"{% endif %}>👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">{{ candidat.nom }} {{ candidat.prenom }}</div>
+                <span class="card-party party-rhdp">{{ candidat.parti_politique }}</span>
+            </div>
+        </div>
+
+        {% empty %}
+        {# ══ Si base vide : candidats par défaut avec vraies photos ══ #}
+
+        <div class="candidate-card" data-id="1" data-name="Alassane Ouattara" data-party="RHDP"
+             data-photo="https://livoirienexpress.com/wp-content/uploads/2024/08/Alassane-Ouattara.jpg"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://livoirienexpress.com/wp-content/uploads/2024/08/Alassane-Ouattara.jpg" alt="Alassane Ouattara" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Alassane Ouattara</div>
+                <span class="card-party party-rhdp">RHDP</span>
+            </div>
+        </div>
+
+        <div class="candidate-card" data-id="2" data-name="Tidjane Thiam" data-party="PDCI-RDA"
+             data-photo="https://tse4.mm.bing.net/th/id/OIP.h2Da3CR_-gE-a-8J3irScQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://tse4.mm.bing.net/th/id/OIP.h2Da3CR_-gE-a-8J3irScQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Tidjane Thiam" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Tidjane Thiam</div>
+                <span class="card-party party-pdci">PDCI-RDA</span>
+            </div>
+        </div>
+
+        <div class="candidate-card" data-id="3" data-name="Laurent Gbagbo" data-party="PPA-CI"
+             data-photo="https://tse3.mm.bing.net/th/id/OIP.lDEAu_mJGYm9gLDZEfekbQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://tse3.mm.bing.net/th/id/OIP.lDEAu_mJGYm9gLDZEfekbQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Laurent Gbagbo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Laurent Gbagbo</div>
+                <span class="card-party party-fpi">PPA-CI</span>
+            </div>
+        </div>
+
+        <div class="candidate-card" data-id="4" data-name="Guillaume Soro" data-party="GPS"
+             data-photo="https://www.afrik.com/wp-content/uploads/2023/11/soro-1200x675.jpg"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://www.afrik.com/wp-content/uploads/2023/11/soro-1200x675.jpg" alt="Guillaume Soro" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Guillaume Soro</div>
+                <span class="card-party party-affi">GPS</span>
+            </div>
+        </div>
+
+        <div class="candidate-card" data-id="5" data-name="Simone Gbagbo" data-party="MGL"
+             data-photo="https://tse4.mm.bing.net/th/id/OIP._SCZLGLkE5sTSMtBgl3nNQHaHk?rs=1&pid=ImgDetMain&o=7&rm=3"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://tse4.mm.bing.net/th/id/OIP._SCZLGLkE5sTSMtBgl3nNQHaHk?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Simone Gbagbo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👩🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Simone Gbagbo</div>
+                <span class="card-party party-fpi">MGL</span>
+            </div>
+        </div>
+
+        <div class="candidate-card" data-id="6" data-name="Charles Blé Goudé" data-party="COJEP"
+             data-photo="https://tse2.mm.bing.net/th/id/OIP.gVprQyxz0UFv2BgZz1CXWgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://tse2.mm.bing.net/th/id/OIP.gVprQyxz0UFv2BgZz1CXWgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Charles Blé Goudé" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Charles Blé Goudé</div>
+                <span class="card-party party-upci">COJEP</span>
+            </div>
+        </div>
+
+        <div class="candidate-card" data-id="7" data-name="Ibrahima Ouattara" data-party="Indépendant"
+             data-photo="https://www.yeclo.com/wp-content/uploads/2023/02/Tene-Ouattara-1-6.jpg"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://www.yeclo.com/wp-content/uploads/2023/02/Tene-Ouattara-1-6.jpg" alt="Ibrahima Ouattara" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Ibrahima Ouattara</div>
+                <span class="card-party party-ind">Indépendant</span>
+            </div>
+        </div>
+
+        <div class="candidate-card" data-id="8" data-name="Jean-Louis Billon" data-party="Indépendant"
+             data-photo="https://prod.cdn-medias.jeuneafrique.com/cdn-cgi/image/q=100,f=auto,metadata=none,width=1256,height=628/https://prod.cdn-medias.jeuneafrique.com/medias/2023/03/23/jad20230323-pol-jean-louis-billon-1256x628-1679580260.jpg"
+             onclick="selectCandidate(this)">
+            <div class="card-check">✓</div>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="https://prod.cdn-medias.jeuneafrique.com/cdn-cgi/image/q=100,f=auto,metadata=none,width=1256,height=628/https://prod.cdn-medias.jeuneafrique.com/medias/2023/03/23/jad20230323-pol-jean-louis-billon-1256x628-1679580260.jpg" alt="Jean-Louis Billon" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
+                <div class="card-overlay"></div>
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jean-Louis Billon</div>
+                <span class="card-party party-ind">Indépendant</span>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="divider"><div class="div-line"></div><span style="font-size:22px">🗳️</span><div class="div-line"></div></div>
+
+<!-- ══ FORMULAIRE VOTE — Envoi vers Django ══ -->
+<div class="vote-section">
+    <div class="section-title">
+        <h2>Valider Votre Vote</h2>
+        <p>ENTREZ VOTRE NUMÉRO D'ÉLECTEUR</p>
+        <div class="title-line"></div>
+    </div>
+
+    <div class="vote-card">
+        <div class="vote-card-header">
+            <span class="icon">🗳️</span>
+            <h3>Bulletin de Vote</h3>
+            <p>Sélectionnez un candidat ci-dessus puis entrez votre numéro d'électeur pour confirmer.</p>
+        </div>
+        <div class="vote-card-body">
+
+            <!-- Aperçu candidat sélectionné -->
+            <div class="selected-preview" id="selectedPreview">
+                <div class="preview-photo-wrap" id="previewPhotoWrap">
+                    <span class="preview-emoji" id="previewEmoji">👤</span>
+                </div>
+                <div class="selected-preview-info">
+                    <strong id="previewName">—</strong>
+                    <span id="previewParty">—</span>
+                </div>
+                <div style="margin-left:auto;color:var(--orange);font-weight:700;font-size:13px;">Sélectionné ✓</div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════
+                 FORMULAIRE DJANGO — action vers vote/views.py
+                 ✅ PAS de validation JavaScript sur les numéros
+                 ✅ Django vérifie dans la base MariaDB
+            ══════════════════════════════════════════════════ -->
+            <form method="POST" action="{% url 'voter' %}" id="voteForm">
+                {% csrf_token %}
+
+                <!-- ID candidat sélectionné (rempli par JavaScript) -->
+                <input type="hidden" name="candidat_id" id="candidatInput" value="">
+
+                <div class="input-group">
+                    <label class="input-label">Numéro d'Électeur</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🪪</span>
+                        <input class="vote-input"
+                               type="text"
+                               id="numElecteur"
+                               name="numero_electeur"
+                               placeholder="Ex : CEI-XXXXXXXX"
+                               maxlength="30"
+                               autocomplete="off"
+                               required>
+                    </div>
+                    <p class="input-hint">📌 Ce numéro figure sur votre carte d'électeur officielle CEI (format : CEI-XXXXXXXX).</p>
+                </div>
+
+                <button type="button" class="btn-vote" onclick="soumettreVote()">
+                    🗳️&nbsp; Soumettre Mon Vote
+                </button>
+
+            </form>
+
+            <div class="vote-info-row">
+                <div class="info-pill"><strong>🔒</strong>Vote sécurisé<br>& confidentiel</div>
+                <div class="info-pill"><strong>1×</strong>Un seul vote<br>par électeur</div>
+                <div class="info-pill"><strong>✅</strong>Résultats<br>certifiés CEI</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>© 2030 — Commission Électorale Indépendante · République de Côte d'Ivoire · Tous droits réservés</footer>
+
+<script>
+// ════════════════════════════════════════════════
+//  GUIDES IA PAR LANGUE
+// ════════════════════════════════════════════════
+const GUIDES_STATIQUES = {
+    fr:     { nom: "FRANÇAIS",       texte: "Bonjour ! Je suis votre guide de vote. 3 étapes : 1. Cliquez sur la photo du candidat. 2. Tapez votre numéro d'électeur (CEI-XXXXXXXX). 3. Cliquez sur le bouton orange. C'est tout !" },
+    dioula: { nom: "DIOULA",         texte: "I ni ce ! Sɛbɛnni saba : Fɔlɔ — candidat ka jaa klikli. Filanan — numéro électeur sɛbɛn. Sabanan — bouton orange digi. Aw ni baara !" },
+    baoule: { nom: "BAOULÉ",         texte: "Mô ndé ! Ndé sa lô : Klikli candidat foto. Numéro électeur flan. Bouton orange ba tô. Yako sa !" },
+    bete:   { nom: "BÉTÉ",           texte: "A boua ! Étape sâba : Klikli candidat foto. Numéro électeur sêbên. Bouton orange klê. Bâgou !" },
+    nouchi: { nom: "NOUCHI",         texte: "Wesh ! C'est simple nô stress ! Cliquez votre gars. Tapez votre numéro CEI. Appuyez le bouton orange. C'est bon djo !" },
+    attie:  { nom: "ATTIÉ",          texte: "Mo ho ! Ntsia saba : Candidat foto klikli. Numéro électeur tsô. Bouton orange da. Yé so !" }
+};
+
+let langueActive = null;
+let synthVoix    = window.speechSynthesis;
+let selectedCard = null;
+
+// ══ Guide IA ══
+async function activerGuide(langue, btn) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    langueActive = langue;
+
+    const box   = document.getElementById('aiGuideBox');
+    const msgEl = document.getElementById('aiMessage');
+    const nomEl = document.getElementById('aiLangName');
+
+    box.classList.add('visible');
+    nomEl.textContent = GUIDES_STATIQUES[langue].nom;
+    msgEl.classList.add('loading');
+    msgEl.textContent = "L'IA prépare votre guide...";
+
+    try {
+        const response = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "claude-sonnet-4-20250514",
+                max_tokens: 500,
+                messages: [{ role: "user", content:
+                    `Tu es un guide électoral CEI Côte d'Ivoire. Explique en ${GUIDES_STATIQUES[langue].nom} comment voter en 3 étapes : 1. Cliquer photo candidat 2. Entrer numéro électeur (format CEI-XXXXXXXX) 3. Bouton orange. Langage simple et chaleureux. UNIQUEMENT en ${GUIDES_STATIQUES[langue].nom}.`
+                }]
+            })
+        });
+        const data = await response.json();
+        msgEl.classList.remove('loading');
+        msgEl.textContent = data.content?.[0]?.text || GUIDES_STATIQUES[langue].texte;
+    } catch(err) {
+        msgEl.classList.remove('loading');
+        msgEl.textContent = GUIDES_STATIQUES[langue].texte;
+    }
+}
+
+// ══ Lecture vocale ══
+function lireTexte() {
+    const btn   = document.getElementById('aiSpeakBtn');
+    const texte = document.getElementById('aiMessage').textContent;
+    if (synthVoix.speaking) {
+        synthVoix.cancel();
+        btn.innerHTML = '🔊 Écouter le guide';
+        btn.classList.remove('speaking');
+        return;
+    }
+    const u = new SpeechSynthesisUtterance(texte);
+    u.lang = 'fr-FR'; u.rate = 0.85;
+    u.onstart = () => { btn.innerHTML = '⏹️ Arrêter'; btn.classList.add('speaking'); };
+    u.onend   = () => { btn.innerHTML = '🔊 Écouter le guide'; btn.classList.remove('speaking'); };
+    synthVoix.speak(u);
+}
+
+// ══ Sélection candidat ══
+function selectCandidate(card) {
+    if (selectedCard) selectedCard.classList.remove('selected');
+    card.classList.add('selected');
+    selectedCard = card;
+
+    const { id, name, party, photo } = card.dataset;
+    document.getElementById('candidatInput').value = id;
+    document.getElementById('previewName').textContent  = name;
+    document.getElementById('previewParty').textContent = party;
+
+    const wrap  = document.getElementById('previewPhotoWrap');
+    const emoji = document.getElementById('previewEmoji');
+
+    if (photo && photo.trim()) {
+        let img = wrap.querySelector('img');
+        if (!img) {
+            img = document.createElement('img');
+            img.style.width = '100%'; img.style.height = '100%';
+            img.style.objectFit = 'cover'; img.style.objectPosition = 'top';
+            img.onerror = () => { img.style.display='none'; emoji.style.display='block'; };
+            wrap.appendChild(img);
+        }
+        img.src = photo; img.alt = name;
+        img.style.display = 'block'; emoji.style.display = 'none';
+    }
+
+    document.getElementById('selectedPreview').classList.add('visible');
+
+    if (langueActive && synthVoix && !synthVoix.speaking) {
+        const msg = new SpeechSynthesisUtterance(`Vous avez choisi ${name}. Entrez maintenant votre numéro d'électeur.`);
+        msg.lang = 'fr-FR'; msg.rate = 0.9;
+        synthVoix.speak(msg);
+    }
+
+    document.querySelector('.vote-section').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ══ SOUMISSION DU VOTE — Envoie à Django, PAS de validation locale ══
+function soumettreVote() {
+    // Vérification 1 : candidat sélectionné ?
+    if (!selectedCard) {
+        alert('⚠️ Veuillez d\'abord cliquer sur un candidat.');
+        return;
+    }
+
+    // Vérification 2 : numéro renseigné ?
+    const numero = document.getElementById('numElecteur').value.trim();
+    if (!numero) {
+        alert('⚠️ Veuillez entrer votre numéro d\'électeur.');
+        return;
+    }
+
+    // ✅ On soumet le formulaire — Django fait la vraie vérification en base
+    document.getElementById('voteForm').submit();
+}
+</script>
+
+</body>
+</html>
