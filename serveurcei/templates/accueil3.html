@@ -30,7 +30,6 @@
             overflow-x: hidden;
         }
 
-        /* ══════════ BACKGROUND ══════════ */
         .bg {
             position: fixed; inset: 0; z-index: 0;
             background:
@@ -40,7 +39,6 @@
                 linear-gradient(180deg, #050810 0%, #0a1020 50%, #050810 100%);
         }
 
-        /* Grille subtile */
         .bg-grid {
             position: fixed; inset: 0; z-index: 0;
             background-image:
@@ -49,7 +47,6 @@
             background-size: 80px 80px;
         }
 
-        /* Particules décoratives */
         .particle {
             position: fixed; border-radius: 50%; z-index: 0; pointer-events: none;
             animation: float linear infinite;
@@ -68,7 +65,6 @@
             100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
-        /* ══════════ LAYOUT PRINCIPAL ══════════ */
         .page {
             position: relative; z-index: 5;
             min-height: 100vh;
@@ -76,7 +72,6 @@
             flex-direction: column;
         }
 
-        /* ══════════ HEADER ══════════ */
         header {
             padding: 20px 50px;
             display: flex; align-items: center; justify-content: space-between;
@@ -131,7 +126,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ══════════ HERO CENTRE ══════════ */
         .hero {
             flex: 1;
             display: flex; flex-direction: column;
@@ -176,7 +170,6 @@
             to   { opacity:1; transform: translateY(0); }
         }
 
-        /* ══════════ PORTAILS ══════════ */
         .portails {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -204,7 +197,6 @@
             border: 1px solid transparent;
         }
 
-        /* Portail CEI — orange */
         .portail-cei {
             background: linear-gradient(145deg, rgba(249,115,22,0.12), rgba(200,80,0,0.06));
             border-color: rgba(249,115,22,0.2);
@@ -215,7 +207,6 @@
             box-shadow: 0 30px 70px rgba(249,115,22,0.2), 0 0 0 1px rgba(249,115,22,0.3);
         }
 
-        /* Portail VOTE — vert */
         .portail-vote {
             background: linear-gradient(145deg, rgba(0,158,96,0.12), rgba(0,100,60,0.06));
             border-color: rgba(0,158,96,0.2);
@@ -226,7 +217,6 @@
             box-shadow: 0 30px 70px rgba(0,158,96,0.2), 0 0 0 1px rgba(0,158,96,0.3);
         }
 
-        /* Coin décoratif */
         .portail::before {
             content: '';
             position: absolute; top: 0; right: 0;
@@ -274,7 +264,6 @@
             margin-bottom: 24px;
         }
 
-        /* Liste des actions */
         .portail-actions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
 
         .action-item {
@@ -287,7 +276,6 @@
         .portail-cei .action-dot  { background: var(--orange); }
         .portail-vote .action-dot { background: var(--green); }
 
-        /* Bouton en bas */
         .portail-footer { padding: 0 36px 36px; }
 
         .portail-btn {
@@ -324,7 +312,6 @@
         }
         .portail-btn:hover .btn-arrow { transform: translateX(4px); }
 
-        /* ══════════ STATS BARRE ══════════ */
         .stats-bar {
             display: flex; align-items: center; justify-content: center;
             gap: 40px; padding: 24px 50px;
@@ -346,7 +333,6 @@
 
         .stat-sep { width: 1px; height: 40px; background: var(--border); }
 
-        /* ══════════ RESPONSIVE ══════════ */
         @media (max-width: 700px) {
             header { padding: 16px 20px; }
             .logo-text { font-size: 18px; }
@@ -362,11 +348,9 @@
 </head>
 <body>
 
-<!-- Fond -->
 <div class="bg"></div>
 <div class="bg-grid"></div>
 
-<!-- Particules -->
 <div class="particle p1"></div>
 <div class="particle p2"></div>
 <div class="particle p3"></div>
@@ -376,7 +360,6 @@
 
 <div class="page">
 
-    <!-- ══ HEADER ══ -->
     <header>
         <div class="logo-area">
             <div class="flag">
@@ -398,7 +381,6 @@
         </div>
     </header>
 
-    <!-- ══ HERO ══ -->
     <div class="hero">
 
         <div class="hero-kicker">
@@ -416,11 +398,10 @@
             Choisissez votre espace pour continuer.
         </p>
 
-        <!-- ══ LES DEUX PORTAILS ══ -->
         <div class="portails">
 
-            <!-- ─── PORTAIL CEI — INSCRIPTION ─── -->
-            <a class="portail portail-cei" href="{% url 'ancien_accueil' %}">
+            <!-- ✅ CORRECTION : 'ancien_accueil' → 'serveurcei:ancien_accueil' -->
+            <a class="portail portail-cei" href="{% url 'serveurcei:ancien_accueil' %}">
                 <div class="portail-body">
                     <div class="portail-icon">📋</div>
                     <div class="portail-tag">Espace CEI</div>
@@ -451,8 +432,8 @@
                 </div>
             </a>
 
-            <!-- ─── PORTAIL VOTE ─── -->
-            <a class="portail portail-vote" href="{% url 'page_vote' %}">
+            <!-- ✅ INCHANGÉ : vote:page_vote déjà correct -->
+            <a class="portail portail-vote" href="{% url 'vote:page_vote' %}">
                 <div class="portail-body">
                     <div class="portail-icon">🗳️</div>
                     <div class="portail-tag">Espace Électeur</div>
@@ -486,7 +467,6 @@
         </div>
     </div>
 
-    <!-- ══ BARRE DE STATS ══ -->
     <div class="stats-bar">
         <div class="stat-item">
             <div class="stat-num">{{ nb_electeurs|default:"0" }}</div>

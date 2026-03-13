@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 
 class Electeur(models.Model):
+
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=150)
     numero_cni = models.CharField(max_length=20, unique=True)
@@ -11,29 +12,23 @@ class Electeur(models.Model):
     sexe = models.CharField(max_length=10, choices=[('M', 'Masculin'), ('F', 'Féminin')], null=True)
     region = models.CharField(max_length=100, null=True)
     
-    # 1. Le champ numéro (Généré par le save() ou le Trigger)
+
     numero_electeur = models.CharField(
-        max_length=20, 
-        unique=True, 
-        editable=False, 
-        blank=True, 
+        max_length=20,
+        unique=True,
+        editable=False,
+        blank=True,
         null=True
     )
 
-    # 2. LA DATE D'INSCRIPTION EST ICI
+    # ✅ AJOUTER CE CHAMP
+    empreinte_hash = models.CharField(
+        max_length=256,
+        blank=True,
+        null=True
+    )
+
     date_inscription = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'electeurs'
-
-    def save(self, *args, **kwargs):
-        if not self.numero_electeur:
-            # Génération du numéro CEI (Sécurité si le Trigger MariaDB ne le fait pas)
-            self.numero_electeur = f"CEI-{str(uuid.uuid4())[:8].upper()}"
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.nom} {self.prenom}"
 
 
 class Candidat(models.Model):

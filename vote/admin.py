@@ -1,13 +1,18 @@
-# vote/admin.py
+# vote/admin.py — FICHIER COMPLET FINAL
 
 from django.contrib import admin
-from .models import Vote
+from .models import ParticipationVote, BulletinVote
 
-# Vote est déjà enregistré via VoteAdmin, donc on ne fait rien ici
-# Si vous voulez personnaliser, utilisez cette approche :
 
-@admin.register(Vote)
-class VoteAdmin(admin.ModelAdmin):
-    list_display  = ['electeur', 'candidat', 'date_vote']
-    list_filter   = ['candidat']
-    search_fields = ['electeur__nom', 'electeur__numero_electeur']
+@admin.register(ParticipationVote)
+class ParticipationVoteAdmin(admin.ModelAdmin):
+    list_display    = ('electeur', 'date_vote')
+    search_fields   = ('electeur__nom',)
+    readonly_fields = ('electeur', 'date_vote', 'jeton_utilise')
+
+
+@admin.register(BulletinVote)
+class BulletinVoteAdmin(admin.ModelAdmin):
+    list_display    = ('candidat', 'date_vote')
+    search_fields   = ('candidat__nom',)
+    readonly_fields = ('candidat', 'date_vote', 'jeton_hash')

@@ -184,12 +184,7 @@
         .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         .badge.inscrit { background: #e6f7f0; color: #009E60; }
 
-        /* ═══════════════════════════════════════════════════════
-           ===== STATISTIQUES AMÉLIORÉES — RÉSULTATS PAR CANDIDAT =====
-           ═══════════════════════════════════════════════════════ */
         .stats-page { padding: 30px 40px 40px; }
-
-        /* Cartes chiffres globaux */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 36px; }
         .stat-card { background: #f7f7f7; border-radius: 12px; padding: 24px; text-align: left; border-left: 5px solid; transition: transform 0.2s; }
         .stat-card:hover { transform: translateY(-3px); }
@@ -202,86 +197,28 @@
         .stat-card.dark   .stat-card-num { color: #2c3e50; }
         .stat-card-label { font-size: 14px; color: #888; margin-top: 4px; font-weight: 600; }
 
-        /* Titre section résultats */
-        .results-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px; font-weight: 900; color: #1a1a1a;
-            margin-bottom: 6px; text-align: left;
-        }
-        .results-subtitle {
-            font-size: 12px; color: #aaa; text-transform: uppercase;
-            letter-spacing: 2px; margin-bottom: 24px; text-align: left;
-        }
+        .results-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: #1a1a1a; margin-bottom: 6px; text-align: left; }
+        .results-subtitle { font-size: 12px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; text-align: left; }
 
-        /* Carte résultat par candidat */
-        .candidat-result-card {
-            background: white;
-            border: 2px solid #f0f0f0;
-            border-radius: 14px;
-            padding: 18px 22px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            transition: all 0.25s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .candidat-result-card:hover {
-            border-color: #ddd;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transform: translateX(4px);
-        }
+        .candidat-result-card { background: white; border: 2px solid #f0f0f0; border-radius: 14px; padding: 18px 22px; margin-bottom: 16px; display: flex; align-items: center; gap: 18px; transition: all 0.25s ease; position: relative; overflow: hidden; }
+        .candidat-result-card:hover { border-color: #ddd; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateX(4px); }
 
-        /* Médaille pour le top 3 */
-        .rank-badge {
-            width: 38px; height: 38px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; font-weight: 900; flex-shrink: 0;
-            font-family: 'Playfair Display', serif;
-        }
+        .rank-badge { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; flex-shrink: 0; font-family: 'Playfair Display', serif; }
         .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: white; box-shadow: 0 3px 10px rgba(255,165,0,0.4); }
         .rank-2 { background: linear-gradient(135deg, #C0C0C0, #999); color: white; box-shadow: 0 3px 10px rgba(150,150,150,0.4); }
         .rank-3 { background: linear-gradient(135deg, #CD7F32, #a05a20); color: white; box-shadow: 0 3px 10px rgba(160,90,40,0.3); }
         .rank-other { background: #f0f0f0; color: #888; font-size: 14px; }
 
-        /* Photo candidat miniature */
-        .candidat-mini-photo {
-            width: 52px; height: 52px; border-radius: 50%;
-            object-fit: cover; object-position: top;
-            border: 3px solid #eee; flex-shrink: 0;
-            background: #f0f0f0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; overflow: hidden;
-        }
-        .candidat-mini-photo img {
-            width: 100%; height: 100%; object-fit: cover; object-position: top;
-        }
+        .candidat-mini-photo { width: 52px; height: 52px; border-radius: 50%; border: 3px solid #eee; flex-shrink: 0; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 22px; overflow: hidden; }
+        .candidat-mini-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 
-        /* Infos candidat */
         .candidat-result-info { flex: 1; min-width: 0; }
-        .candidat-result-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 17px; font-weight: 700; color: #1a1a1a;
-            margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .candidat-result-party {
-            font-size: 12px; color: #aaa; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
+        .candidat-result-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .candidat-result-party { font-size: 12px; color: #aaa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Barre de progression */
         .candidat-progress-wrap { flex: 2; min-width: 120px; }
-        .candidat-progress-bar {
-            height: 14px; background: #f0f0f0;
-            border-radius: 7px; overflow: hidden; margin-bottom: 6px;
-        }
-        .candidat-progress-fill {
-            height: 100%; border-radius: 7px;
-            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 0%;
-        }
-        /* Couleurs par rang */
+        .candidat-progress-bar { height: 14px; background: #f0f0f0; border-radius: 7px; overflow: hidden; margin-bottom: 6px; }
+        .candidat-progress-fill { height: 100%; border-radius: 7px; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
         .fill-1 { background: linear-gradient(to right, #FF8200, #ffb366); }
         .fill-2 { background: linear-gradient(to right, #009E60, #66ccaa); }
         .fill-3 { background: linear-gradient(to right, #2c3e50, #4a6278); }
@@ -291,63 +228,21 @@
         .fill-7 { background: linear-gradient(to right, #06B6D4, #a5f3fc); }
         .fill-8 { background: linear-gradient(to right, #EC4899, #fbcfe8); }
 
-        .candidat-progress-labels {
-            display: flex; justify-content: space-between;
-            font-size: 12px; color: #aaa; font-weight: 600;
-        }
+        .candidat-progress-labels { display: flex; justify-content: space-between; font-size: 12px; color: #aaa; font-weight: 600; }
 
-        /* Compteur de votes */
-        .vote-count-box {
-            text-align: center; flex-shrink: 0; min-width: 70px;
-        }
-        .vote-count-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px; font-weight: 900; color: #1a1a1a;
-            line-height: 1;
-        }
-        .vote-count-label {
-            font-size: 11px; color: #aaa; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            margin-top: 3px;
-        }
+        .vote-count-box { text-align: center; flex-shrink: 0; min-width: 70px; }
+        .vote-count-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #1a1a1a; line-height: 1; }
+        .vote-count-label { font-size: 11px; color: #aaa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
 
-        /* Badge leader */
-        .leader-badge {
-            position: absolute; top: 12px; right: 14px;
-            background: linear-gradient(135deg, #FF8200, #e07000);
-            color: white; font-size: 10px; font-weight: 700;
-            letter-spacing: 1px; text-transform: uppercase;
-            padding: 3px 10px; border-radius: 20px;
-        }
+        .leader-badge { position: absolute; top: 12px; right: 14px; background: linear-gradient(135deg, #FF8200, #e07000); color: white; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
 
-        /* Taux de participation */
-        .participation-section {
-            margin-top: 30px;
-            background: linear-gradient(135deg, #2c3e50, #4a6278);
-            border-radius: 14px; padding: 24px 28px; color: white; text-align: left;
-        }
-        .participation-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px; font-weight: 900; margin-bottom: 16px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .participation-bar-wrap {
-            background: rgba(255,255,255,0.15); border-radius: 8px; height: 20px; overflow: hidden; margin-bottom: 10px;
-        }
-        .participation-fill {
-            height: 100%; background: linear-gradient(to right, #FF8200, #ffb366);
-            border-radius: 8px; transition: width 1.5s ease;
-        }
-        .participation-nums {
-            display: flex; justify-content: space-between;
-            font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 600;
-        }
+        .participation-section { margin-top: 30px; background: linear-gradient(135deg, #2c3e50, #4a6278); border-radius: 14px; padding: 24px 28px; color: white; text-align: left; }
+        .participation-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .participation-bar-wrap { background: rgba(255,255,255,0.15); border-radius: 8px; height: 20px; overflow: hidden; margin-bottom: 10px; }
+        .participation-fill { height: 100%; background: linear-gradient(to right, #FF8200, #ffb366); border-radius: 8px; transition: width 1.5s ease; }
+        .participation-nums { display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 600; }
 
-        /* Aucun vote */
-        .no-votes-msg {
-            text-align: center; padding: 40px 20px;
-            color: #aaa; font-size: 15px;
-        }
+        .no-votes-msg { text-align: center; padding: 40px 20px; color: #aaa; font-size: 15px; }
         .no-votes-msg .emoji { font-size: 48px; margin-bottom: 12px; display: block; }
 
         /* ===== FOOTER ===== */
@@ -384,13 +279,13 @@
     </div>
 </div>
 
-<!-- NAVBAR -->
+<!-- ✅ NAVBAR CORRIGÉE — liens réels au lieu de navigate() JS -->
 <nav class="navbar">
-    <a onclick="navigate('accueil')" id="nav-accueil" class="active"><span>🏠</span> Accueil</a>
-    <a onclick="navigate('electeur')" id="nav-electeur"><span>📋</span> Inscription Électeur</a>
-    <a onclick="navigate('candidat')" id="nav-candidat"><span>🎖️</span> Inscription Candidat</a>
-    <a onclick="navigate('votants')" id="nav-votants"><span>👥</span> Voir les Votants</a>
-    <a onclick="navigate('stats')" id="nav-stats"><span>📊</span> Statistiques</a>
+    <a href="{% url 'accueil3' %}" id="nav-accueil"><span>🏠</span> Accueil</a>
+    <a href="{% url 'serveurcei:inscription_electeur' %}" id="nav-electeur"><span>📋</span> Inscription Électeur</a>
+    <a href="{% url 'serveurcei:inscription_candidat' %}" id="nav-candidat"><span>🎖️</span> Inscription Candidat</a>
+    <a href="{% url 'serveurcei:ancien_accueil' %}?tab=votants" id="nav-votants"><span>👥</span> Voir les Votants</a>
+    <a href="{% url 'serveurcei:ancien_accueil' %}?tab=stats" id="nav-stats"><span>📊</span> Statistiques</a>
 </nav>
 
 <div class="page-wrapper">
@@ -444,145 +339,6 @@
     </div>
 </div>
 
-<!-- ══ PAGE INSCRIPTION ÉLECTEUR ══ -->
-<div class="page" id="page-electeur">
-    <div class="page-content">
-        <div class="page-header orange-border">
-            <div class="page-header-icon">📋</div>
-            <div><h2>Inscription Électeur</h2><p>Remplissez le formulaire ci-dessous pour vous inscrire sur la liste électorale.</p></div>
-        </div>
-        {% if messages %}<div class="django-messages">{% for message in messages %}<div class="dj-msg dj-msg-{{ message.tags }}">{% if message.tags == 'error' %}❌{% else %}✅{% endif %} {{ message }}</div>{% endfor %}</div>{% endif %}
-        {% if form_electeur and form_electeur.errors %}<div class="django-messages"><div class="dj-msg dj-msg-error">❌ Veuillez corriger les erreurs ci-dessous.</div></div>{% endif %}
-        <form method="POST" action="{% url 'ancien_accueil' %}" id="form-electeur">
-            {% csrf_token %}
-            <input type="hidden" name="form_type" value="electeur">
-            <div class="form-body">
-                <span class="form-section">👤 Identité</span>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nom de famille <span class="req">*</span></label>
-                        <input type="text" name="nom" value="{% if form_electeur %}{{ form_electeur.nom.value|default:'' }}{% endif %}" placeholder="Ex : KOUASSI" class="{% if form_electeur.nom.errors %}input-error{% endif %}" required>
-                        {% if form_electeur.nom.errors %}<span class="field-err">⚠ {{ form_electeur.nom.errors|join:", " }}</span>{% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label>Prénom(s) <span class="req">*</span></label>
-                        <input type="text" name="prenom" value="{% if form_electeur %}{{ form_electeur.prenom.value|default:'' }}{% endif %}" placeholder="Ex : Jean-Marie" class="{% if form_electeur.prenom.errors %}input-error{% endif %}" required>
-                        {% if form_electeur.prenom.errors %}<span class="field-err">⚠ {{ form_electeur.prenom.errors|join:", " }}</span>{% endif %}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Date de naissance <span class="req">*</span></label>
-                        <input type="date" name="date_naissance" value="{% if form_electeur %}{{ form_electeur.date_naissance.value|default:'' }}{% endif %}" class="{% if form_electeur.date_naissance.errors %}input-error{% endif %}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Téléphone <span class="req">*</span></label>
-                        <input type="tel" name="telephon" value="{% if form_electeur %}{{ form_electeur.telephon.value|default:'' }}{% endif %}" placeholder="Ex : 0707070707" class="{% if form_electeur.telephon.errors %}input-error{% endif %}" required>
-                    </div>
-                </div>
-                <span class="form-section" style="margin-top:8px;">🪪 Document d'identité</span>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Numéro CNI / Passeport <span class="req">*</span></label>
-                        <input type="text" name="numero_cni" value="{% if form_electeur %}{{ form_electeur.numero_cni.value|default:'' }}{% endif %}" placeholder="Ex : CI0012345678" class="{% if form_electeur.numero_cni.errors %}input-error{% endif %}" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Région *</label>
-                        <select name="region" required>
-                            <option value="">-- Sélectionner --</option>
-                            <option value="Abidjan">Abidjan</option>
-                            <option value="Yamoussoukro">Yamoussoukro</option>
-                            <option value="Bouaké">Bouaké</option>
-                            <option value="San Pedro">San Pedro</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select name="sexe" required>
-                            <option value="">-- Sélectionner --</option>
-                            <option value="M">Masculin</option>
-                            <option value="F">Féminin</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-footer">
-                    <a class="back-link" href="{% url 'accueil3' %}">← Retour à l'accueil</a>
-                    <button type="submit" class="btn-submit orange">✅ Valider l'inscription</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- ══ PAGE INSCRIPTION CANDIDAT ══ -->
-<div class="page" id="page-candidat">
-    <div class="page-content">
-        <div class="page-header green-border">
-            <div class="page-header-icon">🎖️</div>
-            <div><h2>Inscription Candidat</h2><p>Déposez votre candidature officielle pour les prochaines élections présidentielles.</p></div>
-        </div>
-        {% if messages %}<div class="django-messages">{% for message in messages %}<div class="dj-msg dj-msg-{{ message.tags }}">{% if message.tags == 'error' %}❌{% else %}✅{% endif %} {{ message }}</div>{% endfor %}</div>{% endif %}
-        {% if form_candidat and form_candidat.errors %}<div class="django-messages"><div class="dj-msg dj-msg-error">❌ Veuillez corriger les erreurs ci-dessous.</div></div>{% endif %}
-        <form method="POST" action="{% url 'ancien_accueil' %}" enctype="multipart/form-data" id="form-candidat">
-            {% csrf_token %}
-            <input type="hidden" name="form_type" value="candidat">
-            <div class="form-body">
-                <span class="form-section">👤 Identité du candidat</span>
-                <div class="form-row">
-                    <div class="form-group green">
-                        <label>Nom <span class="req-green">*</span></label>
-                        <input type="text" name="nom" value="{% if form_candidat %}{{ form_candidat.nom.value|default:'' }}{% endif %}" placeholder="Ex : OUATTARA" required>
-                    </div>
-                    <div class="form-group green">
-                        <label>Prénom(s) <span class="req-green">*</span></label>
-                        <input type="text" name="prenom" value="{% if form_candidat %}{{ form_candidat.prenom.value|default:'' }}{% endif %}" placeholder="Ex : Alassane" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group green">
-                        <label>Parti politique <span class="req-green">*</span></label>
-                        <input type="text" name="parti_politique" value="{% if form_candidat %}{{ form_candidat.parti_politique.value|default:'' }}{% endif %}" placeholder="Ex : RHDP" required>
-                    </div>
-                    <div class="form-group green">
-                        <label>Date de naissance <span class="req-green">*</span></label>
-                        <input type="date" name="date_naissance" value="{% if form_candidat %}{{ form_candidat.date_naissance.value|default:'' }}{% endif %}" required>
-                    </div>
-                </div>
-                <span class="form-section" style="margin-top:8px;">📎 Documents obligatoires</span>
-                <div class="form-row">
-                    <div class="form-group green">
-                        <label>Photo officielle <span class="req-green">*</span></label>
-                        <input type="file" name="photo" accept="image/*">
-                        <span class="file-hint">JPG ou PNG — Max 5 Mo.</span>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group green">
-                        <label>Extrait de naissance <span class="req-green">*</span></label>
-                        <input type="file" name="extrait_naissance" accept=".pdf,image/*">
-                        <span class="file-hint">PDF ou image</span>
-                    </div>
-                    <div class="form-group green">
-                        <label>Casier judiciaire <span class="req-green">*</span></label>
-                        <input type="file" name="casier_judiciaire" accept=".pdf,image/*">
-                        <span class="file-hint">PDF ou image</span>
-                    </div>
-                </div>
-                <span class="form-section" style="margin-top:8px;">💰 Cautionnement</span>
-                <div class="checkbox-row">
-                    <input type="checkbox" name="cautionnement_valide" id="caution" {% if form_candidat.cautionnement_valide.value %}checked{% endif %}>
-                    <label for="caution">Je certifie que la caution de <strong>50 000 000 FCFA</strong> a été versée auprès du Trésor Public.<br><small style="font-weight:400;color:#666;">⚠️ Sans cette case cochée, le candidat n'apparaîtra pas dans la page de vote.</small></label>
-                </div>
-                <div class="form-footer">
-                    <a class="back-link" href="{% url 'accueil3' %}">← Retour à l'accueil</a>
-                    <button type="submit" class="btn-submit green">🎖️ Déposer la candidature</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!-- ══ PAGE VOTANTS ══ -->
 <div class="page" id="page-votants">
     <div class="page-content" style="max-width:1000px;">
@@ -622,9 +378,7 @@
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     PAGE STATISTIQUES — RÉSULTATS PAR CANDIDAT ✅ NOUVEAU
-══════════════════════════════════════════════════════════════ -->
+<!-- ══ PAGE STATISTIQUES ══ -->
 <div class="page" id="page-stats">
     <div class="page-content" style="max-width:900px;">
         <div class="page-header dark-border">
@@ -636,8 +390,6 @@
         </div>
 
         <div class="stats-page">
-
-            <!-- ── Chiffres globaux ── -->
             <div class="stats-grid">
                 <div class="stat-card orange">
                     <div class="stat-card-num">{{ nb_electeurs|default:"0" }}</div>
@@ -653,25 +405,18 @@
                 </div>
             </div>
 
-            <!-- ── Résultats par candidat ── -->
             <div class="results-title">🗳️ Résultats par candidat</div>
             <div class="results-subtitle">Classement selon le nombre de votes reçus</div>
 
             {% if resultats_candidats %}
-                {# resultats_candidats doit être une liste triée envoyée par Django :      #}
-                {# [{ nom, prenom, parti_politique, photo, nb_votes, pourcentage }, ...]   #}
                 {% for candidat in resultats_candidats %}
                 <div class="candidat-result-card">
-
-                    <!-- Rang -->
                     <div class="rank-badge rank-{% if forloop.counter <= 3 %}{{ forloop.counter }}{% else %}other{% endif %}">
                         {% if forloop.counter == 1 %}🥇
                         {% elif forloop.counter == 2 %}🥈
                         {% elif forloop.counter == 3 %}🥉
                         {% else %}{{ forloop.counter }}{% endif %}
                     </div>
-
-                    <!-- Photo -->
                     <div class="candidat-mini-photo">
                         {% if candidat.photo %}
                             <img src="{{ candidat.photo.url }}" alt="{{ candidat.nom }}" onerror="this.style.display='none';this.parentNode.innerHTML='👨🏾‍💼'">
@@ -679,14 +424,10 @@
                             👨🏾‍💼
                         {% endif %}
                     </div>
-
-                    <!-- Nom & Parti -->
                     <div class="candidat-result-info">
                         <div class="candidat-result-name">{{ candidat.nom }} {{ candidat.prenom }}</div>
                         <div class="candidat-result-party">{{ candidat.parti_politique }}</div>
                     </div>
-
-                    <!-- Barre de progression -->
                     <div class="candidat-progress-wrap">
                         <div class="candidat-progress-bar">
                             <div class="candidat-progress-fill fill-{{ forloop.counter }}"
@@ -700,23 +441,16 @@
                             <span>100%</span>
                         </div>
                     </div>
-
-                    <!-- Nombre de votes -->
                     <div class="vote-count-box">
                         <div class="vote-count-num">{{ candidat.nb_votes|default:0 }}</div>
                         <div class="vote-count-label">vote{% if candidat.nb_votes != 1 %}s{% endif %}</div>
                     </div>
-
-                    <!-- Badge leader pour le 1er -->
                     {% if forloop.first %}
                     <div class="leader-badge">🏆 Leader</div>
                     {% endif %}
-
                 </div>
                 {% endfor %}
-
             {% else %}
-                <!-- Aucun vote encore enregistré -->
                 <div class="no-votes-msg">
                     <span class="emoji">🗳️</span>
                     Aucun vote enregistré pour le moment.<br>
@@ -724,7 +458,6 @@
                 </div>
             {% endif %}
 
-            <!-- ── Taux de participation ── -->
             {% if nb_electeurs and nb_electeurs > 0 %}
             <div class="participation-section">
                 <div class="participation-title">📈 Taux de participation</div>
@@ -743,10 +476,9 @@
             </div>
             {% endif %}
 
-        </div><!-- fin stats-page -->
+        </div>
     </div>
 </div>
-<!-- ══ FIN PAGE STATISTIQUES ══ -->
 
 </div><!-- fin page-wrapper -->
 
@@ -756,35 +488,30 @@
 </div>
 
 <script>
-    /* ── Navigation onglets ── */
-    function navigate(page) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
-        document.getElementById('page-' + page).classList.add('active');
-        document.getElementById('nav-' + page).classList.add('active');
-
-        /* Animer les barres de progression quand on ouvre l'onglet stats */
-        if (page === 'stats') animerBarres();
-    }
-
-    /* ── Ouvrir le bon onglet depuis GET ── */
+    /* ── Ouvrir le bon onglet depuis GET (?tab=votants ou ?tab=stats) ── */
     document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
         const tab = params.get('tab');
-        if (tab === 'electeur') navigate('electeur');
-        else if (tab === 'candidat') navigate('candidat');
-        else if (tab === 'votants') navigate('votants');
-        else if (tab === 'stats') { navigate('stats'); }
+        if (tab === 'votants') {
+            document.getElementById('page-accueil').classList.remove('active');
+            document.getElementById('page-votants').classList.add('active');
+            document.getElementById('nav-votants').classList.add('active');
+        } else if (tab === 'stats') {
+            document.getElementById('page-accueil').classList.remove('active');
+            document.getElementById('page-stats').classList.add('active');
+            document.getElementById('nav-stats').classList.add('active');
+            animerBarres();
+        } else {
+            document.getElementById('nav-accueil').classList.add('active');
+        }
     });
 
     /* ── Animer les barres de progression ── */
     function animerBarres() {
-        /* Barres candidats */
         document.querySelectorAll('.candidat-progress-fill').forEach(function(bar) {
             var pct = parseFloat(bar.getAttribute('data-pct')) || 0;
             setTimeout(function() { bar.style.width = pct + '%'; }, 100);
         });
-        /* Barre participation */
         var pb = document.getElementById('participationBar');
         if (pb) {
             var pct = parseFloat(pb.getAttribute('data-pct')) || 0;

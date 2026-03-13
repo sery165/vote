@@ -1,13 +1,22 @@
 from django import forms
 from .models import Electeur, Candidat
 
-
 class ElecteurForm(forms.ModelForm):
     class Meta:
-        model = Electeur
-        fields = ['nom', 'prenom', 'region','sexe', 'telephon', 'numero_cni', 'date_naissance']
+        model  = Electeur
+        # ✅ Uniquement les champs qui existent dans le modèle
+        fields = [
+            'nom',
+            'prenom',
+            'numero_cni',
+            'date_naissance',
+            'telephon',
+            'sexe',
+            'region',
+        ]
         widgets = {
             'date_naissance': forms.DateInput(attrs={'type': 'date'}),
+            'sexe': forms.Select(choices=[('', '-- Sélectionner --'), ('M', 'Masculin'), ('F', 'Féminin')]),
         }
 
 class CandidatForm(forms.ModelForm):

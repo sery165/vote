@@ -1,5 +1,3 @@
-{% load static %}
-TEST123
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -48,17 +46,16 @@ TEST123
         .form-group { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
         .form-group label { font-size: 12px; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
         .required { color: #e74c3c; }
-        .form-group input,
-        .form-group select {
+        .form-group input, .form-group select {
             padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 8px;
             font-family: 'Nunito', sans-serif; font-size: 14px; color: #333;
             outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; background: white;
         }
-        .form-group input:focus,
-        .form-group select:focus { border-color: #FF8200; box-shadow: 0 0 0 3px rgba(255,130,0,0.1); }
+        .form-group input:focus, .form-group select:focus { border-color: #FF8200; box-shadow: 0 0 0 3px rgba(255,130,0,0.1); }
         .form-group input::placeholder { color: #ccc; }
         .form-section { margin-bottom: 28px; }
 
+        /* Bouton submit — grisé jusqu'à empreinte OK */
         .btn-submit {
             display: inline-flex; align-items: center; gap: 10px;
             padding: 15px 40px; color: white;
@@ -71,16 +68,6 @@ TEST123
         }
         .btn-submit.active { opacity: 1; pointer-events: all; }
         .btn-submit.active:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,130,0,0.4); }
-
-        .btn-retour {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 12px 24px; color: #888; background: white;
-            font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 14px;
-            border: 2px solid #e8e8e8; border-radius: 10px; cursor: pointer;
-            text-decoration: none; transition: all 0.2s;
-        }
-        .btn-retour:hover { border-color: #FF8200; color: #FF8200; }
-        .form-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 12px; }
 
         .msg { display: none; border-radius: 10px; padding: 16px 20px; font-weight: 700; font-size: 14px; margin-top: 20px; text-align: center; }
         .msg.success { background: #e6f7f0; border: 2px solid #009E60; color: #007a4a; }
@@ -97,8 +84,7 @@ TEST123
         .empreinte-bloc {
             border: 2px dashed #e0e0e0; border-radius: 16px;
             padding: 28px 20px; text-align: center;
-            transition: all 0.4s; background: #fafafa;
-            position: relative; overflow: hidden;
+            transition: all 0.4s; background: #fafafa; position: relative; overflow: hidden;
         }
         .empreinte-bloc.scanning    { border-color: #FF8200; background: #fff8f2; }
         .empreinte-bloc.verified    { border-color: #009E60; background: #f0fff8; }
@@ -147,11 +133,7 @@ TEST123
         .btn-scan:hover    { background: #FF8200; color: white; }
         .btn-scan:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .hash-preview {
-            font-family: 'Courier New', monospace; font-size: 10px; color: #aaa;
-            word-break: break-all; margin-top: 10px; padding: 6px 10px;
-            background: #f5f5f5; border-radius: 6px; display: none;
-        }
+        .hash-preview { font-family: 'Courier New', monospace; font-size: 10px; color: #aaa; word-break: break-all; margin-top: 10px; padding: 6px 10px; background: #f5f5f5; border-radius: 6px; display: none; }
         .empreinte-bloc.verified .hash-preview { display: block; }
 
         .footer { text-align: center; margin-top: 30px; font-size: 13px; color: #999; }
@@ -185,7 +167,7 @@ TEST123
         <div class="card-header-icon">📋</div>
         <div>
             <h2>Inscription Électeur</h2>
-            <p>Remplissez le formulaire ci-dessous pour vous inscrire sur la liste électorale.</p>
+            <p>Remplissez tous les champs pour vous inscrire sur la liste électorale nationale.</p>
         </div>
     </div>
 
@@ -204,79 +186,82 @@ TEST123
             <div class="section-label">👤 Identité</div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Nom de famille <span class="required">*</span></label>
-                    <input type="text" name="nom" id="champNom"
-                           placeholder="Ex : KOUASSI"
-                           value="{{ form.nom.value|default:'' }}"
-                           required maxlength="100">
+                    <label>Nom <span class="required">*</span></label>
+                    <input type="text" name="nom" id="champNom" placeholder="Ex : KOUASSI"
+                           value="{{ form.nom.value|default:'' }}" required maxlength="100">
                 </div>
                 <div class="form-group">
                     <label>Prénom(s) <span class="required">*</span></label>
-                    <input type="text" name="prenom"
-                           placeholder="Ex : Jean-Marie"
-                           value="{{ form.prenom.value|default:'' }}"
-                           required maxlength="100">
+                    <input type="text" name="prenom" placeholder="Ex : Jean-Marie"
+                           value="{{ form.prenom.value|default:'' }}" required maxlength="100">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Date de naissance <span class="required">*</span></label>
                     <input type="date" name="date_naissance" id="champDDN"
-                           value="{{ form.date_naissance.value|default:'' }}"
-                           required>
+                           value="{{ form.date_naissance.value|default:'' }}" required>
                 </div>
                 <div class="form-group">
-                    <label>Téléphone <span class="required">*</span></label>
-                    <input type="tel" name="telephon"
-                           placeholder="Ex : 0707070707"
-                           value="{{ form.telephon.value|default:'' }}"
-                           required maxlength="20">
+                    <label>Lieu de naissance</label>
+                    <input type="text" name="lieu_naissance" placeholder="Ex : Abidjan"
+                           value="{{ form.lieu_naissance.value|default:'' }}" maxlength="100">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Sexe</label>
+                    <select name="sexe">
+                        <option value="">-- Choisir --</option>
+                        <option value="M" {% if form.sexe.value == 'M' %}selected{% endif %}>Masculin</option>
+                        <option value="F" {% if form.sexe.value == 'F' %}selected{% endif %}>Féminin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Région</label>
+                    <input type="text" name="region" placeholder="Ex : Abidjan"
+                           value="{{ form.region.value|default:'' }}" maxlength="100">
                 </div>
             </div>
         </div>
 
-        <!-- ════ DOCUMENT D'IDENTITÉ ════ -->
+        <!-- ════ IDENTIFICATION ════ -->
         <div class="form-section">
-            <div class="section-label">🪪 Document d'identité</div>
+            <div class="section-label">🪪 Identification</div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Numéro CNI / Passeport <span class="required">*</span></label>
-                    <input type="text" name="numero_cni" id="champCNI"
-                           placeholder="Ex : CI0012345678"
-                           value="{{ form.numero_cni.value|default:'' }}"
-                           required maxlength="50">
+                    <label>Numéro CNI <span class="required">*</span></label>
+                    <input type="text" name="numero_cni" id="champCNI" placeholder="Ex : CI0012345678"
+                           value="{{ form.numero_cni.value|default:'' }}" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label>Téléphone <span class="required">*</span></label>
+                    <input type="tel" name="telephon" placeholder="Ex : +225 07 00 00 00 00"
+                           value="{{ form.telephon.value|default:'' }}" required maxlength="20">
+                </div>
+            </div>
+        </div>
+
+        <!-- ════ COORDONNÉES ════ -->
+        <div class="form-section">
+            <div class="section-label">📍 Coordonnées</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Domicile</label>
+                    <input type="text" name="domicile" placeholder="Ex : Cocody, Rue des Jardins"
+                           value="{{ form.domicile.value|default:'' }}" maxlength="150">
+                </div>
+                <div class="form-group">
+                    <label>Profession</label>
+                    <input type="text" name="profession" placeholder="Ex : Enseignant"
+                           value="{{ form.profession.value|default:'' }}" maxlength="100">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Région <span class="required">*</span></label>
-                    <select name="region">
-                        <option value="">-- Sélectionner --</option>
-                        <option value="Abidjan"          {% if form.region.value == 'Abidjan' %}selected{% endif %}>Abidjan</option>
-                        <option value="Yamoussoukro"     {% if form.region.value == 'Yamoussoukro' %}selected{% endif %}>Yamoussoukro</option>
-                        <option value="Bouaké"           {% if form.region.value == 'Bouaké' %}selected{% endif %}>Bouaké</option>
-                        <option value="Daloa"            {% if form.region.value == 'Daloa' %}selected{% endif %}>Daloa</option>
-                        <option value="Korhogo"          {% if form.region.value == 'Korhogo' %}selected{% endif %}>Korhogo</option>
-                        <option value="San-Pédro"        {% if form.region.value == 'San-Pédro' %}selected{% endif %}>San-Pédro</option>
-                        <option value="Man"              {% if form.region.value == 'Man' %}selected{% endif %}>Man</option>
-                        <option value="Gagnoa"           {% if form.region.value == 'Gagnoa' %}selected{% endif %}>Gagnoa</option>
-                        <option value="Abengourou"       {% if form.region.value == 'Abengourou' %}selected{% endif %}>Abengourou</option>
-                        <option value="Bondoukou"        {% if form.region.value == 'Bondoukou' %}selected{% endif %}>Bondoukou</option>
-                        <option value="Divo"             {% if form.region.value == 'Divo' %}selected{% endif %}>Divo</option>
-                        <option value="Odienné"          {% if form.region.value == 'Odienné' %}selected{% endif %}>Odienné</option>
-                        <option value="Séguéla"          {% if form.region.value == 'Séguéla' %}selected{% endif %}>Séguéla</option>
-                        <option value="Touba"            {% if form.region.value == 'Touba' %}selected{% endif %}>Touba</option>
-                        <option value="Ferkessédougou"   {% if form.region.value == 'Ferkessédougou' %}selected{% endif %}>Ferkessédougou</option>
-                        <option value="Autre"            {% if form.region.value == 'Autre' %}selected{% endif %}>Autre</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Sexe</label>
-                    <select name="sexe">
-                        <option value="">-- Sélectionner --</option>
-                        <option value="M" {% if form.sexe.value == 'M' %}selected{% endif %}>Masculin</option>
-                        <option value="F" {% if form.sexe.value == 'F' %}selected{% endif %}>Féminin</option>
-                    </select>
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Ex : jean@email.com"
+                           value="{{ form.email.value|default:'' }}" maxlength="100">
                 </div>
             </div>
         </div>
@@ -306,7 +291,7 @@ TEST123
                 </div>
 
                 <p class="fp-label" id="fpLabelInscription">
-                    Cliquez sur l'icône pour enregistrer votre empreinte digitale.<br>
+                    Cliquez pour enregistrer votre empreinte digitale.<br>
                     <small style="color:#aaa;">Elle servira à confirmer votre identité lors du vote.</small>
                 </p>
 
@@ -326,17 +311,14 @@ TEST123
             <input type="hidden" name="empreinte_hash" id="empreinteHashInput" value="">
         </div>
 
-        <!-- ════ BOUTONS ════ -->
-        <div class="form-actions">
-            <a href="{% url 'accueil3' %}" class="btn-retour">← Retour à l'accueil</a>
-            <div>
-                <button type="submit" class="btn-submit" id="btnSoumettre">
-                    ✅ Valider l'inscription
-                </button>
-                <p style="font-size:11px;color:#bbb;margin-top:8px;text-align:right;">
-                    ☝️ Le bouton s'active après la capture de l'empreinte.
-                </p>
-            </div>
+        <!-- ════ BOUTON SOUMETTRE ════ -->
+        <div>
+            <button type="submit" class="btn-submit" id="btnSoumettre">
+                ✅ Soumettre l'inscription
+            </button>
+            <p style="font-size:12px;color:#bbb;margin-top:10px;">
+                ☝️ Le bouton s'active après la capture de l'empreinte.
+            </p>
         </div>
 
         <!-- ════ MESSAGE SUCCÈS DJANGO ════ -->
@@ -380,6 +362,7 @@ async function lancerScanInscription() {
     const label  = document.getElementById('fpLabelInscription');
     const btn    = document.getElementById('btnScanInscription');
 
+    // Vérifier les champs obligatoires avant de scanner
     const cni = document.getElementById('champCNI').value.trim();
     const nom = document.getElementById('champNom').value.trim();
     const ddn = document.getElementById('champDDN').value;
@@ -392,6 +375,7 @@ async function lancerScanInscription() {
         return;
     }
 
+    // Passer en mode scanning
     bloc.classList.remove('verified', 'error-state');
     bloc.classList.add('scanning');
     status.className   = 'fp-status status-scanning';
@@ -403,6 +387,7 @@ async function lancerScanInscription() {
     try {
         const hashHex = await obtenirHashEmpreinte(cni, nom, ddn);
 
+        // ✅ Stocker dans le champ caché qui partira avec le POST Django
         document.getElementById('empreinteHashInput').value = hashHex;
         document.getElementById('hashPreview').textContent  = '🔑 Hash : ' + hashHex;
         empreinteInscriptionOk = true;
@@ -415,6 +400,7 @@ async function lancerScanInscription() {
                            + '<small style="color:#888;">Elle sera utilisée pour vérifier votre identité lors du vote.</small>';
         btn.innerHTML      = '✅ Enregistrée';
 
+        // Activer le bouton Soumettre
         document.getElementById('btnSoumettre').classList.add('active');
 
     } catch(err) {
@@ -429,7 +415,7 @@ async function lancerScanInscription() {
 }
 
 // ═══════════════════════════════════════════════════════
-//  GÉNÉRER LE HASH — WebAuthn ou simulation stable
+//  GÉNÉRER LE HASH — WebAuthn (mobile) ou simulation stable (desktop)
 // ═══════════════════════════════════════════════════════
 async function obtenirHashEmpreinte(cni, nom, ddn) {
     if (window.PublicKeyCredential) {
@@ -443,6 +429,7 @@ async function obtenirHashEmpreinte(cni, nom, ddn) {
                     rpId: window.location.hostname,
                 }
             });
+            // Hash = rawId WebAuthn + données personnelles stables
             const rawId    = new Uint8Array(assertion.rawId);
             const seed     = new TextEncoder().encode(
                 cni.toUpperCase() + ':' + nom.toUpperCase() + ':' + ddn
@@ -455,18 +442,25 @@ async function obtenirHashEmpreinte(cni, nom, ddn) {
             if (e.name === 'NotAllowedError') {
                 throw new Error('Scan annulé ou refusé par l\'utilisateur.');
             }
+            // Autre erreur WebAuthn (capteur absent, etc.) → fallback simulation
             return await hashStable(cni, nom, ddn);
         }
     }
+    // Pas de WebAuthn disponible → simulation pour tests desktop
     return await hashStable(cni, nom, ddn);
 }
 
 // ═══════════════════════════════════════════════════════
-//  HASH STABLE ✅ CORRIGÉ — backticks corrects
-//  Résultat identique pour mêmes données → vérifiable au vote
+//  HASH STABLE (simulation desktop / tests)
+//  ✅ CORRIGÉ — utilise les backticks corrects
+//  ✅ SANS Date.now() → toujours le même résultat
+//     pour les mêmes CNI + NOM + DDN (reproductible au vote)
 // ═══════════════════════════════════════════════════════
 async function hashStable(cni, nom, ddn) {
+    // Simule un délai de scan biométrique
     await new Promise(r => setTimeout(r, 1800));
+
+    // Seed fixe et reproductible basée sur les données CEI
     const seed    = `CEI_EMPREINTE:${cni.trim().toUpperCase()}:${nom.trim().toUpperCase()}:${ddn}`;
     const encoded = new TextEncoder().encode(seed);
     const buf     = await crypto.subtle.digest('SHA-256', encoded);
@@ -475,14 +469,14 @@ async function hashStable(cni, nom, ddn) {
 }
 
 // ═══════════════════════════════════════════════════════
-//  BLOQUER SOUMISSION SI EMPREINTE MANQUANTE
+//  BLOQUER LA SOUMISSION SI EMPREINTE MANQUANTE
 // ═══════════════════════════════════════════════════════
 document.getElementById('formElecteur').addEventListener('submit', function(e) {
     const hash = document.getElementById('empreinteHashInput').value.trim();
     if (!hash) {
         e.preventDefault();
         const err = document.getElementById('msg-error');
-        err.textContent   = '⚠️ Veuillez d\'abord enregistrer votre empreinte digitale (☝️).';
+        err.textContent  = '⚠️ Veuillez d\'abord enregistrer votre empreinte digitale (☝️).';
         err.style.display = 'block';
         document.getElementById('empreinteBlocInscription')
                 .scrollIntoView({ behavior: 'smooth' });
@@ -491,4 +485,4 @@ document.getElementById('formElecteur').addEventListener('submit', function(e) {
 </script>
 
 </body>
-</html> 
+</html>

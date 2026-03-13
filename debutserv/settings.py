@@ -61,12 +61,14 @@ ROOT_URLCONF = 'debutserv.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # On dit à Django de chercher spécifiquement dans le dossier templates de serveurcei
-        'DIRS': [BASE_DIR / 'serveurcei' / 'templates'], 
+        'DIRS': [
+            BASE_DIR / 'serveurcei' / 'templates',
+            BASE_DIR / 'vote' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug', # Ajoute celui-ci pour aider au debug
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',

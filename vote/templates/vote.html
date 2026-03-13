@@ -7,19 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --orange: #F97316;
-            --green: #009E60;
-            --dark: #060912;
-            --mid: #0d1528;
-            --gold: #D4A017;
-            --gold-light: #F5C842;
-            --gray: #8B92A5;
-            --border: rgba(255,255,255,0.08);
-            --card-bg: rgba(255,255,255,0.04);
+            --orange: #F97316; --green: #009E60; --dark: #060912; --mid: #0d1528;
+            --gold: #D4A017; --gold-light: #F5C842; --gray: #8B92A5;
+            --border: rgba(255,255,255,0.08); --card-bg: rgba(255,255,255,0.04);
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'DM Sans',sans-serif; background:var(--dark); color:#fff; overflow-x:hidden; }
-
         .bg-layer {
             position:fixed; inset:0; z-index:0;
             background:
@@ -33,7 +26,6 @@
                               linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
             background-size:60px 60px;
         }
-
         header {
             position:sticky; top:0; z-index:50;
             padding:18px 40px; display:flex; align-items:center; justify-content:space-between;
@@ -45,28 +37,20 @@
         .flag-o{flex:1;background:#F97316;} .flag-w{flex:1;background:#fff;} .flag-g{flex:1;background:#009E60;}
         .header-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; }
         .header-title span { display:block; font-size:11px; font-family:'DM Sans',sans-serif; color:var(--gray); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
-        .pulse-badge {
-            display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:50px;
-            border:1px solid rgba(249,115,22,0.3); background:rgba(249,115,22,0.08);
-            font-size:12px; font-weight:600; color:var(--orange); letter-spacing:1px;
-        }
+        .pulse-badge { display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:50px; border:1px solid rgba(249,115,22,0.3); background:rgba(249,115,22,0.08); font-size:12px; font-weight:600; color:var(--orange); letter-spacing:1px; }
         .pulse { width:8px; height:8px; border-radius:50%; background:var(--orange); animation:pulse 2s infinite; }
         @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(249,115,22,0.5)} 50%{opacity:.7;box-shadow:0 0 0 6px rgba(249,115,22,0)} }
 
         /* ══ MESSAGES DJANGO ══ */
         .django-alerts { position:relative; z-index:10; max-width:680px; margin:20px auto 0; padding:0 30px; }
-        .alert {
-            display:flex; align-items:flex-start; gap:14px;
-            padding:16px 20px; border-radius:14px; margin-bottom:12px;
-            font-size:14px; font-weight:600; line-height:1.5;
-            animation:slideDown 0.4s ease;
-        }
+        .alert { display:flex; align-items:flex-start; gap:14px; padding:16px 20px; border-radius:14px; margin-bottom:12px; font-size:14px; font-weight:600; line-height:1.5; animation:slideDown 0.4s ease; }
         @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
         .alert-error   { background:rgba(239,68,68,0.1);  border:1px solid rgba(239,68,68,0.3);  color:#F87171; }
         .alert-success { background:rgba(0,158,96,0.12);  border:1px solid rgba(0,158,96,0.35);  color:#4ADE80; }
         .alert-warning { background:rgba(234,179,8,0.1);  border:1px solid rgba(234,179,8,0.3);  color:#FBBF24; }
         .alert-icon { font-size:22px; flex-shrink:0; }
 
+        /* ══ GUIDE IA BANDEAU ══ */
         .ai-guide-banner {
             position:relative; z-index:10;
             background: linear-gradient(135deg, rgba(0,158,96,0.15), rgba(0,100,60,0.08));
@@ -93,6 +77,7 @@
         .lang-btn:hover { background:rgba(0,158,96,0.25); border-color:rgba(0,200,100,0.4); transform:translateY(-1px); }
         .lang-btn.active { background:var(--green); border-color:var(--green); color:white; box-shadow:0 4px 14px rgba(0,158,96,0.4); }
 
+        /* ══ BOÎTE GUIDE IA ══ */
         .ai-guide-box { position:relative; z-index:10; max-width:1200px; margin:20px auto 10px; padding:0 30px; display:none; }
         .ai-guide-box.visible { display:block; }
         .ai-box-inner {
@@ -122,19 +107,10 @@
         .ai-speak-btn.speaking { background:var(--green); color:white; border-color:var(--green); animation:pulse-btn 1s infinite; }
         @keyframes pulse-btn { 0%,100%{box-shadow:0 0 0 0 rgba(0,158,96,0.5)} 50%{box-shadow:0 0 0 8px rgba(0,158,96,0)} }
 
+        /* ══ HERO ══ */
         .hero { position:relative; z-index:5; text-align:center; padding:60px 20px 40px; }
-        .hero-eyebrow {
-            display:inline-flex; align-items:center; gap:10px; padding:6px 20px; border-radius:50px;
-            background:rgba(212,160,23,0.1); border:1px solid rgba(212,160,23,0.25);
-            color:var(--gold-light); font-size:11px; font-weight:600; letter-spacing:2.5px;
-            text-transform:uppercase; margin-bottom:24px;
-        }
-        .hero h1 {
-            font-family:'Cormorant Garamond',serif; font-size:clamp(36px,6vw,68px);
-            font-weight:700; line-height:1.05; margin-bottom:16px;
-            background:linear-gradient(135deg,#fff 0%,#D4A017 50%,#F97316 100%);
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-        }
+        .hero-eyebrow { display:inline-flex; align-items:center; gap:10px; padding:6px 20px; border-radius:50px; background:rgba(212,160,23,0.1); border:1px solid rgba(212,160,23,0.25); color:var(--gold-light); font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:24px; }
+        .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,6vw,68px); font-weight:700; line-height:1.05; margin-bottom:16px; background:linear-gradient(135deg,#fff 0%,#D4A017 50%,#F97316 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
         .hero p { font-size:16px; color:var(--gray); max-width:520px; margin:0 auto; line-height:1.7; }
 
         .section-title { position:relative; z-index:5; text-align:center; margin:20px 0 40px; }
@@ -142,14 +118,10 @@
         .section-title p { font-size:13px; color:var(--gray); letter-spacing:1px; }
         .title-line { width:60px; height:3px; background:linear-gradient(90deg,var(--orange),var(--gold)); margin:12px auto 0; border-radius:2px; }
 
+        /* ══ CANDIDATS ══ */
         .candidates-section { position:relative; z-index:5; max-width:1200px; margin:0 auto; padding:0 30px 70px; }
         .candidates-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:22px; }
-
-        .candidate-card {
-            background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
-            overflow:hidden; transition:all 0.35s ease; cursor:pointer; position:relative;
-            opacity:0; animation:fadeUp 0.5s ease forwards;
-        }
+        .candidate-card { background:var(--card-bg); border:1px solid var(--border); border-radius:20px; overflow:hidden; transition:all 0.35s ease; cursor:pointer; position:relative; opacity:0; animation:fadeUp 0.5s ease forwards; }
         @keyframes fadeUp { from{opacity:0;transform:translateY(25px)} to{opacity:1;transform:translateY(0)} }
         .candidate-card:nth-child(1){animation-delay:.05s} .candidate-card:nth-child(2){animation-delay:.10s}
         .candidate-card:nth-child(3){animation-delay:.15s} .candidate-card:nth-child(4){animation-delay:.20s}
@@ -158,12 +130,7 @@
         .candidate-card:hover { transform:translateY(-6px); border-color:rgba(249,115,22,0.4); box-shadow:0 20px 60px rgba(0,0,0,0.4),0 0 30px rgba(249,115,22,0.1); }
         .candidate-card.selected { border-color:var(--orange); box-shadow:0 0 0 2px var(--orange),0 20px 60px rgba(249,115,22,0.2); }
         .candidate-card.selected .card-check { opacity:1; transform:scale(1); }
-        .card-check {
-            position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%;
-            background:var(--orange); color:white; font-size:16px; font-weight:700;
-            display:flex; align-items:center; justify-content:center;
-            opacity:0; transform:scale(0.4); transition:all 0.3s; z-index:5;
-        }
+        .card-check { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; background:var(--orange); color:white; font-size:16px; font-weight:700; display:flex; align-items:center; justify-content:center; opacity:0; transform:scale(0.4); transition:all 0.3s; z-index:5; }
         .card-photo-wrap { position:relative; width:100%; aspect-ratio:3/3.5; overflow:hidden; }
         .card-photo { width:100%; height:100%; object-fit:cover; object-position:top center; transition:transform 0.5s ease; display:block; }
         .candidate-card:hover .card-photo { transform:scale(1.06); }
@@ -182,6 +149,7 @@
         .divider { position:relative;z-index:5;display:flex;align-items:center;max-width:1200px;margin:0 auto 50px;padding:0 30px;gap:20px; }
         .div-line{flex:1;height:1px;background:var(--border);}
 
+        /* ══ SECTION VOTE ══ */
         .vote-section { position:relative;z-index:5;max-width:680px;margin:0 auto;padding:0 30px 80px; }
         .vote-card { background:rgba(255,255,255,.03);border:1px solid rgba(249,115,22,.2);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4); }
         .vote-card-header { padding:32px 40px 24px;border-bottom:1px solid var(--border);background:rgba(249,115,22,.04);text-align:center; }
@@ -207,23 +175,53 @@
         .input-hint{margin-top:8px;font-size:12px;color:var(--gray);}
         .input-group{margin-bottom:22px;}
 
-        .btn-vote{width:100%;padding:17px;background:linear-gradient(135deg,#F97316,#e05a00);color:white;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .3s;}
-        .btn-vote:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(249,115,22,.4);}
+        /* ══ BLOC EMPREINTE ══ */
+        .empreinte-bloc { margin-bottom:24px; border:2px dashed rgba(255,255,255,0.1); border-radius:20px; padding:24px; text-align:center; transition:all 0.4s; position:relative; overflow:hidden; }
+        .empreinte-bloc.scanning { border-color:rgba(249,115,22,0.5); background:rgba(249,115,22,0.04); }
+        .empreinte-bloc.verified { border-color:var(--green); background:rgba(0,158,96,0.06); }
+        .empreinte-bloc.error-state { border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.05); }
+
+        .fingerprint-icon { width:80px; height:80px; margin:0 auto 16px; position:relative; cursor:pointer; }
+        .fp-svg { width:100%; height:100%; }
+        .fp-path { fill:none; stroke:rgba(255,255,255,0.2); stroke-width:2; stroke-linecap:round; transition:stroke 0.3s; }
+        .empreinte-bloc:not(.verified):not(.error-state) .fingerprint-icon:hover .fp-path { stroke:rgba(249,115,22,0.6); }
+        .empreinte-bloc.scanning .fp-path { stroke:var(--orange); stroke-dasharray:200; stroke-dashoffset:200; animation:scanLine 1.5s ease-in-out infinite; }
+        @keyframes scanLine { 0%{stroke-dashoffset:200;opacity:1} 50%{stroke-dashoffset:0;opacity:1} 100%{stroke-dashoffset:-200;opacity:0} }
+        .empreinte-bloc.verified .fp-path { stroke:var(--green); stroke-dasharray:none; animation:none; }
+        .empreinte-bloc.error-state .fp-path { stroke:#F87171; animation:none; }
+
+        .scan-ring { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:90px; height:90px; border-radius:50%; border:2px solid var(--orange); opacity:0; }
+        .empreinte-bloc.scanning .scan-ring { animation:ringPulse 1.5s ease-out infinite; }
+        @keyframes ringPulse { 0%{opacity:0.8;transform:translate(-50%,-50%) scale(0.8)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)} }
+
+        .empreinte-label { font-size:14px; font-weight:600; color:var(--gray); margin-bottom:12px; line-height:1.5; }
+        .empreinte-status { font-size:13px; font-weight:700; padding:8px 16px; border-radius:50px; display:inline-flex; align-items:center; gap:6px; margin-bottom:16px; }
+        .status-waiting  { background:rgba(255,255,255,0.06); color:var(--gray); border:1px solid rgba(255,255,255,0.1); }
+        .status-scanning { background:rgba(249,115,22,0.12); color:var(--orange); border:1px solid rgba(249,115,22,0.3); }
+        .status-ok       { background:rgba(0,158,96,0.12); color:#4ADE80; border:1px solid rgba(0,158,96,0.35); }
+        .status-fail     { background:rgba(239,68,68,0.1); color:#F87171; border:1px solid rgba(239,68,68,0.3); }
+
+        .btn-scan { padding:12px 28px; border-radius:50px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; border:1px solid rgba(249,115,22,0.4); background:rgba(249,115,22,0.1); color:var(--orange); transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-scan:hover { background:var(--orange); color:white; border-color:var(--orange); transform:translateY(-2px); box-shadow:0 8px 24px rgba(249,115,22,0.3); }
+        .btn-scan:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+        /* Étapes visuelles */
+        .etapes-bar { display:flex; gap:0; margin-bottom:28px; border-radius:14px; overflow:hidden; border:1px solid var(--border); }
+        .etape { flex:1; padding:12px 8px; text-align:center; font-size:11px; font-weight:600; color:var(--gray); background:rgba(255,255,255,0.02); transition:all 0.3s; border-right:1px solid var(--border); display:flex; flex-direction:column; align-items:center; gap:4px; }
+        .etape:last-child { border-right:none; }
+        .etape.done { background:rgba(0,158,96,0.08); color:#4ADE80; }
+        .etape.active { background:rgba(249,115,22,0.08); color:var(--orange); }
+        .etape-num { font-size:18px; }
+
+        .btn-vote{width:100%;padding:17px;background:linear-gradient(135deg,#F97316,#e05a00);color:white;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .3s;opacity:0.4;pointer-events:none;}
+        .btn-vote.active{opacity:1;pointer-events:all;}
+        .btn-vote.active:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(249,115,22,.4);}
 
         .vote-info-row{display:flex;gap:12px;margin-top:18px;}
         .info-pill{flex:1;padding:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;text-align:center;font-size:11px;color:var(--gray);line-height:1.5;}
         .info-pill strong{display:block;font-size:18px;margin-bottom:2px;}
 
         footer{position:relative;z-index:5;text-align:center;padding:28px;border-top:1px solid var(--border);font-size:13px;color:var(--gray);}
-
-        .confetti-piece {
-            position:fixed; width:10px; height:10px; z-index:200;
-            animation:confettiFall 3s ease-in forwards; border-radius:2px;
-        }
-        @keyframes confettiFall {
-            0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
-            100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
-        }
 
         @media(max-width:768px){
             header{padding:14px 18px;} .ai-guide-inner{padding:14px 18px;} .lang-btn{font-size:12px;padding:6px 12px;}
@@ -246,7 +244,7 @@
     <div class="pulse-badge"><div class="pulse"></div>VOTE EN COURS</div>
 </header>
 
-<!-- ══ MESSAGES DJANGO — Erreurs et succès envoyés par views.py ══ -->
+<!-- MESSAGES DJANGO -->
 {% if messages %}
 <div class="django-alerts">
     {% for message in messages %}
@@ -262,7 +260,7 @@
 </div>
 {% endif %}
 
-<!-- BANDEAU GUIDE IA -->
+<!-- ✅ BANDEAU GUIDE IA — AJOUTÉ -->
 <div class="ai-guide-banner">
     <div class="ai-guide-inner">
         <div class="ai-guide-label">
@@ -280,7 +278,7 @@
     </div>
 </div>
 
-<!-- BOÎTE GUIDE IA -->
+<!-- ✅ BOÎTE GUIDE IA — AJOUTÉE -->
 <div class="ai-guide-box" id="aiGuideBox">
     <div class="ai-box-inner">
         <div class="ai-avatar">🤖</div>
@@ -299,7 +297,7 @@
     <p>Exercez votre droit civique. Votre voix compte pour l'avenir de la Côte d'Ivoire.</p>
 </div>
 
-<!-- ══ CANDIDATS — Chargés depuis Django (base de données) ══ -->
+<!-- CANDIDATS -->
 <div class="candidates-section">
     <div class="section-title">
         <h2>Les Candidats</h2>
@@ -307,9 +305,7 @@
         <div class="title-line"></div>
     </div>
     <div class="candidates-grid">
-
         {% for candidat in candidats %}
-        {# ══ Candidats depuis la base de données Django ══ #}
         <div class="candidate-card"
              data-id="{{ candidat.id }}"
              data-name="{{ candidat.nom }} {{ candidat.prenom }}"
@@ -319,9 +315,7 @@
             <div class="card-check">✓</div>
             <div class="card-photo-wrap">
                 {% if candidat.photo %}
-                    <img class="card-photo"
-                         src="{{ candidat.photo.url }}"
-                         alt="{{ candidat.nom }}"
+                    <img class="card-photo" src="{{ candidat.photo.url }}" alt="{{ candidat.nom }}"
                          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                 {% endif %}
                 <div class="card-photo-placeholder" {% if candidat.photo %}style="display:none"{% endif %}>👨🏾‍💼</div>
@@ -332,153 +326,65 @@
                 <span class="card-party party-rhdp">{{ candidat.parti_politique }}</span>
             </div>
         </div>
-
         {% empty %}
-        {# ══ Si base vide : candidats par défaut avec vraies photos ══ #}
-
-        <div class="candidate-card" data-id="1" data-name="Alassane Ouattara" data-party="RHDP"
-             data-photo="https://livoirienexpress.com/wp-content/uploads/2024/08/Alassane-Ouattara.jpg"
-             onclick="selectCandidate(this)">
+        <div class="candidate-card" data-id="1" data-name="Alassane Ouattara" data-party="RHDP" data-photo="https://livoirienexpress.com/wp-content/uploads/2024/08/Alassane-Ouattara.jpg" onclick="selectCandidate(this)">
             <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://livoirienexpress.com/wp-content/uploads/2024/08/Alassane-Ouattara.jpg" alt="Alassane Ouattara" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Alassane Ouattara</div>
-                <span class="card-party party-rhdp">RHDP</span>
-            </div>
+            <div class="card-photo-wrap"><img class="card-photo" src="https://livoirienexpress.com/wp-content/uploads/2024/08/Alassane-Ouattara.jpg" alt="Alassane Ouattara" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div><div class="card-overlay"></div></div>
+            <div class="card-body"><div class="card-name">Alassane Ouattara</div><span class="card-party party-rhdp">RHDP</span></div>
         </div>
-
-        <div class="candidate-card" data-id="2" data-name="Tidjane Thiam" data-party="PDCI-RDA"
-             data-photo="https://tse4.mm.bing.net/th/id/OIP.h2Da3CR_-gE-a-8J3irScQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
-             onclick="selectCandidate(this)">
+        <div class="candidate-card" data-id="2" data-name="Tidjane Thiam" data-party="PDCI-RDA" data-photo="https://tse4.mm.bing.net/th/id/OIP.h2Da3CR_-gE-a-8J3irScQHaE8?rs=1&pid=ImgDetMain" onclick="selectCandidate(this)">
             <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://tse4.mm.bing.net/th/id/OIP.h2Da3CR_-gE-a-8J3irScQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Tidjane Thiam" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Tidjane Thiam</div>
-                <span class="card-party party-pdci">PDCI-RDA</span>
-            </div>
+            <div class="card-photo-wrap"><img class="card-photo" src="https://tse4.mm.bing.net/th/id/OIP.h2Da3CR_-gE-a-8J3irScQHaE8?rs=1&pid=ImgDetMain" alt="Tidjane Thiam" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div><div class="card-overlay"></div></div>
+            <div class="card-body"><div class="card-name">Tidjane Thiam</div><span class="card-party party-pdci">PDCI-RDA</span></div>
         </div>
-
-        <div class="candidate-card" data-id="3" data-name="Laurent Gbagbo" data-party="PPA-CI"
-             data-photo="https://tse3.mm.bing.net/th/id/OIP.lDEAu_mJGYm9gLDZEfekbQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
-             onclick="selectCandidate(this)">
+        <div class="candidate-card" data-id="3" data-name="Laurent Gbagbo" data-party="PPA-CI" data-photo="https://tse3.mm.bing.net/th/id/OIP.lDEAu_mJGYm9gLDZEfekbQHaE8?rs=1&pid=ImgDetMain" onclick="selectCandidate(this)">
             <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://tse3.mm.bing.net/th/id/OIP.lDEAu_mJGYm9gLDZEfekbQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Laurent Gbagbo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Laurent Gbagbo</div>
-                <span class="card-party party-fpi">PPA-CI</span>
-            </div>
+            <div class="card-photo-wrap"><img class="card-photo" src="https://tse3.mm.bing.net/th/id/OIP.lDEAu_mJGYm9gLDZEfekbQHaE8?rs=1&pid=ImgDetMain" alt="Laurent Gbagbo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div><div class="card-overlay"></div></div>
+            <div class="card-body"><div class="card-name">Laurent Gbagbo</div><span class="card-party party-fpi">PPA-CI</span></div>
         </div>
-
-        <div class="candidate-card" data-id="4" data-name="Guillaume Soro" data-party="GPS"
-             data-photo="https://www.afrik.com/wp-content/uploads/2023/11/soro-1200x675.jpg"
-             onclick="selectCandidate(this)">
+        <div class="candidate-card" data-id="4" data-name="Guillaume Soro" data-party="GPS" data-photo="https://www.afrik.com/wp-content/uploads/2023/11/soro-1200x675.jpg" onclick="selectCandidate(this)">
             <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://www.afrik.com/wp-content/uploads/2023/11/soro-1200x675.jpg" alt="Guillaume Soro" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Guillaume Soro</div>
-                <span class="card-party party-affi">GPS</span>
-            </div>
+            <div class="card-photo-wrap"><img class="card-photo" src="https://www.afrik.com/wp-content/uploads/2023/11/soro-1200x675.jpg" alt="Guillaume Soro" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div><div class="card-overlay"></div></div>
+            <div class="card-body"><div class="card-name">Guillaume Soro</div><span class="card-party party-affi">GPS</span></div>
         </div>
-
-        <div class="candidate-card" data-id="5" data-name="Simone Gbagbo" data-party="MGL"
-             data-photo="https://tse4.mm.bing.net/th/id/OIP._SCZLGLkE5sTSMtBgl3nNQHaHk?rs=1&pid=ImgDetMain&o=7&rm=3"
-             onclick="selectCandidate(this)">
+        <div class="candidate-card" data-id="5" data-name="Simone Gbagbo" data-party="MGL" data-photo="https://tse4.mm.bing.net/th/id/OIP._SCZLGLkE5sTSMtBgl3nNQHaHk?rs=1&pid=ImgDetMain" onclick="selectCandidate(this)">
             <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://tse4.mm.bing.net/th/id/OIP._SCZLGLkE5sTSMtBgl3nNQHaHk?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Simone Gbagbo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👩🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Simone Gbagbo</div>
-                <span class="card-party party-fpi">MGL</span>
-            </div>
+            <div class="card-photo-wrap"><img class="card-photo" src="https://tse4.mm.bing.net/th/id/OIP._SCZLGLkE5sTSMtBgl3nNQHaHk?rs=1&pid=ImgDetMain" alt="Simone Gbagbo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-photo-placeholder" style="display:none">👩🏾‍💼</div><div class="card-overlay"></div></div>
+            <div class="card-body"><div class="card-name">Simone Gbagbo</div><span class="card-party party-fpi">MGL</span></div>
         </div>
-
-        <div class="candidate-card" data-id="6" data-name="Charles Blé Goudé" data-party="COJEP"
-             data-photo="https://tse2.mm.bing.net/th/id/OIP.gVprQyxz0UFv2BgZz1CXWgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
-             onclick="selectCandidate(this)">
+        <div class="candidate-card" data-id="6" data-name="Charles Blé Goudé" data-party="COJEP" data-photo="https://tse2.mm.bing.net/th/id/OIP.gVprQyxz0UFv2BgZz1CXWgHaE8?rs=1&pid=ImgDetMain" onclick="selectCandidate(this)">
             <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://tse2.mm.bing.net/th/id/OIP.gVprQyxz0UFv2BgZz1CXWgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Charles Blé Goudé" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Charles Blé Goudé</div>
-                <span class="card-party party-upci">COJEP</span>
-            </div>
+            <div class="card-photo-wrap"><img class="card-photo" src="https://tse2.mm.bing.net/th/id/OIP.gVprQyxz0UFv2BgZz1CXWgHaE8?rs=1&pid=ImgDetMain" alt="Charles Blé Goudé" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div><div class="card-overlay"></div></div>
+            <div class="card-body"><div class="card-name">Charles Blé Goudé</div><span class="card-party party-upci">COJEP</span></div>
         </div>
-
-        <div class="candidate-card" data-id="7" data-name="Ibrahima Ouattara" data-party="Indépendant"
-             data-photo="https://www.yeclo.com/wp-content/uploads/2023/02/Tene-Ouattara-1-6.jpg"
-             onclick="selectCandidate(this)">
-            <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://www.yeclo.com/wp-content/uploads/2023/02/Tene-Ouattara-1-6.jpg" alt="Ibrahima Ouattara" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Ibrahima Ouattara</div>
-                <span class="card-party party-ind">Indépendant</span>
-            </div>
-        </div>
-
-        <div class="candidate-card" data-id="8" data-name="Jean-Louis Billon" data-party="Indépendant"
-             data-photo="https://prod.cdn-medias.jeuneafrique.com/cdn-cgi/image/q=100,f=auto,metadata=none,width=1256,height=628/https://prod.cdn-medias.jeuneafrique.com/medias/2023/03/23/jad20230323-pol-jean-louis-billon-1256x628-1679580260.jpg"
-             onclick="selectCandidate(this)">
-            <div class="card-check">✓</div>
-            <div class="card-photo-wrap">
-                <img class="card-photo" src="https://prod.cdn-medias.jeuneafrique.com/cdn-cgi/image/q=100,f=auto,metadata=none,width=1256,height=628/https://prod.cdn-medias.jeuneafrique.com/medias/2023/03/23/jad20230323-pol-jean-louis-billon-1256x628-1679580260.jpg" alt="Jean-Louis Billon" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-photo-placeholder" style="display:none">👨🏾‍💼</div>
-                <div class="card-overlay"></div>
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jean-Louis Billon</div>
-                <span class="card-party party-ind">Indépendant</span>
-            </div>
-        </div>
-
         {% endfor %}
-
     </div>
 </div>
 
-<!-- DIVIDER -->
 <div class="divider"><div class="div-line"></div><span style="font-size:22px">🗳️</span><div class="div-line"></div></div>
 
-<!-- ══ FORMULAIRE VOTE — Envoi vers Django ══ -->
+<!-- FORMULAIRE VOTE -->
 <div class="vote-section">
     <div class="section-title">
         <h2>Valider Votre Vote</h2>
-        <p>ENTREZ VOTRE NUMÉRO D'ÉLECTEUR</p>
+        <p>3 ÉTAPES POUR VOTER EN TOUTE SÉCURITÉ</p>
         <div class="title-line"></div>
     </div>
 
     <div class="vote-card">
         <div class="vote-card-header">
             <span class="icon">🗳️</span>
-            <h3>Bulletin de Vote</h3>
-            <p>Sélectionnez un candidat ci-dessus puis entrez votre numéro d'électeur pour confirmer.</p>
+            <h3>Bulletin de Vote Sécurisé</h3>
+            <p>Sélectionnez un candidat, entrez votre numéro puis vérifiez votre empreinte digitale.</p>
         </div>
         <div class="vote-card-body">
+
+            <!-- Barre d'étapes -->
+            <div class="etapes-bar">
+                <div class="etape active" id="etape1"><span class="etape-num">1️⃣</span>Candidat</div>
+                <div class="etape" id="etape2"><span class="etape-num">2️⃣</span>Numéro</div>
+                <div class="etape" id="etape3"><span class="etape-num">3️⃣</span>Empreinte</div>
+            </div>
 
             <!-- Aperçu candidat sélectionné -->
             <div class="selected-preview" id="selectedPreview">
@@ -492,66 +398,90 @@
                 <div style="margin-left:auto;color:var(--orange);font-weight:700;font-size:13px;">Sélectionné ✓</div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════
-                 FORMULAIRE DJANGO — action vers vote/views.py
-                 ✅ PAS de validation JavaScript sur les numéros
-                 ✅ Django vérifie dans la base MariaDB
-            ══════════════════════════════════════════════════ -->
-            <form method="POST" action="{% url 'voter' %}" id="voteForm">
+            <form method="POST" action="{% url 'vote:voter' %}" id="voteForm">
                 {% csrf_token %}
+                <input type="hidden" name="candidat_id"    id="candidatInput" value="">
+                <input type="hidden" name="empreinte_hash" id="empreinteInput" value="">
 
-                <!-- ID candidat sélectionné (rempli par JavaScript) -->
-                <input type="hidden" name="candidat_id" id="candidatInput" value="">
-
+                <!-- Numéro électeur -->
                 <div class="input-group">
                     <label class="input-label">Numéro d'Électeur</label>
                     <div class="input-wrapper">
                         <span class="input-icon">🪪</span>
-                        <input class="vote-input"
-                               type="text"
-                               id="numElecteur"
-                               name="numero_electeur"
-                               placeholder="Ex : CEI-XXXXXXXX"
-                               maxlength="30"
-                               autocomplete="off"
-                               required>
+                        <input class="vote-input" type="text" id="numElecteur" name="numero_electeur"
+                               placeholder="Ex : CEI-XXXXXXXX" maxlength="30" autocomplete="off" required
+                               oninput="reinitialiserEmpreinte()">
                     </div>
-                    <p class="input-hint">📌 Ce numéro figure sur votre carte d'électeur officielle CEI (format : CEI-XXXXXXXX).</p>
+                    <p class="input-hint">📌 Ce numéro figure sur votre carte d'électeur officielle CEI.</p>
                 </div>
 
-                <button type="button" class="btn-vote" onclick="soumettreVote()">
+                <!-- Bloc empreinte -->
+                <div class="empreinte-bloc" id="empreinteBlocUI">
+                    <div style="position:relative;display:inline-block;">
+                        <div class="fingerprint-icon" id="fpIcon" onclick="lancerScan()">
+                            <svg class="fp-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="fp-path" d="M40 8C22.3 8 8 22.3 8 40" stroke-width="2.5"/>
+                                <path class="fp-path" d="M40 8C57.7 8 72 22.3 72 40" stroke-width="2.5"/>
+                                <path class="fp-path" d="M40 16C26.7 16 16 26.7 16 40" stroke-width="2.5"/>
+                                <path class="fp-path" d="M40 16C53.3 16 64 26.7 64 40" stroke-width="2.5"/>
+                                <path class="fp-path" d="M40 24C31.2 24 24 31.2 24 40" stroke-width="2.5"/>
+                                <path class="fp-path" d="M40 24C48.8 24 56 31.2 56 40" stroke-width="2.5"/>
+                                <path class="fp-path" d="M40 32C35.6 32 32 35.6 32 40c0 4.4 3.6 8 8 8" stroke-width="2.5"/>
+                                <path class="fp-path" d="M40 32C44.4 32 48 35.6 48 40" stroke-width="2.5"/>
+                                <path class="fp-path" d="M16 40c0 13.3 10.7 24 24 24" stroke-width="2.5"/>
+                                <path class="fp-path" d="M64 40c0 13.3-10.7 24-24 24" stroke-width="2.5"/>
+                                <path class="fp-path" d="M24 40c0 8.8 7.2 16 16 16" stroke-width="2.5"/>
+                                <path class="fp-path" d="M56 40c0 8.8-7.2 16-16 16" stroke-width="2.5"/>
+                            </svg>
+                        </div>
+                        <div class="scan-ring" id="scanRing"></div>
+                    </div>
+
+                    <div class="empreinte-label" id="fpLabel">
+                        Appuyez sur l'icône pour scanner<br>votre empreinte digitale
+                    </div>
+                    <div class="empreinte-status status-waiting" id="fpStatus">
+                        👆 En attente du scan
+                    </div>
+                    <button type="button" class="btn-scan" id="btnScan" onclick="lancerScan()">
+                        🔒 Scanner mon empreinte
+                    </button>
+                </div>
+
+                <button type="button" class="btn-vote" id="btnVote" onclick="soumettreVote()">
                     🗳️&nbsp; Soumettre Mon Vote
                 </button>
-
             </form>
 
             <div class="vote-info-row">
                 <div class="info-pill"><strong>🔒</strong>Vote sécurisé<br>& confidentiel</div>
+                <div class="info-pill"><strong>☝️</strong>Empreinte<br>vérifiée</div>
                 <div class="info-pill"><strong>1×</strong>Un seul vote<br>par électeur</div>
-                <div class="info-pill"><strong>✅</strong>Résultats<br>certifiés CEI</div>
             </div>
         </div>
     </div>
 </div>
 
-<footer>© 2030 — Commission Électorale Indépendante · République de Côte d'Ivoire · Tous droits réservés</footer>
+<footer>© 2025 — Commission Électorale Indépendante · République de Côte d'Ivoire · Tous droits réservés</footer>
 
 <script>
-// ════════════════════════════════════════════════
-//  GUIDES IA PAR LANGUE
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  GUIDES IA PAR LANGUE (textes de secours)
+// ═══════════════════════════════════════════════════════
 const GUIDES_STATIQUES = {
-    fr:     { nom: "FRANÇAIS",       texte: "Bonjour ! Je suis votre guide de vote. 3 étapes : 1. Cliquez sur la photo du candidat. 2. Tapez votre numéro d'électeur (CEI-XXXXXXXX). 3. Cliquez sur le bouton orange. C'est tout !" },
-    dioula: { nom: "DIOULA",         texte: "I ni ce ! Sɛbɛnni saba : Fɔlɔ — candidat ka jaa klikli. Filanan — numéro électeur sɛbɛn. Sabanan — bouton orange digi. Aw ni baara !" },
-    baoule: { nom: "BAOULÉ",         texte: "Mô ndé ! Ndé sa lô : Klikli candidat foto. Numéro électeur flan. Bouton orange ba tô. Yako sa !" },
-    bete:   { nom: "BÉTÉ",           texte: "A boua ! Étape sâba : Klikli candidat foto. Numéro électeur sêbên. Bouton orange klê. Bâgou !" },
-    nouchi: { nom: "NOUCHI",         texte: "Wesh ! C'est simple nô stress ! Cliquez votre gars. Tapez votre numéro CEI. Appuyez le bouton orange. C'est bon djo !" },
-    attie:  { nom: "ATTIÉ",          texte: "Mo ho ! Ntsia saba : Candidat foto klikli. Numéro électeur tsô. Bouton orange da. Yé so !" }
+    fr:     { nom: "FRANÇAIS", texte: "Bonjour ! Je suis votre guide de vote. 3 étapes : 1. Cliquez sur la photo du candidat. 2. Tapez votre numéro d'électeur (CEI-XXXXXXXX). 3. Scannez votre empreinte digitale puis cliquez sur le bouton orange. C'est tout !" },
+    dioula: { nom: "DIOULA",   texte: "I ni ce ! Sɛbɛnni saba : Fɔlɔ — candidat ka jaa klikli. Filanan — numéro électeur sɛbɛn. Sabanan — empreinte digitale digi, bouton orange digi. Aw ni baara !" },
+    baoule: { nom: "BAOULÉ",   texte: "Mô ndé ! Ndé sa lô : Klikli candidat foto. Numéro électeur flan. Empreinte digitale scan, bouton orange ba tô. Yako sa !" },
+    bete:   { nom: "BÉTÉ",     texte: "A boua ! Étape sâba : Klikli candidat foto. Numéro électeur sêbên. Empreinte scan, bouton orange klê. Bâgou !" },
+    nouchi: { nom: "NOUCHI",   texte: "Wesh ! C'est simple nô stress ! Cliquez votre gars. Tapez votre numéro CEI. Scannez le doigt. Appuyez le bouton orange. C'est bon djo !" },
+    attie:  { nom: "ATTIÉ",    texte: "Mo ho ! Ntsia saba : Candidat foto klikli. Numéro électeur tsô. Empreinte scan, bouton orange da. Yé so !" }
 };
 
-let langueActive = null;
-let synthVoix    = window.speechSynthesis;
-let selectedCard = null;
+let langueActive   = null;
+let synthVoix      = window.speechSynthesis;
+let selectedCard   = null;
+let empreinteVerifiee  = false;
+let empreinteHashValue = '';
 
 // ══ Guide IA ══
 async function activerGuide(langue, btn) {
@@ -576,7 +506,7 @@ async function activerGuide(langue, btn) {
                 model: "claude-sonnet-4-20250514",
                 max_tokens: 500,
                 messages: [{ role: "user", content:
-                    `Tu es un guide électoral CEI Côte d'Ivoire. Explique en ${GUIDES_STATIQUES[langue].nom} comment voter en 3 étapes : 1. Cliquer photo candidat 2. Entrer numéro électeur (format CEI-XXXXXXXX) 3. Bouton orange. Langage simple et chaleureux. UNIQUEMENT en ${GUIDES_STATIQUES[langue].nom}.`
+                    `Tu es un guide électoral CEI Côte d'Ivoire. Explique en ${GUIDES_STATIQUES[langue].nom} comment voter en 3 étapes simples : 1. Cliquer sur la photo du candidat 2. Entrer son numéro électeur (format CEI-XXXXXXXX) 3. Scanner son empreinte digitale et cliquer le bouton orange. Langage très simple et chaleureux. UNIQUEMENT en ${GUIDES_STATIQUES[langue].nom}.`
                 }]
             })
         });
@@ -619,49 +549,146 @@ function selectCandidate(card) {
 
     const wrap  = document.getElementById('previewPhotoWrap');
     const emoji = document.getElementById('previewEmoji');
-
     if (photo && photo.trim()) {
         let img = wrap.querySelector('img');
         if (!img) {
             img = document.createElement('img');
-            img.style.width = '100%'; img.style.height = '100%';
-            img.style.objectFit = 'cover'; img.style.objectPosition = 'top';
+            img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:top';
             img.onerror = () => { img.style.display='none'; emoji.style.display='block'; };
             wrap.appendChild(img);
         }
-        img.src = photo; img.alt = name;
-        img.style.display = 'block'; emoji.style.display = 'none';
+        img.src = photo; img.style.display='block'; emoji.style.display='none';
     }
-
     document.getElementById('selectedPreview').classList.add('visible');
-
-    if (langueActive && synthVoix && !synthVoix.speaking) {
-        const msg = new SpeechSynthesisUtterance(`Vous avez choisi ${name}. Entrez maintenant votre numéro d'électeur.`);
-        msg.lang = 'fr-FR'; msg.rate = 0.9;
-        synthVoix.speak(msg);
-    }
-
+    majEtapes();
     document.querySelector('.vote-section').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
-// ══ SOUMISSION DU VOTE — Envoie à Django, PAS de validation locale ══
-function soumettreVote() {
-    // Vérification 1 : candidat sélectionné ?
-    if (!selectedCard) {
-        alert('⚠️ Veuillez d\'abord cliquer sur un candidat.');
-        return;
-    }
+// ══ Mise à jour barre d'étapes ══
+function majEtapes() {
+    const num = document.getElementById('numElecteur').value.trim();
+    document.getElementById('etape1').className = 'etape ' + (selectedCard ? 'done' : 'active');
+    document.getElementById('etape2').className = 'etape ' + (num ? (empreinteVerifiee ? 'done' : 'active') : (selectedCard ? 'active' : ''));
+    document.getElementById('etape3').className = 'etape ' + (empreinteVerifiee ? 'done' : (num ? 'active' : ''));
+}
 
-    // Vérification 2 : numéro renseigné ?
+// ══ Réinitialiser empreinte si numéro change ══
+function reinitialiserEmpreinte() {
+    if (empreinteVerifiee) {
+        empreinteVerifiee  = false;
+        empreinteHashValue = '';
+        document.getElementById('empreinteInput').value = '';
+        const bloc = document.getElementById('empreinteBlocUI');
+        bloc.classList.remove('verified','error-state','scanning');
+        document.getElementById('fpLabel').textContent  = "Appuyez sur l'icône pour scanner votre empreinte digitale";
+        document.getElementById('fpStatus').className   = 'empreinte-status status-waiting';
+        document.getElementById('fpStatus').textContent = '👆 En attente du scan';
+        document.getElementById('btnScan').disabled     = false;
+        document.getElementById('btnScan').innerHTML    = '🔒 Scanner mon empreinte';
+        document.getElementById('btnVote').classList.remove('active');
+    }
+    majEtapes();
+}
+
+// ══ Lancer scan empreinte ══
+async function lancerScan() {
     const numero = document.getElementById('numElecteur').value.trim();
-    if (!numero) {
-        alert('⚠️ Veuillez entrer votre numéro d\'électeur.');
-        return;
-    }
+    if (!selectedCard) { afficherErreurEmpreinte("⚠️ Sélectionnez d'abord un candidat."); return; }
+    if (!numero) { afficherErreurEmpreinte("⚠️ Entrez d'abord votre numéro d'électeur."); return; }
 
-    // ✅ On soumet le formulaire — Django fait la vraie vérification en base
+    const bloc = document.getElementById('empreinteBlocUI');
+    bloc.classList.remove('verified','error-state');
+    bloc.classList.add('scanning');
+    document.getElementById('fpStatus').className   = 'empreinte-status status-scanning';
+    document.getElementById('fpStatus').textContent = '⏳ Scan en cours…';
+    document.getElementById('fpLabel').textContent  = 'Placez votre doigt sur le capteur…';
+    document.getElementById('btnScan').disabled     = true;
+    document.getElementById('btnScan').innerHTML    = '⏳ Vérification…';
+
+    try {
+        if (!window.PublicKeyCredential) throw new Error('non supporté');
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const assertion = await navigator.credentials.get({
+            publicKey: { challenge, timeout: 60000, userVerification: 'required', rpId: window.location.hostname }
+        });
+        const rawId = new Uint8Array(assertion.rawId);
+        const hashBuf = await crypto.subtle.digest('SHA-256', new Uint8Array([...rawId, ...challenge]));
+        const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
+        await verifierAvecServeur(numero, hashHex);
+    } catch(err) {
+        if (err.name === 'NotAllowedError') {
+            afficherErreurEmpreinte('❌ Scan annulé ou refusé.');
+        } else {
+            await fallbackSimulation(numero);
+        }
+    }
+}
+
+// ══ Vérification côté serveur ══
+async function verifierAvecServeur(numero, hashHex) {
+    try {
+        const res = await fetch("{% url 'vote:verifier_empreinte' %}", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ numero_electeur: numero, empreinte_hash: hashHex })
+        });
+        const data = await res.json();
+        if (data.ok) {
+            empreinteVerifiee  = true;
+            empreinteHashValue = hashHex;
+            document.getElementById('empreinteInput').value = hashHex;
+            afficherSuccesEmpreinte(data.message || 'Identité confirmée !');
+        } else {
+            afficherErreurEmpreinte('❌ ' + (data.erreur || 'Empreinte non reconnue.'));
+        }
+    } catch {
+        afficherErreurEmpreinte('❌ Erreur réseau. Réessayez.');
+    }
+}
+
+// ══ Fallback simulation desktop ══
+async function fallbackSimulation(numero) {
+    await new Promise(r => setTimeout(r, 1800));
+    const data    = new TextEncoder().encode(numero + '_demo_' + Date.now());
+    const hashBuf = await crypto.subtle.digest('SHA-256', data);
+    const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    await verifierAvecServeur(numero, hashHex);
+}
+
+function afficherSuccesEmpreinte(msg) {
+    const bloc = document.getElementById('empreinteBlocUI');
+    bloc.classList.remove('scanning','error-state');
+    bloc.classList.add('verified');
+    document.getElementById('fpStatus').className   = 'empreinte-status status-ok';
+    document.getElementById('fpStatus').textContent = '✅ ' + msg;
+    document.getElementById('fpLabel').textContent  = 'Empreinte vérifiée avec succès !';
+    document.getElementById('btnScan').disabled     = true;
+    document.getElementById('btnScan').innerHTML    = '✅ Vérifié';
+    document.getElementById('btnVote').classList.add('active');
+    majEtapes();
+}
+
+function afficherErreurEmpreinte(msg) {
+    const bloc = document.getElementById('empreinteBlocUI');
+    bloc.classList.remove('scanning','verified');
+    bloc.classList.add('error-state');
+    document.getElementById('fpStatus').className   = 'empreinte-status status-fail';
+    document.getElementById('fpStatus').textContent = msg;
+    document.getElementById('fpLabel').textContent  = 'Réessayez après correction.';
+    document.getElementById('btnScan').disabled     = false;
+    document.getElementById('btnScan').innerHTML    = '🔄 Réessayer';
+    majEtapes();
+}
+
+// ══ Soumettre vote ══
+function soumettreVote() {
+    if (!selectedCard) { alert("⚠️ Veuillez d'abord sélectionner un candidat."); return; }
+    if (!document.getElementById('numElecteur').value.trim()) { alert("⚠️ Veuillez entrer votre numéro d'électeur."); return; }
+    if (!empreinteVerifiee) { alert("⚠️ Veuillez vérifier votre empreinte digitale avant de voter."); return; }
     document.getElementById('voteForm').submit();
 }
+
+document.getElementById('numElecteur').addEventListener('input', majEtapes);
 </script>
 
 </body>
