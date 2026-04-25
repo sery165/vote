@@ -264,7 +264,7 @@
 <div class="header">
     <div class="header-inner">
         <div class="logo-left">
-            <a class="logo-badge" href="{% url 'accueil3' %}">C</a>
+        
             <div class="logo-text">Commission<br>Électorale<br>Indépendante</div>
         </div>
         <div class="header-title">
@@ -281,11 +281,12 @@
 
 <!-- ✅ NAVBAR CORRIGÉE — liens réels au lieu de navigate() JS -->
 <nav class="navbar">
-    <a href="{% url 'accueil3' %}" id="nav-accueil"><span>🏠</span> Accueil</a>
+    
     <a href="{% url 'serveurcei:inscription_electeur' %}" id="nav-electeur"><span>📋</span> Inscription Électeur</a>
     <a href="{% url 'serveurcei:inscription_candidat' %}" id="nav-candidat"><span>🎖️</span> Inscription Candidat</a>
     <a href="{% url 'serveurcei:ancien_accueil' %}?tab=votants" id="nav-votants"><span>👥</span> Voir les Votants</a>
     <a href="{% url 'serveurcei:ancien_accueil' %}?tab=stats" id="nav-stats"><span>📊</span> Statistiques</a>
+    <a href="{% url 'serveurcei:admin_dashboard' %}" id="nav-admin"><span>📊</span> Admin Dashboard</a>
 </nav>
 
 <div class="page-wrapper">
@@ -314,7 +315,7 @@
             <div class="stat-label">Votes Enregistrés</div>
         </div>
         <div class="stat-item">
-            <div class="stat-number">2025</div>
+            <div class="stat-number">2030</div>
             <div class="stat-label">Prochaines Élections</div>
         </div>
     </div>

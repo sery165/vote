@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques | Back-office CEI</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:#F7F9FC; color:#0D1F3C; min-height:100vh; }
+
+        /* TOPBAR */
+        .topbar {
+            background:#0D1F3C; color:#fff; height:56px;
+            display:flex; align-items:center; justify-content:space-between;
+            padding:0 1.5rem; position:sticky; top:0; z-index:200;
+            box-shadow:0 2px 8px rgba(0,0,0,0.3);
+        }
+        .topbar-brand { display:flex; align-items:center; gap:10px; }
+        .topbar-logo { width:34px; height:34px; background:#E8611A; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.75rem; color:#fff; }
+        .topbar-title { color:#fff; font-weight:600; font-size:0.95rem; }
+        .topbar-title span { color:#E8611A; font-size:0.72rem; display:block; font-weight:400; }
+        .topbar-user { display:flex; align-items:center; gap:12px; }
+        .topbar-logout { background:rgba(255,255,255,0.1); color:#fff; padding:5px 14px; border-radius:6px; text-decoration:none; font-size:0.82rem; }
+        .topbar-logout:hover { background:#C0392B; }
+
+        /* LAYOUT */
+        .admin-layout { display:flex; min-height:calc(100vh - 56px); }
+
+        /* SIDEBAR */
+        .sidebar { width:220px; background:#0D1F3C; padding:1rem 0; flex-shrink:0; }
+        .sidebar-section { padding:8px 1.2rem 4px; font-size:0.68rem; text-transform:uppercase; letter-spacing:1.2px; color:rgba(255,255,255,0.3); margin-top:10px; }
+        .sidebar-item { display:flex; align-items:center; gap:10px; padding:11px 1.2rem; color:rgba(255,255,255,0.65); text-decoration:none; font-size:0.875rem; transition:all 0.15s; border-left:3px solid transparent; }
+        .sidebar-item:hover { background:rgba(255,255,255,0.07); color:#fff; }
+        .sidebar-item.active { background:rgba(232,97,26,0.2); color:#fff; border-left-color:#E8611A; }
+        .sidebar-icon { font-size:1rem; width:18px; text-align:center; }
+
+        /* MAIN */
+        .admin-main { flex:1; padding:2rem; overflow-y:auto; }
+
+        /* MESSAGES */
+        .alert { padding:10px 16px; border-radius:8px; margin-bottom:10px; font-size:0.875rem; display:flex; align-items:center; gap:8px; }
+        .alert-success { background:#E8F5EC; color:#1A5C2A; border-left:4px solid #1B3A6B; }
+        .alert-error   { background:#FDEAEA; color:#8B1A1A; border-left:4px solid #C0392B; }
+
+        :root {
+            --noir:#111111; --noir-doux:#1E1E1E; --orange:#E8823A;
+            --orange-pale:#FDF0E6; --orange-bord:#F0A96B;
+            --blanc:#FFFFFF; --gris-clair:#F5F5F5;
+            --gris-mid:#9A9A9A; --gris-bord:#E2E2E2;
+            --rouge:#D64545; --vert:#2E9E6B;
+            --radius:8px; --shadow:0 2px 10px rgba(0,0,0,0.07);
+        }
+
+        .page-header { margin-bottom:2rem; padding-bottom:1.25rem; border-bottom:2px solid var(--noir); position:relative; }
+        .page-header::after { content:''; position:absolute; bottom:-2px; left:0; width:56px; height:2px; background:var(--orange); }
+        .breadcrumb { font-size:0.78rem; color:var(--gris-mid); margin-bottom:0.5rem; }
+        .breadcrumb a { color:var(--orange); text-decoration:none; font-weight:600; }
+        .page-header h1 { font-size:1.6rem; font-weight:800; color:var(--noir); margin:0 0 0.25rem; }
+        .page-header p { color:var(--gris-mid); font-size:0.88rem; margin:0; }
+
+        .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
+        @media(max-width:860px){ .grid-4{ grid-template-columns:repeat(2,1fr); } }
+
+        .stat-card { background:var(--blanc); border:1px solid var(--gris-bord); border-radius:var(--radius); border-left:4px solid var(--gris-bord); padding:1.1rem 1.25rem; box-shadow:var(--shadow); }
+        .stat-card.gold { border-left-color:var(--orange); }
+        .stat-card.red  { border-left-color:var(--rouge); }
+        .stat-card.dark { background:var(--noir); border-color:var(--noir); border-left-color:var(--orange); }
+        .stat-num { font-size:2rem; font-weight:800; color:var(--noir); letter-spacing:-1px; line-height:1; }
+        .stat-card.dark .stat-num { color:var(--blanc); }
+        .stat-card.gold .stat-num { color:var(--orange); }
+        .stat-card.red  .stat-num { color:var(--rouge); }
+        .stat-lbl { font-size:0.8rem; font-weight:700; color:var(--noir); margin-top:4px; text-transform:uppercase; letter-spacing:0.4px; }
+        .stat-card.dark .stat-lbl { color:var(--gris-mid); }
+        .stat-sub { font-size:0.74rem; color:var(--gris-mid); margin-top:2px; }
+
+        .card { background:var(--blanc); border-radius:var(--radius); border:1px solid var(--gris-bord); box-shadow:var(--shadow); overflow:hidden; margin-bottom:1.5rem; }
+        .card-header { padding:1rem 1.5rem; border-bottom:1px solid var(--gris-bord); }
+        .card-header h2 { font-size:1rem; font-weight:700; color:var(--noir); margin:0 0 2px; }
+        .card-header p  { font-size:0.8rem; color:var(--gris-mid); margin:0; }
+        .card-body { padding:1.25rem 1.5rem; }
+
+        .card-participation { border-top:3px solid var(--orange); }
+        .card-participation .card-header { background:var(--noir); }
+        .card-participation .card-header h2 { color:var(--blanc); }
+        .card-participation .card-header p  { color:var(--gris-mid); }
+
+        .participation-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center; }
+        @media(max-width:640px){ .participation-grid{ grid-template-columns:1fr; } }
+
+        .jauge-center { text-align:center; }
+        .jauge-wrap   { position:relative; display:inline-block; }
+        .jauge-label  { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+        .jauge-pct    { font-size:2.2rem; font-weight:800; color:var(--orange); letter-spacing:-1px; line-height:1; }
+        .jauge-sub    { font-size:0.68rem; color:var(--gris-mid); text-transform:uppercase; letter-spacing:0.5px; margin-top:2px; }
+
+        .prog-row { margin-bottom:1.4rem; }
+        .prog-head { display:flex; justify-content:space-between; margin-bottom:6px; align-items:center; }
+        .prog-label { font-weight:600; font-size:0.88rem; display:flex; align-items:center; gap:6px; }
+        .prog-dot { width:10px; height:10px; border-radius:3px; display:inline-block; }
+        .prog-val { font-weight:700; font-size:0.88rem; }
+        .prog-val.green { color:var(--vert); }
+        .prog-val.red   { color:var(--rouge); }
+        .progress-wrap { background:var(--gris-clair); border-radius:99px; height:10px; overflow:hidden; }
+        .progress-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--vert),#52C593); transition:width 0.5s ease; }
+        .progress-fill.red-fill { background:linear-gradient(90deg,var(--rouge),#E57373); }
+        .prog-note { font-size:0.76rem; color:var(--gris-mid); margin-top:4px; }
+
+        .refresh-box { margin-top:1.4rem; padding:0.75rem 1rem; background:var(--gris-clair); border-radius:var(--radius); font-size:0.82rem; color:var(--gris-mid); display:flex; align-items:center; justify-content:center; gap:10px; }
+        .btn-refresh { background:var(--noir); color:var(--blanc); border:none; padding:5px 13px; border-radius:6px; font-size:0.78rem; cursor:pointer; font-family:inherit; font-weight:600; transition:background 0.15s; }
+        .btn-refresh:hover { background:var(--orange); }
+
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; align-items:start; margin-bottom:1.5rem; }
+        @media(max-width:640px){ .grid-2{ grid-template-columns:1fr; } }
+
+        .chart-empty { text-align:center; padding:2rem; color:var(--gris-mid); }
+        .chart-empty .icon { font-size:2rem; display:block; margin-bottom:0.5rem; }
+
+        .table-wrap { overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; font-size:0.875rem; }
+        thead tr { background:var(--gris-clair); border-bottom:2px solid var(--gris-bord); }
+        thead th { padding:10px 14px; text-align:left; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--gris-mid); }
+        thead th:first-child { border-left:3px solid var(--orange); }
+        tbody tr { border-bottom:1px solid var(--gris-bord); transition:background 0.12s; }
+        tbody tr:hover { background:var(--gris-clair); }
+        tbody td { padding:12px 14px; vertical-align:middle; color:var(--noir); }
+        tbody tr.total-row { background:var(--gris-clair); font-weight:700; }
+
+        footer { background:#0D1F3C; color:rgba(255,255,255,0.4); text-align:center; padding:1rem; font-size:0.75rem; }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-brand">
+        <div class="topbar-logo">CEI</div>
+        <div class="topbar-title">Back-office CEI <span>🇨🇮 Commission Électorale Indépendante</span></div>
+    </div>
+    <div class="topbar-user">
+        <span style="font-size:0.85rem;color:rgba(255,255,255,0.8);">👤 {{ admin_nom }}</span>
+        <a href="{% url 'serveurcei:admin_deconnexion' %}" class="topbar-logout">Déconnexion</a>
+    </div>
+</div>
+
+<div class="admin-layout">
+    <nav class="sidebar">
+        <div class="sidebar-section">Navigation</div>
+        <a href="{% url 'serveurcei:admin_dashboard' %}" class="sidebar-item"><span class="sidebar-icon">📊</span> Tableau de bord</a>
+        <div class="sidebar-section">Gestion</div>
+        <a href="{% url 'serveurcei:admin_electeurs' %}" class="sidebar-item"><span class="sidebar-icon">👥</span> Électeurs</a>
+        <a href="{% url 'serveurcei:admin_candidats' %}" class="sidebar-item"><span class="sidebar-icon">🏛️</span> Candidats</a>
+        <a href="{% url 'serveurcei:admin_election' %}" class="sidebar-item"><span class="sidebar-icon">⚙️</span> Élection</a>
+        <div class="sidebar-section">Résultats</div>
+        <a href="{% url 'serveurcei:admin_resultats' %}" class="sidebar-item"><span class="sidebar-icon">🏆</span> Résultats</a>
+        <a href="{% url 'serveurcei:admin_statistiques' %}" class="sidebar-item active"><span class="sidebar-icon">📈</span> Statistiques</a>
+        <div class="sidebar-section">Audit</div>
+        <a href="{% url 'serveurcei:admin_logs' %}" class="sidebar-item"><span class="sidebar-icon">📋</span> Journal</a>
+        <div class="sidebar-section">Accès Public</div>
+        <a href="/" class="sidebar-item" target="_blank"><span class="sidebar-icon">🌐</span> Site public ↗</a>
+        <a href="{% url 'serveurcei:resultats' %}" class="sidebar-item" target="_blank"><span class="sidebar-icon">📊</span> Résultats publics ↗</a>
+    </nav>
+
+    <main class="admin-main">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="page-header">
+            <div class="breadcrumb">
+                <a href="{% url 'serveurcei:admin_dashboard' %}">Tableau de bord</a> › Statistiques
+            </div>
+            <h1>📈 Statistiques Électorales</h1>
+            <p>Analyse complète — Participation, résultats et tendances</p>
+        </div>
+
+        <div class="grid-4">
+            <div class="stat-card">
+                <div class="stat-num">{{ total_inscrits }}</div>
+                <div class="stat-lbl">Total inscrits</div>
+                <div class="stat-sub">Électeurs inscrits</div>
+            </div>
+            <div class="stat-card gold">
+                <div class="stat-num">{{ total_votes }}</div>
+                <div class="stat-lbl">Votes exprimés</div>
+                <div class="stat-sub">Bulletins validés</div>
+            </div>
+            <div class="stat-card red">
+                <div class="stat-num">{{ abstentions }}</div>
+                <div class="stat-lbl">Abstentions</div>
+                <div class="stat-sub">N'ont pas encore voté</div>
+            </div>
+            <div class="stat-card dark">
+                <div class="stat-num">{{ taux_participation }}%</div>
+                <div class="stat-lbl">Participation</div>
+                <div class="stat-sub">Taux de votants</div>
+            </div>
+        </div>
+
+        <div class="card card-participation">
+            <div class="card-header">
+                <h2>🎯 Participation Réelle vs Inscrits</h2>
+                <p>Pourcentage des inscrits ayant effectivement voté</p>
+            </div>
+            <div class="card-body">
+                <div class="participation-grid">
+                    <div class="jauge-center">
+                        <div class="jauge-wrap">
+                            <canvas id="chartJauge" style="max-width:220px;max-height:220px;"></canvas>
+                            <div class="jauge-label">
+                                <div class="jauge-pct" id="jauge-pct">{{ taux_participation }}%</div>
+                                <div class="jauge-sub">Participation</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="prog-row">
+                            <div class="prog-head">
+                                <span class="prog-label"><span class="prog-dot" style="background:var(--vert);"></span>Ont voté</span>
+                                <span class="prog-val green">{{ ont_vote }} / {{ total_inscrits }}</span>
+                            </div>
+                            <div class="progress-wrap" style="height:12px;">
+                                <div class="progress-fill" style="width:{{ taux_participation }}%;"></div>
+                            </div>
+                            <div class="prog-note">{{ taux_participation }}% des inscrits</div>
+                        </div>
+                        <div class="prog-row">
+                            <div class="prog-head">
+                                <span class="prog-label"><span class="prog-dot" style="background:var(--rouge);"></span>N'ont pas voté</span>
+                                <span class="prog-val red">{{ abstentions }} / {{ total_inscrits }}</span>
+                            </div>
+                            <div class="progress-wrap" style="height:12px;">
+                                <div class="progress-fill red-fill" style="width:{% if total_inscrits > 0 %}{% widthratio abstentions total_inscrits 100 %}{% else %}0{% endif %}%;"></div>
+                            </div>
+                        </div>
+                        <div class="refresh-box">
+                            🔄 <span id="refresh-label">Mise à jour dans 30s</span>
+                            <button class="btn-refresh" onclick="rafraichirStats()">Actualiser</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card" style="margin-bottom:0;">
+                <div class="card-header"><h2>🥧 Résultats — Camembert</h2><p>Répartition des votes</p></div>
+                <div class="card-body" style="display:flex;justify-content:center;">
+                    <canvas id="chartCamembert" style="max-height:260px;max-width:260px;"></canvas>
+                </div>
+            </div>
+            <div class="card" style="margin-bottom:0;">
+                <div class="card-header"><h2>📊 Votes par Candidat</h2><p>Classement</p></div>
+                <div class="card-body">
+                    <canvas id="chartBarres" style="max-height:240px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h2>📅 Évolution des Votes</h2><p>Votes par jour</p></div>
+            <div class="card-body">
+                {% if votes_par_jour != "[]" %}
+                <canvas id="chartJours" style="max-height:200px;"></canvas>
+                {% else %}
+                <div class="chart-empty"><span class="icon">📅</span>Aucune donnée temporelle disponible.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h2>📋 Tableau Récapitulatif</h2></div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rang</th><th>Candidat</th><th>Parti</th>
+                            <th>Votes</th><th>% exprimés</th><th>% inscrits</th><th>Progression</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableau-corps"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<footer>🇨🇮 <strong style="color:#E8611A;">Commission Électorale Indépendante</strong> · République de Côte d'Ivoire © 2025</footer>
+
+<script>
+const dataCandidats = {{ data_candidats_json|safe }};
+const votesParJour  = {{ votes_par_jour|safe }};
+const totalVotes    = {{ total_votes }};
+const totalInscrits = {{ total_inscrits }};
+const ontVote       = {{ ont_vote }};
+const abstentions   = {{ abstentions }};
+const tauxParticip  = {{ taux_participation }};
+const COULEURS = ['#111111','#E8823A','#2E9E6B','#D64545','#6B7280','#F0A96B','#374151'];
+
+new Chart(document.getElementById('chartJauge'), {
+    type:'doughnut',
+    data:{ datasets:[{ data:[tauxParticip, Math.max(0,100-tauxParticip)], backgroundColor:['#E8823A','#F0F0F0'], borderWidth:0, circumference:270, rotation:-135 }] },
+    options:{ responsive:true, cutout:'75%', plugins:{ legend:{display:false}, tooltip:{enabled:false} } }
+});
+
+if (dataCandidats.length > 0) {
+    new Chart(document.getElementById('chartCamembert'), {
+        type:'doughnut',
+        data:{ labels:dataCandidats.map(c=>c.nom), datasets:[{ data:dataCandidats.map(c=>c.votes), backgroundColor:COULEURS, borderWidth:4, borderColor:'#fff' }] },
+        options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:16 } } } }
+    });
+    new Chart(document.getElementById('chartBarres'), {
+        type:'bar',
+        data:{ labels:dataCandidats.map(c=>c.nom), datasets:[{ label:'Votes', data:dataCandidats.map(c=>c.votes), backgroundColor:COULEURS, borderRadius:6 }] },
+        options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{ beginAtZero:true, ticks:{precision:0} } } }
+    });
+}
+
+const canvasJours = document.getElementById('chartJours');
+if (canvasJours && votesParJour.length > 0) {
+    new Chart(canvasJours, {
+        type:'line',
+        data:{ labels:votesParJour.map(v=>v.date), datasets:[{ label:'Votes par jour', data:votesParJour.map(v=>v.count), borderColor:'#E8823A', backgroundColor:'rgba(232,130,58,0.08)', tension:0.4, fill:true, pointBackgroundColor:'#E8823A', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:6 }] },
+        options:{ responsive:true, scales:{ y:{ beginAtZero:true, ticks:{precision:0} } } }
+    });
+}
+
+const tbody = document.getElementById('tableau-corps');
+if (tbody && dataCandidats.length > 0) {
+    dataCandidats.forEach((c,i) => {
+        const pctVotes    = totalVotes > 0 ? ((c.votes/totalVotes)*100).toFixed(2) : '0.00';
+        const pctInscrits = totalInscrits > 0 ? ((c.votes/totalInscrits)*100).toFixed(2) : '0.00';
+        const medaille    = i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-size:1.2rem;">${medaille}</td>
+            <td style="font-weight:700;">${c.nom}</td>
+            <td style="color:#9A9A9A;font-size:0.83rem;">${c.parti}</td>
+            <td style="font-weight:800;">${c.votes}</td>
+            <td style="font-weight:700;color:#E8823A;">${pctVotes}%</td>
+            <td style="color:#9A9A9A;">${pctInscrits}%</td>
+            <td><div style="background:#F0F0F0;border-radius:99px;height:8px;overflow:hidden;"><div style="width:${pctVotes}%;height:100%;background:linear-gradient(90deg,#111,#E8823A);border-radius:99px;"></div></div></td>`;
+        tbody.appendChild(tr);
+    });
+    const trTotal = document.createElement('tr');
+    trTotal.className = 'total-row';
+    trTotal.innerHTML = `<td colspan="3">TOTAL</td><td>${totalVotes}</td><td>100%</td><td>${tauxParticip}%</td><td></td>`;
+    tbody.appendChild(trTotal);
+}
+
+let countdown = 30;
+setInterval(() => {
+    countdown--;
+    const lbl = document.getElementById('refresh-label');
+    if (lbl) lbl.textContent = `Mise à jour dans ${countdown}s`;
+    if (countdown <= 0) { countdown = 30; rafraichirStats(); }
+}, 1000);
+
+async function rafraichirStats() {
+    try {
+        const resp = await fetch('/api/stats/');
+        const data = await resp.json();
+        const el = document.getElementById('jauge-pct');
+        if (el) el.textContent = data.taux_participation + '%';
+    } catch(e) {}
+}
+</script>
+</body>
+</html>

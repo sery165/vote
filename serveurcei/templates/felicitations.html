@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEI — Inscription Validée</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* [Reprenez vos styles existants] */
+        .success-box {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px;
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 80px;
+            color: #009E60;
+            margin-bottom: 20px;
+        }
+        .numero-badge {
+            background: #f0fff8;
+            border: 3px solid #009E60;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-logo">C</div>
+    <div class="header-title">
+        <h1>Commission Électorale Indépendante</h1>
+        <p>République de Côte d'Ivoire</p>
+    </div>
+    <div class="tri-flag">
+        <div class="band b1"></div>
+        <div class="band b2"></div>
+        <div class="band b3"></div>
+    </div>
+</div>
+
+<div class="success-box">
+    <div class="success-icon">🎉</div>
+    <h2 style="font-family: 'Playfair Display'; color: #009E60; margin-bottom: 10px;">
+        Inscription Validée !
+    </h2>
+    <p style="color: #555; margin-bottom: 20px;">
+        Félicitations {{ electeur.prenom }} {{ electeur.nom }}, votre inscription a été enregistrée avec succès.
+    </p>
+    
+    <div class="numero-badge">
+        <div style="font-size: 14px; color: #888; margin-bottom: 8px;">
+            VOTRE NUMÉRO ÉLECTEUR
+        </div>
+        <div style="font-family: 'Courier New'; font-size: 28px; font-weight: 900; color: #009E60;">
+            {{ electeur.numero }}
+        </div>
+    </div>
+    
+    <p style="color: #c0392b; font-weight: 600; margin: 20px 0;">
+        ⚠️ Conservez précieusement ce numéro, il sera indispensable pour voter.
+    </p>
+    
+    <a href="/" class="btn-download">🏠 Retour à l'accueil</a>
+    <a href="#" class="btn-download" style="background: linear-gradient(135deg, #FF8200, #e07000);">📄 Télécharger le reçu</a>
+</div>
+
+</body>
+</html>

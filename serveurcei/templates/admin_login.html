@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin CEI — Connexion</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #111111;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        :root {
+            --noir:        #111111;
+            --noir-doux:   #1E1E1E;
+            --orange:      #E8823A;
+            --orange-pale: #FDF0E6;
+            --orange-bord: #F0A96B;
+            --blanc:       #FFFFFF;
+            --gris-clair:  #F5F5F5;
+            --gris-mid:    #9A9A9A;
+            --gris-bord:   #E2E2E2;
+            --radius:      8px;
+            --shadow:      0 4px 24px rgba(0,0,0,0.10);
+        }
+
+        /* ── Messages Django ── */
+        .messages { list-style:none; margin-bottom: 16px; max-width: 420px; width:100%; }
+        .messages li { padding:10px 16px; border-radius:6px; margin-bottom:8px; font-size:0.85rem; }
+        .messages .error   { background:#fdecea; color:#c0392b; border-left:4px solid #c0392b; }
+        .messages .success { background:#eafaf1; color:#1e8449; border-left:4px solid #1e8449; }
+        .messages .warning { background:#fef9e7; color:#b7950b; border-left:4px solid #b7950b; }
+
+        .login-wrap { max-width: 420px; width: 100%; }
+
+        .login-card {
+            background: var(--blanc);
+            border-radius: var(--radius);
+            border: 1px solid var(--gris-bord);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: var(--noir);
+            text-align: center;
+            padding: 2rem 1.5rem 1.75rem;
+            position: relative;
+            border-bottom: 3px solid var(--orange);
+        }
+        .login-header .lock-icon {
+            font-size: 2.6rem;
+            margin-bottom: 0.6rem;
+            display: block;
+            filter: drop-shadow(0 2px 6px rgba(232,130,58,0.3));
+        }
+        .login-header h1 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--blanc);
+            margin: 0 0 0.3rem;
+            letter-spacing: -0.3px;
+        }
+        .login-header p { font-size: 0.8rem; color: var(--gris-mid); margin: 0; }
+
+        .login-body { padding: 1.75rem 1.75rem 1.5rem; }
+
+        .warn-banner {
+            background: var(--orange-pale);
+            border-left: 3px solid var(--orange);
+            padding: 0.75rem 1rem;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 1.5rem;
+            font-size: 0.82rem;
+            color: var(--noir);
+            line-height: 1.5;
+        }
+
+        .form-group { margin-bottom: 1.1rem; }
+        .form-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--gris-mid);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            border: 1.5px solid var(--gris-bord);
+            border-radius: var(--radius);
+            padding: 9px 13px;
+            font-size: 0.88rem;
+            color: var(--noir);
+            background: var(--blanc);
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
+            font-family: inherit;
+        }
+        .form-control:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(232,130,58,0.15);
+        }
+        .form-control::placeholder { color: var(--gris-mid); }
+
+        .btn-login {
+            width: 100%;
+            padding: 11px;
+            margin-top: 0.75rem;
+            background: var(--noir);
+            color: var(--blanc);
+            border: 1.5px solid var(--noir);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.2px;
+            transition: background 0.18s, box-shadow 0.18s;
+        }
+        .btn-login:hover {
+            background: var(--noir-doux);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+        }
+
+        .divider { border:none; border-top:1px solid var(--gris-bord); margin:1.4rem 0 1rem; }
+
+        .login-footer-link { text-align:center; font-size:0.8rem; }
+        .login-footer-link a { color:var(--gris-mid); text-decoration:none; transition:color 0.15s; }
+        .login-footer-link a:hover { color:var(--orange); }
+
+        .demo-note { text-align:center; margin-top:0.9rem; font-size:0.76rem; color:var(--gris-mid); }
+        .demo-note code {
+            background:var(--gris-clair); border:1px solid var(--gris-bord);
+            padding:1px 7px; border-radius:4px; font-size:0.78rem; color:var(--noir);
+        }
+    </style>
+</head>
+<body>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="login-wrap">
+        <div class="login-card">
+
+            <div class="login-header">
+                <span class="lock-icon">🔒</span>
+                <h1>Administration CEI</h1>
+                <p>Accès réservé au personnel autorisé</p>
+            </div>
+
+            <div class="login-body">
+                <div class="warn-banner">
+                    ⚠️ <strong>Zone sécurisée.</strong> Toutes les connexions sont journalisées.
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label">Identifiant administrateur</label>
+                        <input type="text" name="username" class="form-control"
+                               placeholder="admin" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mot de passe</label>
+                        <input type="password" name="password" class="form-control"
+                               placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-login">
+                        🔐 Accéder au Back-office
+                    </button>
+                </form>
+
+                <hr class="divider">
+
+                <div class="login-footer-link">
+                    <a href="/">← Retour au site public</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-note">
+            Compte : <code>admin / motdepasse123</code>
+        </div>
+    </div>
+
+</body>
+</html>

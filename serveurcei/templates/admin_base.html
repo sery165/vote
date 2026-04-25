@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin CEI{% endblock %} | Back-office CEI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vert:#1B3A6B;
+            --vert-clair:#2A549A;
+            --or:#E8611A;
+            --or-clair:#F07D3A;
+            --rouge:#C0392B;
+            --blanc:#F7F9FC; --gris-pale:#E8EDF4;
+            --gris:#7A8BA0;  --texte:#0D1F3C;
+            --sidebar:#0D1F3C; --sidebar-hover:rgba(255,255,255,0.07);
+            --ombre:0 2px 12px rgba(27,58,107,0.10);
+            --radius:10px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:var(--blanc); color:var(--texte); display:flex; flex-direction:column; min-height:100vh; }
+
+        .topbar {
+            background:var(--sidebar); color:#fff;
+            height:56px; display:flex; align-items:center;
+            justify-content:space-between; padding:0 1.5rem;
+            position:sticky; top:0; z-index:200;
+            box-shadow:0 2px 8px rgba(0,0,0,0.3);
+        }
+        .topbar-brand { display:flex; align-items:center; gap:10px; }
+        .topbar-logo { width:34px; height:34px; background:var(--or); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--sidebar); }
+        .topbar-title { color:#fff; font-weight:600; font-size:0.95rem; }
+        .topbar-title span { color:var(--or); font-size:0.72rem; display:block; font-weight:400; }
+        .topbar-user { display:flex; align-items:center; gap:12px; }
+        .topbar-name { font-size:0.85rem; color:rgba(255,255,255,0.8); }
+        .topbar-logout { background:rgba(255,255,255,0.1); color:#fff; padding:5px 14px; border-radius:6px; text-decoration:none; font-size:0.82rem; transition:background 0.2s; }
+        .topbar-logout:hover { background:var(--rouge); }
+
+        .admin-layout { display:flex; flex:1; min-height:calc(100vh - 56px); }
+
+        .sidebar { width:220px; background:var(--sidebar); padding:1rem 0; flex-shrink:0; }
+        .sidebar-section { padding:8px 1.2rem 4px; font-size:0.68rem; text-transform:uppercase; letter-spacing:1.2px; color:rgba(255,255,255,0.3); margin-top:10px; }
+        .sidebar-item {
+            display:flex; align-items:center; gap:10px;
+            padding:11px 1.2rem; color:rgba(255,255,255,0.65);
+            text-decoration:none; font-size:0.875rem;
+            transition:all 0.15s; border-left:3px solid transparent;
+        }
+        .sidebar-item:hover { background:var(--sidebar-hover); color:#fff; }
+        .sidebar-item.active { background:rgba(10,92,54,0.4); color:#fff; border-left-color:var(--or); }
+        .sidebar-icon { font-size:1rem; width:18px; text-align:center; }
+        .sidebar-badge { margin-left:auto; background:var(--or); color:var(--sidebar); font-size:0.68rem; font-weight:700; padding:2px 7px; border-radius:50px; }
+
+        .admin-main { flex:1; padding:2rem; overflow-y:auto; }
+        .page-header { margin-bottom:2rem; }
+        .page-header h1 { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--texte); }
+        .page-header p { color:var(--gris); font-size:0.9rem; margin-top:4px; }
+        .breadcrumb { font-size:0.78rem; color:var(--gris); margin-bottom:0.5rem; }
+        .breadcrumb a { color:var(--vert); text-decoration:none; }
+
+        .card { background:#fff; border-radius:var(--radius); box-shadow:var(--ombre); overflow:hidden; }
+        .card-header { background:linear-gradient(135deg,var(--vert) 0%,var(--vert-clair) 100%); padding:1.2rem 1.5rem; color:#fff; }
+        .card-header h2 { font-family:'Playfair Display',serif; font-size:1.25rem; }
+        .card-header p { font-size:0.82rem; opacity:0.85; margin-top:3px; }
+        .card-body { padding:1.5rem; }
+
+        .stat-card { background:#fff; border-radius:var(--radius); padding:1.3rem 1.5rem; box-shadow:var(--ombre); border-left:4px solid var(--vert); }
+        .stat-card.gold  { border-color:var(--or); }
+        .stat-card.red   { border-color:var(--rouge); }
+        .stat-card.dark  { border-color:var(--texte); }
+        .stat-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; color:var(--vert); line-height:1; }
+        .stat-card.gold .stat-num  { color:var(--or); }
+        .stat-card.red .stat-num   { color:var(--rouge); }
+        .stat-card.dark .stat-num  { color:var(--texte); }
+        .stat-lbl { font-size:0.78rem; color:var(--gris); text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+        .stat-sub { font-size:0.8rem; color:var(--gris); margin-top:6px; }
+
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+        .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.2rem; }
+        .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+        @media(max-width:900px){ .grid-4,.grid-3{ grid-template-columns:1fr 1fr; } .grid-2{ grid-template-columns:1fr; } }
+
+        .table-wrap { overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; font-size:0.875rem; }
+        thead th { background:var(--gris-pale); color:var(--gris); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.5px; padding:10px 14px; text-align:left; font-weight:600; }
+        tbody tr { border-bottom:1px solid #F0EEE8; transition:background 0.1s; }
+        tbody tr:hover { background:#FAFAF7; }
+        tbody td { padding:11px 14px; vertical-align:middle; }
+
+        .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:7px; font-family:'DM Sans',sans-serif; font-size:0.875rem; font-weight:600; cursor:pointer; border:none; text-decoration:none; transition:all 0.15s; }
+        .btn-primary { background:var(--vert); color:#fff; }
+        .btn-primary:hover { background:var(--vert-clair); }
+        .btn-gold { background:var(--or); color:var(--texte); }
+        .btn-gold:hover { background:var(--or-clair); }
+        .btn-danger { background:var(--rouge); color:#fff; }
+        .btn-danger:hover { background:#8B1A1A; }
+        .btn-outline { background:transparent; border:2px solid currentColor; }
+        .btn-sm { padding:5px 12px; font-size:0.8rem; }
+
+        .badge { display:inline-block; padding:3px 9px; border-radius:50px; font-size:0.72rem; font-weight:600; }
+        .badge-green { background:#E8F5EC; color:#1A5C2A; }
+        .badge-red   { background:#FDEAEA; color:var(--rouge); }
+        .badge-gold  { background:#FFF8E1; color:#B04A0E; }
+        .badge-gray  { background:var(--gris-pale); color:var(--gris); }
+
+        .form-control { width:100%; padding:9px 12px; border:2px solid var(--gris-pale); border-radius:7px; font-family:'DM Sans',sans-serif; font-size:0.875rem; color:var(--texte); outline:none; transition:border-color 0.2s; }
+        .form-control:focus { border-color:var(--vert); }
+
+        .progress-wrap { background:var(--gris-pale); border-radius:50px; height:8px; overflow:hidden; }
+        .progress-fill { height:100%; background:linear-gradient(90deg,var(--vert),var(--or)); border-radius:50px; transition:width 0.8s ease; }
+
+        .alert { padding:10px 16px; border-radius:8px; margin-bottom:10px; font-size:0.875rem; display:flex; align-items:center; gap:8px; }
+        .alert-success { background:#E8F5EC; color:#1A5C2A; border-left:4px solid var(--vert); }
+        .alert-error   { background:#FDEAEA; color:#8B1A1A; border-left:4px solid var(--rouge); }
+
+        .divider { height:1px; background:var(--gris-pale); margin:1.2rem 0; }
+
+        footer { background:var(--sidebar); color:rgba(255,255,255,0.4); text-align:center; padding:1rem; font-size:0.75rem; }
+        footer strong { color:var(--or); }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-brand">
+        <div class="topbar-logo" style="font-size:0.75rem;font-weight:800;letter-spacing:-0.5px;background:#E8611A;color:#fff;">CEI</div>
+        <div class="topbar-title">
+            Back-office CEI
+            <span>🇨🇮 Commission Électorale Indépendante — Côte d'Ivoire</span>
+        </div>
+    </div>
+    <div class="topbar-user">
+        <span class="topbar-name">👤 {{ admin_nom }}</span>
+        <a href="{% url 'serveurcei:admin_deconnexion' %}" class="topbar-logout">Déconnexion</a>
+    </div>
+</div>
+
+<div class="admin-layout">
+    <nav class="sidebar">
+        <div class="sidebar-section">Navigation</div>
+        <a href="{% url 'serveurcei:admin_dashboard' %}" class="sidebar-item {% block active_dashboard %}{% endblock %}">
+            <span class="sidebar-icon">📊</span> Tableau de bord
+        </a>
+
+        <div class="sidebar-section">Gestion</div>
+        <a href="{% url 'serveurcei:admin_electeurs' %}" class="sidebar-item {% block active_electeurs %}{% endblock %}">
+            <span class="sidebar-icon">👥</span> Électeurs
+        </a>
+        <a href="{% url 'serveurcei:admin_candidats' %}" class="sidebar-item {% block active_candidats %}{% endblock %}">
+            <span class="sidebar-icon">🏛️</span> Candidats
+        </a>
+        <a href="{% url 'serveurcei:admin_election' %}" class="sidebar-item {% block active_election %}{% endblock %}">
+            <span class="sidebar-icon">⚙️</span> Élection
+        </a>
+
+        <div class="sidebar-section">Résultats</div>
+        <a href="{% url 'serveurcei:admin_resultats' %}" class="sidebar-item {% block active_resultats %}{% endblock %}">
+            <span class="sidebar-icon">🏆</span> Résultats officiels
+        </a>
+        <a href="{% url 'serveurcei:admin_statistiques' %}" class="sidebar-item {% block active_stats %}{% endblock %}">
+            <span class="sidebar-icon">📈</span> Statistiques
+        </a>
+
+        <div class="sidebar-section">Audit</div>
+        <a href="{% url 'serveurcei:admin_logs' %}" class="sidebar-item {% block active_logs %}{% endblock %}">
+            <span class="sidebar-icon">📋</span> Journal d'actions
+        </a>
+
+        <div class="sidebar-section">Accès Public</div>
+        <a href="/" class="sidebar-item" target="_blank">
+            <span class="sidebar-icon">🌐</span> Site public ↗
+        </a>
+        <a href="{% url 'serveurcei:resultats' %}" class="sidebar-item" target="_blank">
+            <span class="sidebar-icon">📊</span> Résultats publics ↗
+        </a>
+    </nav>
+
+    <main class="admin-main">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {% if message.tags == 'success' %}✅{% else %}❌{% endif %} {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<footer>
+    🇨🇮 &nbsp;<strong style="color:#E8611A;">Commission Électorale Indépendante</strong> &nbsp;·&nbsp; République de Côte d'Ivoire &copy; 2025 &nbsp;·&nbsp; Blvd Latrille, Cocody, Abidjan
+</footer>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

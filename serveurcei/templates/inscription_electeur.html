@@ -1,5 +1,3 @@
-{% load static %}
-TEST123
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,27 +7,12 @@ TEST123
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Nunito', Arial, sans-serif;
-            background: linear-gradient(to right, #FF8200 33%, white 33%, white 66%, #009E60 66%);
-            min-height: 100vh; padding: 40px 16px;
-        }
-        .header {
-            background: white; padding: 20px 40px;
-            border-bottom: 5px solid #009E60;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            display: flex; align-items: center; justify-content: space-between;
-            max-width: 860px; margin: 0 auto 40px; border-radius: 12px;
-        }
-        .header-logo {
-            background: linear-gradient(135deg, #FF8200, #009E60); color: white;
-            font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900;
-            width: 56px; height: 56px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
+        body { font-family: 'Nunito', Arial, sans-serif; background: linear-gradient(to right, #FF8200 33%, white 33%, white 66%, #009E60 66%); min-height: 100vh; padding: 40px 16px; }
+
+        .header { background: white; padding: 20px 40px; border-bottom: 5px solid #009E60; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; max-width: 860px; margin: 0 auto 40px; border-radius: 12px; }
+        .header-logo { background: linear-gradient(135deg, #FF8200, #009E60); color: white; font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .header-title h1 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: #1a1a1a; }
-        .header-title p  { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+        .header-title p { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
         .tri-flag { display: flex; width: 60px; height: 40px; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .tri-flag .band { flex: 1; }
         .tri-flag .b1 { background: #FF8200; }
@@ -40,7 +23,7 @@ TEST123
         .card-header { background: #fff8f2; border-bottom: 4px solid #FF8200; padding: 28px 40px; display: flex; align-items: center; gap: 16px; }
         .card-header-icon { font-size: 44px; }
         .card-header h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: #1a1a1a; }
-        .card-header p  { font-size: 14px; color: #888; margin-top: 4px; }
+        .card-header p { font-size: 14px; color: #888; margin-top: 4px; }
 
         form { padding: 32px 40px 40px; }
         .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #bbb; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; margin: 0 0 20px; }
@@ -48,111 +31,102 @@ TEST123
         .form-group { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
         .form-group label { font-size: 12px; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
         .required { color: #e74c3c; }
+
+        /* ── Champ normal ── */
         .form-group input,
         .form-group select {
-            padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 8px;
-            font-family: 'Nunito', sans-serif; font-size: 14px; color: #333;
-            outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; background: white;
+            padding: 12px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            width: 100%;
+            background: white;
         }
         .form-group input:focus,
-        .form-group select:focus { border-color: #FF8200; box-shadow: 0 0 0 3px rgba(255,130,0,0.1); }
+        .form-group select:focus {
+            border-color: #FF8200;
+            box-shadow: 0 0 0 3px rgba(255,130,0,0.1);
+        }
         .form-group input::placeholder { color: #ccc; }
+
+        /* ── Champ EN ERREUR : souligné rouge + fond rosé ── */
+        .form-group input.field-error,
+        .form-group select.field-error {
+            border-color: #e53935 !important;
+            border-bottom: 3px solid #e53935 !important;
+            background-color: #fff5f5 !important;
+            box-shadow: 0 0 0 3px rgba(229,57,53,0.12) !important;
+            animation: shake-field 0.35s ease;
+        }
+        .form-group input.field-error:focus,
+        .form-group select.field-error:focus {
+            box-shadow: 0 0 0 3px rgba(229,57,53,0.2) !important;
+        }
+
+        /* ── Message d'erreur sous le champ ── */
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #e53935;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .errorlist li::before { content: "▲ "; font-size: 10px; }
+
+        /* ── Animation secousse ── */
+        @keyframes shake-field {
+            0%, 100% { transform: translateX(0); }
+            25%       { transform: translateX(-5px); }
+            75%       { transform: translateX(5px); }
+        }
+
         .form-section { margin-bottom: 28px; }
 
-        .btn-submit {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 15px 40px; color: white;
-            font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 16px;
-            border: none; border-radius: 10px; cursor: pointer;
-            background: linear-gradient(135deg, #FF8200, #e07000);
-            box-shadow: 0 4px 16px rgba(255,130,0,0.35);
-            transition: all 0.25s ease;
-            opacity: 0.4; pointer-events: none;
-        }
+        /* ── Bouton soumettre ── */
+        .btn-submit { display: inline-flex; align-items: center; gap: 10px; padding: 15px 40px; color: white; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 16px; border: none; border-radius: 10px; cursor: pointer; background: linear-gradient(135deg, #FF8200, #e07000); box-shadow: 0 4px 16px rgba(255,130,0,0.35); transition: all 0.25s ease; opacity: 0.4; pointer-events: none; }
         .btn-submit.active { opacity: 1; pointer-events: all; }
         .btn-submit.active:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,130,0,0.4); }
 
-        .btn-retour {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 12px 24px; color: #888; background: white;
-            font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 14px;
-            border: 2px solid #e8e8e8; border-radius: 10px; cursor: pointer;
-            text-decoration: none; transition: all 0.2s;
-        }
-        .btn-retour:hover { border-color: #FF8200; color: #FF8200; }
-        .form-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 12px; }
+        /* ── Alertes globales ── */
+        .alerte-django { background: #fff0f0; border: 2px solid #e74c3c; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; color: #c0392b; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 10px; }
 
-        .msg { display: none; border-radius: 10px; padding: 16px 20px; font-weight: 700; font-size: 14px; margin-top: 20px; text-align: center; }
-        .msg.success { background: #e6f7f0; border: 2px solid #009E60; color: #007a4a; }
-        .msg.error   { background: #fff0f0; border: 2px solid #e74c3c; color: #c0392b; }
-
-        .alerte-django {
-            background: #fff0f0; border: 2px solid #e74c3c; border-radius: 10px;
-            padding: 14px 18px; margin-bottom: 20px;
-            color: #c0392b; font-weight: 700; font-size: 14px;
-            display: flex; align-items: center; gap: 10px;
-        }
-
-        /* ════ EMPREINTE ════ */
-        .empreinte-bloc {
-            border: 2px dashed #e0e0e0; border-radius: 16px;
-            padding: 28px 20px; text-align: center;
-            transition: all 0.4s; background: #fafafa;
-            position: relative; overflow: hidden;
-        }
-        .empreinte-bloc.scanning    { border-color: #FF8200; background: #fff8f2; }
-        .empreinte-bloc.verified    { border-color: #009E60; background: #f0fff8; }
+        /* ── Empreinte ── */
+        .empreinte-bloc { border: 2px dashed #e0e0e0; border-radius: 16px; padding: 28px 20px; text-align: center; transition: all 0.4s; background: #fafafa; position: relative; overflow: hidden; }
+        .empreinte-bloc.scanning  { border-color: #FF8200; background: #fff8f2; }
+        .empreinte-bloc.verified  { border-color: #009E60; background: #f0fff8; }
         .empreinte-bloc.error-state { border-color: #e74c3c; background: #fff5f5; }
-
         .fingerprint-icon { width: 80px; height: 80px; margin: 0 auto 14px; cursor: pointer; display: block; }
         .fp-path { fill: none; stroke: #ccc; transition: stroke 0.3s; stroke-linecap: round; }
-        .empreinte-bloc:not(.verified):not(.error-state) .fingerprint-icon:hover .fp-path { stroke: #FF8200; }
-        .empreinte-bloc.scanning .fp-path {
-            stroke: #FF8200; stroke-dasharray: 200; stroke-dashoffset: 200;
-            animation: scanLine 1.5s ease-in-out infinite;
-        }
-        .empreinte-bloc.verified    .fp-path { stroke: #009E60; animation: none; }
+        .empreinte-bloc.scanning .fp-path { stroke: #FF8200; stroke-dasharray: 200; stroke-dashoffset: 200; animation: scanLine 1.5s ease-in-out infinite; }
+        .empreinte-bloc.verified .fp-path { stroke: #009E60; animation: none; }
         .empreinte-bloc.error-state .fp-path { stroke: #e74c3c; animation: none; }
-        @keyframes scanLine {
-            0%  { stroke-dashoffset: 200; opacity: 1; }
-            50% { stroke-dashoffset: 0;   opacity: 1; }
-            100%{ stroke-dashoffset:-200; opacity: 0; }
-        }
-        .scan-ring {
-            position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
-            width: 90px; height: 90px; border-radius: 50%;
-            border: 2px solid #FF8200; opacity: 0; pointer-events: none;
-        }
+        @keyframes scanLine { 0% { stroke-dashoffset: 200; opacity: 1; } 50% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: -200; opacity: 0; } }
+        .scan-ring { position: absolute; top: 55px; left: 50%; transform: translateX(-50%); width: 90px; height: 90px; border-radius: 50%; border: 2px solid #FF8200; opacity: 0; pointer-events: none; }
         .empreinte-bloc.scanning .scan-ring { animation: ringPulse 1.5s ease-out infinite; }
-        @keyframes ringPulse {
-            0%  { opacity: 0.8; transform: translateX(-50%) scale(0.8); }
-            100%{ opacity: 0;   transform: translateX(-50%) scale(1.6); }
-        }
+        @keyframes ringPulse { 0% { opacity: 0.8; transform: translateX(-50%) scale(0.8); } 100% { opacity: 0; transform: translateX(-50%) scale(1.6); } }
         .fp-label { font-size: 14px; color: #666; margin-bottom: 12px; line-height: 1.6; }
-        .fp-status {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 7px 16px; border-radius: 50px;
-            font-size: 13px; font-weight: 700; margin-bottom: 16px;
-        }
-        .status-waiting  { background: #f0f0f0; color: #888;    border: 1px solid #ddd; }
+        .fp-status { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 16px; }
+        .status-waiting  { background: #f0f0f0; color: #888; border: 1px solid #ddd; }
         .status-scanning { background: #fff3e0; color: #FF8200; border: 1px solid #FF8200; }
         .status-ok       { background: #e6f7f0; color: #009E60; border: 1px solid #009E60; }
         .status-fail     { background: #fff0f0; color: #e74c3c; border: 1px solid #e74c3c; }
-        .btn-scan {
-            padding: 11px 26px; border-radius: 50px; cursor: pointer;
-            font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
-            border: 2px solid #FF8200; background: transparent; color: #FF8200;
-            transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-scan:hover    { background: #FF8200; color: white; }
+        .btn-scan { padding: 11px 26px; border-radius: 50px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; border: 2px solid #FF8200; background: transparent; color: #FF8200; transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-scan:hover { background: #FF8200; color: white; }
         .btn-scan:disabled { opacity: 0.4; cursor: not-allowed; }
-
-        .hash-preview {
-            font-family: 'Courier New', monospace; font-size: 10px; color: #aaa;
-            word-break: break-all; margin-top: 10px; padding: 6px 10px;
-            background: #f5f5f5; border-radius: 6px; display: none;
-        }
+        .hash-preview { font-family: 'Courier New', monospace; font-size: 10px; color: #aaa; word-break: break-all; margin-top: 10px; padding: 6px 10px; background: #f5f5f5; border-radius: 6px; display: none; }
         .empreinte-bloc.verified .hash-preview { display: block; }
+
+        /* ── Succès inscription ── */
+        .msg { display: none; border-radius: 10px; padding: 16px 20px; font-weight: 700; font-size: 14px; margin-top: 20px; text-align: center; }
+        .msg.success { background: #e6f7f0; border: 2px solid #009E60; color: #007a4a; }
+        .msg.error   { background: #fff0f0; border: 2px solid #e74c3c; color: #c0392b; }
+        .btn-download { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: linear-gradient(135deg, #FF8200, #e07000); color: white; border-radius: 10px; font-weight: 700; font-size: 15px; text-decoration: none; box-shadow: 0 4px 16px rgba(255,130,0,0.35); margin-top: 16px; transition: all 0.25s; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,130,0,0.4); }
 
         .footer { text-align: center; margin-top: 30px; font-size: 13px; color: #999; }
         .footer span.o { color: #FF8200; font-weight: 700; }
@@ -160,13 +134,14 @@ TEST123
 
         @media (max-width: 600px) {
             .header, form { padding: 20px; }
-            .card-header  { padding: 20px; }
-            .form-row     { flex-direction: column; }
+            .card-header { padding: 20px; }
+            .form-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
+<!-- ══ EN-TÊTE ══ -->
 <div class="header">
     <div class="header-logo">C</div>
     <div class="header-title">
@@ -180,6 +155,7 @@ TEST123
     </div>
 </div>
 
+<!-- ══ CARTE ══ -->
 <div class="card">
     <div class="card-header">
         <div class="card-header-icon">📋</div>
@@ -192,154 +168,184 @@ TEST123
     <form id="formElecteur" method="POST" action="{% url 'serveurcei:inscription_electeur' %}">
         {% csrf_token %}
 
+        <!-- Alertes globales Django -->
         {% if erreur_empreinte %}
             <div class="alerte-django">⚠️ {{ erreur_empreinte }}</div>
         {% endif %}
-        {% if errors %}
-            <div class="alerte-django">⚠️ Veuillez corriger les erreurs ci-dessous.</div>
+        {% if form.errors %}
+            <div class="alerte-django">⚠️ Veuillez corriger les erreurs ci-dessous avant de soumettre.</div>
         {% endif %}
 
-        <!-- ════ IDENTITÉ ════ -->
+        <!-- ══ SECTION IDENTITÉ ══ -->
         <div class="form-section">
             <div class="section-label">👤 Identité</div>
             <div class="form-row">
+
+                <!-- NOM -->
                 <div class="form-group">
                     <label>Nom de famille <span class="required">*</span></label>
                     <input type="text" name="nom" id="champNom"
                            placeholder="Ex : KOUASSI"
                            value="{{ form.nom.value|default:'' }}"
+                           class="{% if form.nom.errors %}field-error{% endif %}"
                            required maxlength="100">
+                    {% if form.nom.errors %}
+                        <ul class="errorlist">
+                            {% for e in form.nom.errors %}<li>{{ e }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
+
+                <!-- PRÉNOM -->
                 <div class="form-group">
                     <label>Prénom(s) <span class="required">*</span></label>
                     <input type="text" name="prenom"
                            placeholder="Ex : Jean-Marie"
                            value="{{ form.prenom.value|default:'' }}"
+                           class="{% if form.prenom.errors %}field-error{% endif %}"
                            required maxlength="100">
+                    {% if form.prenom.errors %}
+                        <ul class="errorlist">
+                            {% for e in form.prenom.errors %}<li>{{ e }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
+
             </div>
             <div class="form-row">
+
+                <!-- DATE DE NAISSANCE -->
                 <div class="form-group">
                     <label>Date de naissance <span class="required">*</span></label>
                     <input type="date" name="date_naissance" id="champDDN"
                            value="{{ form.date_naissance.value|default:'' }}"
+                           class="{% if form.date_naissance.errors %}field-error{% endif %}"
                            required>
+                    {% if form.date_naissance.errors %}
+                        <ul class="errorlist">
+                            {% for e in form.date_naissance.errors %}<li>{{ e }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
+
+                <!-- TÉLÉPHONE -->
                 <div class="form-group">
                     <label>Téléphone <span class="required">*</span></label>
                     <input type="tel" name="telephon"
                            placeholder="Ex : 0707070707"
                            value="{{ form.telephon.value|default:'' }}"
+                           class="{% if form.telephon.errors %}field-error{% endif %}"
                            required maxlength="20">
+                    {% if form.telephon.errors %}
+                        <ul class="errorlist">
+                            {% for e in form.telephon.errors %}<li>{{ e }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
+
             </div>
         </div>
 
-        <!-- ════ DOCUMENT D'IDENTITÉ ════ -->
+        <!-- ══ SECTION DOCUMENT ══ -->
         <div class="form-section">
             <div class="section-label">🪪 Document d'identité</div>
             <div class="form-row">
+
+                <!-- CNI / PASSEPORT -->
                 <div class="form-group">
                     <label>Numéro CNI / Passeport <span class="required">*</span></label>
                     <input type="text" name="numero_cni" id="champCNI"
                            placeholder="Ex : CI0012345678"
                            value="{{ form.numero_cni.value|default:'' }}"
+                           class="{% if form.numero_cni.errors %}field-error{% endif %}"
                            required maxlength="50">
+                    {% if form.numero_cni.errors %}
+                        <ul class="errorlist">
+                            {% for e in form.numero_cni.errors %}<li>{{ e }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
+
             </div>
             <div class="form-row">
+
+                <!-- RÉGION -->
                 <div class="form-group">
-                    <label>Région <span class="required">*</span></label>
-                    <select name="region">
+                    <label>Région</label>
+                    <select name="region" class="{% if form.region.errors %}field-error{% endif %}">
                         <option value="">-- Sélectionner --</option>
-                        <option value="Abidjan"          {% if form.region.value == 'Abidjan' %}selected{% endif %}>Abidjan</option>
-                        <option value="Yamoussoukro"     {% if form.region.value == 'Yamoussoukro' %}selected{% endif %}>Yamoussoukro</option>
-                        <option value="Bouaké"           {% if form.region.value == 'Bouaké' %}selected{% endif %}>Bouaké</option>
-                        <option value="Daloa"            {% if form.region.value == 'Daloa' %}selected{% endif %}>Daloa</option>
-                        <option value="Korhogo"          {% if form.region.value == 'Korhogo' %}selected{% endif %}>Korhogo</option>
-                        <option value="San-Pédro"        {% if form.region.value == 'San-Pédro' %}selected{% endif %}>San-Pédro</option>
-                        <option value="Man"              {% if form.region.value == 'Man' %}selected{% endif %}>Man</option>
-                        <option value="Gagnoa"           {% if form.region.value == 'Gagnoa' %}selected{% endif %}>Gagnoa</option>
-                        <option value="Abengourou"       {% if form.region.value == 'Abengourou' %}selected{% endif %}>Abengourou</option>
-                        <option value="Bondoukou"        {% if form.region.value == 'Bondoukou' %}selected{% endif %}>Bondoukou</option>
-                        <option value="Divo"             {% if form.region.value == 'Divo' %}selected{% endif %}>Divo</option>
-                        <option value="Odienné"          {% if form.region.value == 'Odienné' %}selected{% endif %}>Odienné</option>
-                        <option value="Séguéla"          {% if form.region.value == 'Séguéla' %}selected{% endif %}>Séguéla</option>
-                        <option value="Touba"            {% if form.region.value == 'Touba' %}selected{% endif %}>Touba</option>
-                        <option value="Ferkessédougou"   {% if form.region.value == 'Ferkessédougou' %}selected{% endif %}>Ferkessédougou</option>
-                        <option value="Autre"            {% if form.region.value == 'Autre' %}selected{% endif %}>Autre</option>
+                        <option value="Abidjan">Abidjan</option> <option value="Yamoussoukro">Yamoussoukro</option> <option value="Bouaké">Bouaké</option> <option value="Daloa">Daloa</option> <option value="Korhogo">Korhogo</option> <option value="San-Pédro">San-Pédro</option> <option value="Man">Man</option> <option value="Gagnoa">Gagnoa</option> <option value="Abengourou">Abengourou</option> <option value="Autre">Autre</option>
+                        {% for val, label in form.region.field.choices %}
+                            <option value="{{ val }}" {% if form.region.value == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
                     </select>
+                    {% if form.region.errors %}
+                        <ul class="errorlist">
+                            {% for e in form.region.errors %}<li>{{ e }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
+
+                <!-- SEXE -->
                 <div class="form-group">
                     <label>Sexe</label>
-                    <select name="sexe">
+                    <select name="sexe" class="{% if form.sexe.errors %}field-error{% endif %}">
                         <option value="">-- Sélectionner --</option>
                         <option value="M" {% if form.sexe.value == 'M' %}selected{% endif %}>Masculin</option>
                         <option value="F" {% if form.sexe.value == 'F' %}selected{% endif %}>Féminin</option>
                     </select>
+                    {% if form.sexe.errors %}
+                        <ul class="errorlist">
+                            {% for e in form.sexe.errors %}<li>{{ e }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
+
             </div>
         </div>
 
-        <!-- ════ EMPREINTE DIGITALE ════ -->
+        <!-- ══ SECTION EMPREINTE ══ -->
         <div class="form-section">
             <div class="section-label">☝️ Empreinte Digitale <span class="required">*</span></div>
-
             <div class="empreinte-bloc" id="empreinteBlocInscription">
                 <div class="scan-ring"></div>
-
                 <div class="fingerprint-icon" onclick="lancerScanInscription()">
                     <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
-                        <path class="fp-path" d="M40 8C22.3 8 8 22.3 8 40"     stroke-width="2.5"/>
-                        <path class="fp-path" d="M40 8C57.7 8 72 22.3 72 40"   stroke-width="2.5"/>
+                        <path class="fp-path" d="M40 8C22.3 8 8 22.3 8 40" stroke-width="2.5"/>
+                        <path class="fp-path" d="M40 8C57.7 8 72 22.3 72 40" stroke-width="2.5"/>
                         <path class="fp-path" d="M40 16C26.7 16 16 26.7 16 40" stroke-width="2.5"/>
                         <path class="fp-path" d="M40 16C53.3 16 64 26.7 64 40" stroke-width="2.5"/>
                         <path class="fp-path" d="M40 24C31.2 24 24 31.2 24 40" stroke-width="2.5"/>
                         <path class="fp-path" d="M40 24C48.8 24 56 31.2 56 40" stroke-width="2.5"/>
                         <path class="fp-path" d="M40 32C35.6 32 32 35.6 32 40c0 4.4 3.6 8 8 8" stroke-width="2.5"/>
                         <path class="fp-path" d="M40 32C44.4 32 48 35.6 48 40" stroke-width="2.5"/>
-                        <path class="fp-path" d="M16 40c0 13.3 10.7 24 24 24"  stroke-width="2.5"/>
-                        <path class="fp-path" d="M64 40c0 13.3-10.7 24-24 24"  stroke-width="2.5"/>
-                        <path class="fp-path" d="M24 40c0 8.8 7.2 16 16 16"    stroke-width="2.5"/>
-                        <path class="fp-path" d="M56 40c0 8.8-7.2 16-16 16"    stroke-width="2.5"/>
+                        <path class="fp-path" d="M16 40c0 13.3 10.7 24 24 24" stroke-width="2.5"/>
+                        <path class="fp-path" d="M64 40c0 13.3-10.7 24-24 24" stroke-width="2.5"/>
+                        <path class="fp-path" d="M24 40c0 8.8 7.2 16 16 16" stroke-width="2.5"/>
+                        <path class="fp-path" d="M56 40c0 8.8-7.2 16-16 16" stroke-width="2.5"/>
                     </svg>
                 </div>
-
-                <p class="fp-label" id="fpLabelInscription">
-                    Cliquez sur l'icône pour enregistrer votre empreinte digitale.<br>
-                    <small style="color:#aaa;">Elle servira à confirmer votre identité lors du vote.</small>
-                </p>
-
-                <div class="fp-status status-waiting" id="fpStatusInscription">
-                    👆 En attente du scan
-                </div>
-
-                <button type="button" class="btn-scan" id="btnScanInscription"
-                        onclick="lancerScanInscription()">
+                <p class="fp-label" id="fpLabelInscription">Cliquez pour enregistrer votre empreinte digitale.</p>
+                <div class="fp-status status-waiting" id="fpStatusInscription">👆 En attente du scan</div>
+                <button type="button" class="btn-scan" id="btnScanInscription" onclick="lancerScanInscription()">
                     ☝️ Enregistrer mon empreinte
                 </button>
-
                 <div class="hash-preview" id="hashPreview"></div>
             </div>
-
-            <!-- ✅ Champ caché envoyé à Django avec le POST -->
             <input type="hidden" name="empreinte_hash" id="empreinteHashInput" value="">
         </div>
 
-        <!-- ════ BOUTONS ════ -->
-        <div class="form-actions">
-            <a href="{% url 'accueil3' %}" class="btn-retour">← Retour à l'accueil</a>
-            <div>
-                <button type="submit" class="btn-submit" id="btnSoumettre">
-                    ✅ Valider l'inscription
-                </button>
-                <p style="font-size:11px;color:#bbb;margin-top:8px;text-align:right;">
-                    ☝️ Le bouton s'active après la capture de l'empreinte.
-                </p>
-            </div>
+        <!-- ══ BOUTON SOUMETTRE ══ -->
+        <div>
+            <button type="submit" class="btn-submit" id="btnSoumettre">
+                ✅ Valider l'inscription
+            </button>
+            <p style="font-size:12px;color:#bbb;margin-top:10px;">
+                ☝️ Le bouton s'active après la capture de l'empreinte.
+            </p>
         </div>
 
-        <!-- ════ MESSAGE SUCCÈS DJANGO ════ -->
+        <!-- ══ SUCCÈS INSCRIPTION ══ -->
         {% if inscription_reussie %}
         <div class="msg success" style="display:block;margin-top:20px;">
             <div style="font-size:18px;margin-bottom:12px;">🎉 Inscription réussie !</div>
@@ -347,16 +353,15 @@ TEST123
                 Votre numéro électeur a été généré automatiquement.<br>
                 <strong style="color:#c0392b;">Notez-le soigneusement, il est indispensable pour voter.</strong>
             </div>
-            <div style="background:white;border:3px solid #009E60;border-radius:12px;padding:20px 24px;margin:0 auto;max-width:380px;">
+            <div style="background:white;border:3px solid #009E60;border-radius:12px;padding:20px 24px;margin:0 auto;max-width:400px;">
                 <div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">Votre numéro électeur</div>
                 <div style="font-family:'Courier New',monospace;font-size:28px;font-weight:900;color:#009E60;letter-spacing:3px;margin-bottom:8px;">
                     {{ electeur.numero_electeur }}
                 </div>
-                <div style="font-size:14px;color:#555;margin-bottom:14px;">{{ electeur.nom }} {{ electeur.prenom }}</div>
+                <div style="font-size:14px;color:#555;margin-bottom:16px;">{{ electeur.nom }} {{ electeur.prenom }}</div>
+                <a href="{{ url_recu }}" class="btn-download">📄 Télécharger mon reçu CEI (PDF)</a>
             </div>
-            <div style="font-size:12px;color:#888;margin-top:14px;">
-                ⚠️ Ce numéro vous sera demandé lors du vote. Conservez-le précieusement.
-            </div>
+            <div style="font-size:12px;color:#888;margin-top:14px;">⚠️ Ce numéro vous sera demandé lors du vote.</div>
         </div>
         {% endif %}
 
@@ -371,24 +376,30 @@ TEST123
 <script>
 let empreinteInscriptionOk = false;
 
-// ═══════════════════════════════════════════════════════
-//  LANCER LE SCAN
-// ═══════════════════════════════════════════════════════
+// ══ Si des erreurs Django existent au chargement, réactiver le bouton ══
+window.addEventListener('DOMContentLoaded', function() {
+    const hasErrors = document.querySelectorAll('.field-error').length > 0;
+    // Si la page revient avec erreurs, on vérifie si une empreinte était déjà dans le hidden
+    const hashExistant = document.getElementById('empreinteHashInput').value.trim();
+    if (hashExistant) {
+        document.getElementById('btnSoumettre').classList.add('active');
+    }
+});
+
 async function lancerScanInscription() {
     const bloc   = document.getElementById('empreinteBlocInscription');
     const status = document.getElementById('fpStatusInscription');
     const label  = document.getElementById('fpLabelInscription');
     const btn    = document.getElementById('btnScanInscription');
-
-    const cni = document.getElementById('champCNI').value.trim();
-    const nom = document.getElementById('champNom').value.trim();
-    const ddn = document.getElementById('champDDN').value;
+    const cni    = document.getElementById('champCNI').value.trim();
+    const nom    = document.getElementById('champNom').value.trim();
+    const ddn    = document.getElementById('champDDN').value;
 
     if (!cni || !nom || !ddn) {
         bloc.classList.remove('verified', 'scanning');
         bloc.classList.add('error-state');
         status.className   = 'fp-status status-fail';
-        status.textContent = '⚠️ Remplissez d\'abord : Nom, CNI et Date de naissance.';
+        status.textContent = "⚠️ Remplissez d'abord : Nom, CNI et Date de naissance.";
         return;
     }
 
@@ -402,21 +413,16 @@ async function lancerScanInscription() {
 
     try {
         const hashHex = await obtenirHashEmpreinte(cni, nom, ddn);
-
         document.getElementById('empreinteHashInput').value = hashHex;
         document.getElementById('hashPreview').textContent  = '🔑 Hash : ' + hashHex;
         empreinteInscriptionOk = true;
-
         bloc.classList.remove('scanning');
         bloc.classList.add('verified');
         status.className   = 'fp-status status-ok';
         status.textContent = '✅ Empreinte enregistrée avec succès !';
-        label.innerHTML    = '<strong style="color:#009E60;">Empreinte capturée.</strong><br>'
-                           + '<small style="color:#888;">Elle sera utilisée pour vérifier votre identité lors du vote.</small>';
+        label.innerHTML    = '<strong style="color:#009E60;">Empreinte capturée.</strong>';
         btn.innerHTML      = '✅ Enregistrée';
-
         document.getElementById('btnSoumettre').classList.add('active');
-
     } catch(err) {
         bloc.classList.remove('scanning');
         bloc.classList.add('error-state');
@@ -428,9 +434,6 @@ async function lancerScanInscription() {
     }
 }
 
-// ═══════════════════════════════════════════════════════
-//  GÉNÉRER LE HASH — WebAuthn ou simulation stable
-// ═══════════════════════════════════════════════════════
 async function obtenirHashEmpreinte(cni, nom, ddn) {
     if (window.PublicKeyCredential) {
         try {
@@ -440,55 +443,41 @@ async function obtenirHashEmpreinte(cni, nom, ddn) {
                     challenge,
                     timeout: 60000,
                     userVerification: 'required',
-                    rpId: window.location.hostname,
+                    rpId: window.location.hostname
                 }
             });
             const rawId    = new Uint8Array(assertion.rawId);
-            const seed     = new TextEncoder().encode(
-                cni.toUpperCase() + ':' + nom.toUpperCase() + ':' + ddn
-            );
+            const seed     = new TextEncoder().encode(cni.toUpperCase() + ':' + nom.toUpperCase() + ':' + ddn);
             const combined = new Uint8Array([...rawId, ...seed]);
             const hashBuf  = await crypto.subtle.digest('SHA-256', combined);
-            return Array.from(new Uint8Array(hashBuf))
-                        .map(b => b.toString(16).padStart(2,'0')).join('');
+            return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
         } catch(e) {
-            if (e.name === 'NotAllowedError') {
-                throw new Error('Scan annulé ou refusé par l\'utilisateur.');
-            }
+            if (e.name === 'NotAllowedError') throw new Error("Scan annulé ou refusé.");
             return await hashStable(cni, nom, ddn);
         }
     }
     return await hashStable(cni, nom, ddn);
 }
 
-// ═══════════════════════════════════════════════════════
-//  HASH STABLE ✅ CORRIGÉ — backticks corrects
-//  Résultat identique pour mêmes données → vérifiable au vote
-// ═══════════════════════════════════════════════════════
 async function hashStable(cni, nom, ddn) {
     await new Promise(r => setTimeout(r, 1800));
     const seed    = `CEI_EMPREINTE:${cni.trim().toUpperCase()}:${nom.trim().toUpperCase()}:${ddn}`;
     const encoded = new TextEncoder().encode(seed);
     const buf     = await crypto.subtle.digest('SHA-256', encoded);
-    return Array.from(new Uint8Array(buf))
-                .map(b => b.toString(16).padStart(2,'0')).join('');
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-// ═══════════════════════════════════════════════════════
-//  BLOQUER SOUMISSION SI EMPREINTE MANQUANTE
-// ═══════════════════════════════════════════════════════
+// ══ Vérification finale avant soumission ══
 document.getElementById('formElecteur').addEventListener('submit', function(e) {
     const hash = document.getElementById('empreinteHashInput').value.trim();
     if (!hash) {
         e.preventDefault();
         const err = document.getElementById('msg-error');
-        err.textContent   = '⚠️ Veuillez d\'abord enregistrer votre empreinte digitale (☝️).';
+        err.textContent   = "⚠️ Veuillez d'abord enregistrer votre empreinte digitale.";
         err.style.display = 'block';
-        document.getElementById('empreinteBlocInscription')
-                .scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('empreinteBlocInscription').scrollIntoView({ behavior: 'smooth' });
     }
 });
 </script>
-
 </body>
-</html> 
+</html>

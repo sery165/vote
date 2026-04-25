@@ -1,0 +1,429 @@
+{% extends 'admin_base.html' %}
+{% block title %}Gestion Élection{% endblock %}
+{% block active_election %}active{% endblock %}
+
+{% block content %}
+<style>
+  /* ── Palette ── */
+  :root {
+    --noir:        #111111;
+    --noir-doux:   #1E1E1E;
+    --orange:      #E8823A;
+    --orange-pale: #FDF0E6;
+    --orange-bord: #F0A96B;
+    --blanc:       #FFFFFF;
+    --gris-clair:  #F5F5F5;
+    --gris-mid:    #9A9A9A;
+    --gris-bord:   #E2E2E2;
+    --rouge:       #D64545;
+    --vert:        #2E9E6B;
+    --radius:      8px;
+    --shadow:      0 2px 10px rgba(0,0,0,0.07);
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--noir);
+    position: relative;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 56px; height: 2px;
+    background: var(--orange);
+  }
+  .breadcrumb {
+    font-size: 0.78rem;
+    color: var(--gris-mid);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.3px;
+  }
+  .breadcrumb a {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--noir);
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.5px;
+  }
+  .page-header p {
+    color: var(--gris-mid);
+    font-size: 0.88rem;
+    margin: 0;
+  }
+
+  /* ── Grid ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 780px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    border: 1px solid var(--gris-bord);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-body  { padding: 1.25rem 1.5rem; }
+  .card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gris-bord);
+  }
+  .card-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--noir);
+    margin: 0;
+  }
+
+  /* ── Form elements ── */
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--gris-mid);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .form-control {
+    width: 100%;
+    border: 1.5px solid var(--gris-bord);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    color: var(--noir);
+    background: var(--blanc);
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  .form-control:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(232,130,58,0.15);
+  }
+  textarea.form-control { resize: vertical; }
+
+  .date-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* ── Checkbox ── */
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.2rem;
+    padding: 10px 12px;
+    border: 1.5px solid var(--gris-bord);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .check-row:hover {
+    border-color: var(--orange-bord);
+    background: var(--orange-pale);
+  }
+  .check-row input[type="checkbox"] {
+    width: 17px; height: 17px;
+    accent-color: var(--orange);
+    cursor: pointer;
+  }
+  .check-row label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--noir);
+    cursor: pointer;
+    margin: 0;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.18s;
+    text-decoration: none;
+    font-family: inherit;
+  }
+  .btn-block { width: 100%; box-sizing: border-box; }
+  .btn-primary {
+    background: var(--noir);
+    color: var(--blanc);
+    border-color: var(--noir);
+  }
+  .btn-primary:hover {
+    background: var(--noir-doux);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  }
+  .btn-outline-orange {
+    background: transparent;
+    color: var(--orange);
+    border-color: var(--orange-bord);
+  }
+  .btn-outline-orange:hover {
+    background: var(--orange-pale);
+    border-color: var(--orange);
+  }
+  .btn-outline-gray {
+    background: transparent;
+    color: var(--gris-mid);
+    border-color: var(--gris-bord);
+  }
+  .btn-outline-gray:hover {
+    border-color: var(--noir);
+    color: var(--noir);
+  }
+  .btn-danger {
+    background: transparent;
+    color: var(--rouge);
+    border-color: rgba(214,69,69,0.35);
+  }
+  .btn-danger:hover {
+    background: var(--rouge);
+    color: var(--blanc);
+    border-color: var(--rouge);
+  }
+
+  /* ── Status card ── */
+  .status-card-active {
+    border-left: 4px solid var(--vert) !important;
+  }
+  .status-card-inactive {
+    border-left: 4px solid var(--gris-bord) !important;
+  }
+  .status-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--noir);
+    margin-bottom: 0.5rem;
+  }
+  .status-election-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--noir);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.3px;
+  }
+  .status-dates {
+    font-size: 0.83rem;
+    color: var(--gris-mid);
+    line-height: 1.7;
+  }
+
+  /* ── Danger zone card ── */
+  .danger-card {
+    border-left: 4px solid var(--rouge) !important;
+  }
+  .danger-title {
+    font-weight: 700;
+    color: var(--rouge);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .danger-desc {
+    font-size: 0.83rem;
+    color: var(--gris-mid);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--gris-mid);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .action-desc {
+    font-size: 0.83rem;
+    color: var(--gris-mid);
+    margin-bottom: 1rem;
+    line-height: 1.55;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .badge-green {
+    background: rgba(46,158,107,0.1);
+    color: var(--vert);
+    border: 1px solid rgba(46,158,107,0.25);
+  }
+  .badge-gray {
+    background: var(--gris-clair);
+    color: var(--gris-mid);
+    border: 1px solid var(--gris-bord);
+  }
+
+  /* ── Sidebar stack ── */
+  .sidebar-stack { display: flex; flex-direction: column; gap: 1.2rem; }
+</style>
+
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="{% url 'serveurcei:admin_dashboard' %}">Tableau de bord</a> › Élection
+  </div>
+  <h1>⚙️ Gestion de l'Élection</h1>
+  <p>Configurer, activer ou réinitialiser le scrutin</p>
+</div>
+
+<div class="grid-2">
+
+  <!-- ── Formulaire config ── -->
+  <div class="card">
+    <div class="card-header">
+      <h2>{% if election %}✏️ Modifier l'Élection{% else %}➕ Créer une Élection{% endif %}</h2>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="creer_modifier">
+
+        <div class="form-group">
+          <label>Titre *</label>
+          <input type="text" name="titre" class="form-control"
+                 value="{{ election.titre|default:'Élection Présidentielle 2025' }}" required>
+        </div>
+
+        <div class="date-grid">
+          <div class="form-group">
+            <label>Date de début *</label>
+            <input type="datetime-local" name="date_debut" class="form-control"
+                   value="{{ election.date_debut|date:'Y-m-d\TH:i'|default:'' }}" required>
+          </div>
+          <div class="form-group">
+            <label>Date de fin *</label>
+            <input type="datetime-local" name="date_fin" class="form-control"
+                   value="{{ election.date_fin|date:'Y-m-d\TH:i'|default:'' }}" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea name="description" class="form-control" rows="3">{{ election.description|default:'' }}</textarea>
+        </div>
+
+        <label class="check-row" for="est_active">
+          <input type="checkbox" name="est_active" id="est_active"
+                 {% if election.est_active %}checked{% endif %}>
+          <span>Élection active — vote ouvert aux électeurs</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          {% if election %}💾 Enregistrer les modifications{% else %}➕ Créer l'élection{% endif %}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Colonne droite ── -->
+  <div class="sidebar-stack">
+
+    <!-- Statut actuel -->
+    <div class="card {% if election and election.est_active %}status-card-active{% else %}status-card-inactive{% endif %}">
+      <div class="card-body">
+        <div class="status-title">Statut actuel</div>
+        {% if election %}
+          <div class="status-election-name">{{ election.titre }}</div>
+          <div class="status-dates">
+            📅 Début : {{ election.date_debut|date:"d/m/Y H:i" }}<br>
+            📅 Fin&nbsp;&nbsp; : {{ election.date_fin|date:"d/m/Y H:i" }}
+          </div>
+          <div style="margin-top:12px;">
+            {% if election.est_active %}
+              <span class="badge badge-green">🟢 Élection active</span>
+            {% else %}
+              <span class="badge badge-gray">⏸️ Élection inactive</span>
+            {% endif %}
+          </div>
+        {% else %}
+          <div style="color:var(--gris-mid);font-size:0.88rem;">Aucune élection configurée.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Toggle activation -->
+    {% if election %}
+    <div class="card">
+      <div class="card-body">
+        <div class="section-label">
+          {% if election.est_active %}Suspendre le scrutin{% else %}Ouvrir le scrutin{% endif %}
+        </div>
+        <div class="action-desc">
+          {% if election.est_active %}
+            Suspendre temporairement le scrutin. Les votes s'arrêtent immédiatement.
+          {% else %}
+            Ouvrir le scrutin. Les électeurs pourront voter dès l'activation.
+          {% endif %}
+        </div>
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="toggle">
+          <button type="submit"
+                  class="btn btn-block {% if election.est_active %}btn-outline-orange{% else %}btn-primary{% endif %}"
+                  onclick="return confirm('{% if election.est_active %}Suspendre l\'élection ?{% else %}Activer l\'élection ?{% endif %}')">
+            {% if election.est_active %}⏸️ Suspendre l'élection{% else %}▶️ Activer l'élection{% endif %}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Zone danger -->
+    <div class="card danger-card">
+      <div class="card-body">
+        <div class="danger-title">🔴 Zone Danger — Réinitialisation</div>
+        <div class="danger-desc">
+          Supprimer <strong>tous</strong> les votes enregistrés et remettre les compteurs à zéro.<br>
+          <strong>⚠️ Cette action est irréversible !</strong>
+        </div>
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="reset_votes">
+          <button type="submit" class="btn btn-danger btn-block"
+                  onclick="return confirm('⚠️ ATTENTION !\n\nVous allez supprimer TOUS les votes.\nCette action est IRRÉVERSIBLE.\n\nÊtes-vous absolument certain ?')">
+            🔄 Réinitialiser tous les votes
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

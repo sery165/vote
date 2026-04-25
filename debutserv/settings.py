@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'serveurcei',
-    'vote',
+    
 
     
 ]
@@ -63,7 +63,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'serveurcei' / 'templates',
-            BASE_DIR / 'vote' / 'templates',
+            
         ],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -1,0 +1,439 @@
+{% extends 'admin_base.html' %}
+{% block title %}Gestion Électeurs{% endblock %}
+{% block active_electeurs %}active{% endblock %}
+
+{% block content %}
+<style>
+  /* ── Palette ── */
+  :root {
+    --noir:        #111111;
+    --noir-doux:   #1E1E1E;
+    --orange:      #E8823A;
+    --orange-pale: #FDF0E6;
+    --orange-bord: #F0A96B;
+    --blanc:       #FFFFFF;
+    --gris-clair:  #F5F5F5;
+    --gris-mid:    #9A9A9A;
+    --gris-bord:   #E2E2E2;
+    --rouge:       #D64545;
+    --vert:        #2E9E6B;
+    --radius:      8px;
+    --shadow:      0 2px 10px rgba(0,0,0,0.07);
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--noir);
+    position: relative;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 56px;
+    height: 2px;
+    background: var(--orange);
+  }
+  .breadcrumb {
+    font-size: 0.78rem;
+    color: var(--gris-mid);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.3px;
+  }
+  .breadcrumb a {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--noir);
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.5px;
+  }
+  .page-header p {
+    color: var(--gris-mid);
+    font-size: 0.88rem;
+    margin: 0;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    border: 1px solid var(--gris-bord);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-body  { padding: 1.25rem 1.5rem; }
+  .card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gris-bord);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--noir);
+    margin: 0 0 2px;
+  }
+  .card-header p {
+    font-size: 0.8rem;
+    color: var(--gris-mid);
+    margin: 0;
+  }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .filter-group label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--gris-mid);
+    font-weight: 700;
+  }
+  .filter-group.grow { flex: 1; min-width: 220px; }
+
+  /* ── Form controls ── */
+  .form-control {
+    border: 1.5px solid var(--gris-bord);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    color: var(--noir);
+    background: var(--blanc);
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .form-control:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(232,130,58,0.15);
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.18s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--noir);
+    color: var(--blanc);
+    border-color: var(--noir);
+  }
+  .btn-primary:hover {
+    background: var(--noir-doux);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--gris-mid);
+    border-color: var(--gris-bord);
+  }
+  .btn-outline:hover {
+    border-color: var(--gris-mid);
+    color: var(--noir);
+  }
+  .btn-sm {
+    padding: 5px 11px;
+    font-size: 0.78rem;
+    border-radius: 6px;
+  }
+  .btn-deces {
+    background: transparent;
+    color: var(--rouge);
+    border-color: rgba(214,69,69,0.35);
+  }
+  .btn-deces:hover {
+    background: rgba(214,69,69,0.06);
+    border-color: var(--rouge);
+  }
+  .btn-rehabiliter {
+    background: transparent;
+    color: var(--vert);
+    border-color: rgba(46,158,107,0.35);
+  }
+  .btn-rehabiliter:hover {
+    background: rgba(46,158,107,0.06);
+    border-color: var(--vert);
+  }
+  .btn-danger {
+    background: transparent;
+    color: var(--rouge);
+    border-color: rgba(214,69,69,0.35);
+  }
+  .btn-danger:hover {
+    background: var(--rouge);
+    color: var(--blanc);
+    border-color: var(--rouge);
+  }
+
+  /* ── Table ── */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  thead tr {
+    background: var(--gris-clair);
+    border-bottom: 2px solid var(--gris-bord);
+  }
+  thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--gris-mid);
+  }
+  /* Orange accent on first column header */
+  thead th:first-child {
+    border-left: 3px solid var(--orange);
+    padding-left: 12px;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--gris-bord);
+    transition: background 0.12s;
+  }
+  tbody tr:hover { background: var(--gris-clair); }
+  tbody tr.decede {
+    opacity: 0.62;
+    background: #FFF5F5;
+  }
+  tbody tr.decede:hover { background: #FFE9E9; }
+  tbody td {
+    padding: 11px 14px;
+    vertical-align: middle;
+    color: var(--noir);
+  }
+  /* Orange left accent on first cell of each row */
+  tbody td:first-child {
+    border-left: 3px solid transparent;
+  }
+  tbody tr:hover td:first-child {
+    border-left-color: var(--orange-bord);
+  }
+  .identity-name {
+    font-weight: 700;
+    color: var(--noir);
+    font-size: 0.9rem;
+  }
+  .identity-sub {
+    font-size: 0.76rem;
+    color: var(--gris-mid);
+    margin-top: 2px;
+  }
+  code.piece {
+    background: var(--gris-clair);
+    border: 1px solid var(--gris-bord);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    color: var(--noir);
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .badge-green {
+    background: rgba(46,158,107,0.1);
+    color: var(--vert);
+    border: 1px solid rgba(46,158,107,0.25);
+  }
+  .badge-red {
+    background: rgba(214,69,69,0.08);
+    color: var(--rouge);
+    border: 1px solid rgba(214,69,69,0.2);
+  }
+  .badge-gray {
+    background: var(--gris-clair);
+    color: var(--gris-mid);
+    border: 1px solid var(--gris-bord);
+  }
+  .badge-gold {
+    background: var(--orange-pale);
+    color: var(--orange);
+    border: 1px solid var(--orange-bord);
+  }
+
+  /* ── Empty state ── */
+  .empty-state {
+    text-align: center;
+    padding: 3.5rem 1rem;
+    color: var(--gris-mid);
+  }
+  .empty-state span { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+
+  /* ── Actions column ── */
+  .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+</style>
+
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="{% url 'serveurcei:admin_dashboard' %}">Tableau de bord</a> Électeurs
+  </div>
+  <h1>👥 Gestion des Électeurs</h1>
+  <p>Liste complète de la base CEI — Recherche, filtres, suppression</p>
+</div>
+
+<!-- Filtres et recherche -->
+<div class="card" style="margin-bottom:1.5rem;">
+  <div class="card-body">
+    <form method="GET" class="filter-bar">
+      <div class="filter-group grow">
+        <label>Rechercher</label>
+        <input type="text" name="search" value="{{ search }}"
+               class="form-control" placeholder="Nom, prénom, numéro de pièce…">
+      </div>
+      <div class="filter-group" style="min-width:190px;">
+        <label>Filtrer</label>
+        <select name="filtre" class="form-control" onchange="this.form.submit()">
+          <option value="tous"      {% if filtre == 'tous' %}selected{% endif %}>Tous</option>
+          <option value="vivants"   {% if filtre == 'vivants' %}selected{% endif %}>Vivants seulement</option>
+          <option value="decedes"   {% if filtre == 'decedes' %}selected{% endif %}>Décédés</option>
+          <option value="ont_vote"  {% if filtre == 'ont_vote' %}selected{% endif %}>Ont voté</option>
+          <option value="pas_vote"  {% if filtre == 'pas_vote' %}selected{% endif %}>N'ont pas voté</option>
+        </select>
+      </div>
+      <div class="filter-group" style="justify-content:flex-end;">
+        <label style="opacity:0;">.</label>
+        <div style="display:flex;gap:8px;">
+          <button type="submit" class="btn btn-primary">🔍 Rechercher</button>
+          <a href="{% url 'serveurcei:admin_electeurs' %}" class="btn btn-outline">✖ Effacer</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Tableau -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h2>Liste des Électeurs</h2>
+      <p>{{ electeurs|length }} résultat(s)</p>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Identité</th>
+          <th>N° Pièce</th>
+          <th>Rôle</th>
+          <th>Statut Vie</th>
+          <th>A Voté</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in electeurs %}
+        <tr {% if not e.is_alive %}class="decede"{% endif %}>
+          <td>
+            <div class="identity-name">{{ e.nom_complet }}rzretyuiuoertyu</div>
+            <div class="identity-sub">{{ e.date_naissance }} · {{ e.telephone }}</div>
+          </td>
+          <td><code class="piece">{{ e.numero_piece }}</code></td>
+          <td>
+            {% if e.role == 'candidat' %}
+              <span class="badge badge-gold">🏛️ Candidat</span>
+            {% else %}
+              <span class="badge badge-gray">🗳️ Électeur</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if e.is_alive %}
+              <span class="badge badge-green">✅ Vivant(e)</span>
+            {% else %}
+              <span class="badge badge-red">☠️ Décédé(e)</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if e.has_voted %}
+              <span class="badge badge-green">✅ Oui</span>
+            {% else %}
+              <span class="badge badge-gray">⏳ Non</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="actions-cell">
+              <!-- Toggle décès -->
+              <form method="POST" action="{% url 'serveurcei:admin_toggle_deces' e.id %}">
+                {% csrf_token %}
+                {% if e.is_alive %}
+                  <button type="submit" class="btn btn-sm btn-deces"
+                          onclick="return confirm('Marquer comme décédé(e) ?')">
+                    ☠️ Décès
+                  </button>
+                {% else %}
+                  <button type="submit" class="btn btn-sm btn-rehabiliter"
+                          onclick="return confirm('Réhabiliter cette personne ?')">
+                    ♻️ Réhabiliter
+                  </button>
+                {% endif %}
+              </form>
+              <!-- Supprimer -->
+              <form method="POST" action="{% url 'serveurcei:admin_supprimer_electeur' e.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-danger"
+                        onclick="return confirm('⚠️ SUPPRIMER définitivement {{ e.nom_complet }} ?\nCette action est irréversible.')">
+                  🗑️ Supprimer
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6">
+            <div class="empty-state">
+              <span>🔍</span>
+              Aucun électeur trouvé avec ces critères.
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

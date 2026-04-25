@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats — CEI</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI',sans-serif; background:#050810; color:#fff; min-height:100vh; }
+        header { padding:20px 40px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.07); }
+        .logo { font-size:20px; font-weight:900; color:#F97316; }
+        .logo span { display:block; font-size:11px; color:#7A8299; font-weight:400; }
+        .back { padding:8px 18px; border-radius:50px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; text-decoration:none; font-size:13px; }
+        .container { max-width:860px; margin:0 auto; padding:50px 20px; }
+        .title { text-align:center; margin-bottom:40px; }
+        .title h1 { font-size:42px; font-weight:900; margin-bottom:10px; }
+        .total-badge { display:inline-block; padding:6px 20px; border-radius:50px; background:rgba(212,160,23,0.1); border:1px solid rgba(212,160,23,0.3); color:#F5C842; font-size:14px; }
+        .card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:22px 26px; margin-bottom:14px; transition:all 0.3s; }
+        .card:hover { background:rgba(255,255,255,0.07); }
+        .card.first { background:rgba(249,115,22,0.08); border-color:rgba(249,115,22,0.4); }
+        .row { display:flex; align-items:center; gap:18px; }
+        .rank { width:50px; height:50px; flex-shrink:0; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; }
+        .rank-1 { background:rgba(249,115,22,0.2); border:2px solid rgba(249,115,22,0.5); }
+        .rank-2 { background:rgba(255,255,255,0.1); border:2px solid rgba(255,255,255,0.2); }
+        .rank-3 { background:rgba(212,160,23,0.15); border:2px solid rgba(212,160,23,0.3); }
+        .rank-other { background:rgba(255,255,255,0.05); border:2px solid rgba(255,255,255,0.1); font-size:15px; color:#7A8299; }
+        .info { flex:1; }
+        .nom { font-size:17px; font-weight:700; margin-bottom:3px; }
+        .parti { font-size:12px; color:#7A8299; margin-bottom:10px; }
+        .bar-wrap { background:rgba(255,255,255,0.08); border-radius:50px; height:7px; overflow:hidden; }
+        .bar-fill { height:100%; border-radius:50px; }
+        .bar-orange { background:linear-gradient(90deg,#F97316,#FFB347); }
+        .bar-gray   { background:linear-gradient(90deg,#4B5563,#9CA3AF); }
+        .score { text-align:right; flex-shrink:0; min-width:80px; }
+        .pct { font-size:26px; font-weight:800; line-height:1; }
+        .pct-orange { color:#F97316; }
+        .pct-white  { color:#fff; }
+        .votes { font-size:12px; color:#7A8299; margin-top:3px; }
+        .empty { text-align:center; padding:60px; color:#7A8299; }
+        footer { text-align:center; padding:30px; color:#7A8299; font-size:13px; border-top:1px solid rgba(255,255,255,0.07); margin-top:50px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">🗳️ C.E.I <span>Commission Électorale Indépendante</span></div>
+    <a href="/" class="back">← Accueil</a>
+</header>
+
+<div class="container">
+    <div class="title">
+        <h1>🏆 Résultats</h1>
+        <span class="total-badge">{{ total_votes }} vote(s) exprimé(s)</span>
+    </div>
+
+    {% if classement %}
+        {% for item in classement %}
+        <div class="card {% if item.rang == 1 %}first{% endif %}">
+            <div class="row">
+                <div class="rank {% if item.rang == 1 %}rank-1{% elif item.rang == 2 %}rank-2{% elif item.rang == 3 %}rank-3{% else %}rank-other{% endif %}">
+                    {% if item.rang == 1 %}🥇{% elif item.rang == 2 %}🥈{% elif item.rang == 3 %}🥉{% else %}{{ item.rang }}{% endif %}
+                </div>
+                <div class="info">
+                    <div class="nom">{{ item.candidat.nom }} {{ item.candidat.prenom }}</div>
+                    <div class="parti">{{ item.candidat.parti_politique }}</div>
+                    <div class="bar-wrap">
+                        <div class="bar-fill {% if item.rang == 1 %}bar-orange{% else %}bar-gray{% endif %}" style="width:{{ item.pourcentage }}%;"></div>
+                    </div>
+                </div>
+                <div class="score">
+                    <div class="pct {% if item.rang == 1 %}pct-orange{% else %}pct-white{% endif %}">{{ item.pourcentage }}%</div>
+                    <div class="votes">{{ item.total }} vote(s)</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty">⏳ Aucun résultat disponible.</div>
+    {% endif %}
+</div>
+
+<footer>🇨🇮 Commission Électorale Indépendante — Côte d'Ivoire 2025</footer>
+
+</body>
+</html>

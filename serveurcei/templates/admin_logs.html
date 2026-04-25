@@ -1,0 +1,97 @@
+{% extends 'admin_base.html' %}
+{% block title %}Journal d'Actions{% endblock %}
+{% block active_logs %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a> › Journal</div>
+    <h1>📋 Journal d'Audit</h1>
+    <p>Toutes les actions enregistrées — <strong>Les votes sont strictement anonymes</strong> (aucune association identité → candidat)</p>
+</div>
+
+<!-- Avertissement anonymat -->
+<div style="background:#FFF8E1;border:2px solid var(--or);border-radius:var(--radius);padding:1rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;font-size:0.88rem;">
+    <div style="font-size:1.8rem;">🎭</div>
+    <div>
+        <strong>Anonymat garanti par la loi électorale :</strong> Le journal indique <em>qu'un vote a eu lieu</em> 
+        mais <strong>jamais pour quel candidat</strong>. Il est techniquement impossible de relier 
+        un électeur à son choix électoral.
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Action</th>
+                    <th>Électeur concerné</th>
+                    <th>Détails</th>
+                    <th>IP</th>
+                    <th>Date &amp; Heure</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td style="color:var(--gris);font-size:0.78rem;">{{ log.id }}</td>
+                    <td>
+                        {% if log.action == 'vote' %}
+                            <span class="badge badge-green">🗳️ Vote enregistré</span>
+                        {% elif log.action == 'inscription' %}
+                            <span class="badge badge-gold">📝 Inscription</span>
+                        {% elif log.action == 'connexion' %}
+                            <span class="badge badge-gray">🔐 Connexion</span>
+                        {% elif log.action == 'otp_envoye' %}
+                            <span class="badge badge-gray">📱 OTP Envoyé</span>
+                        {% elif log.action == 'suppression' %}
+                            <span class="badge badge-red">🗑️ Suppression</span>
+                        {% elif log.action == 'deces_detecte' %}
+                            <span class="badge badge-red">☠️ Décès détecté</span>
+                        {% elif log.action == 'echec_connexion' %}
+                            <span class="badge badge-red">❌ Échec connexion</span>
+                        {% else %}
+                            <span class="badge badge-gray">{{ log.action }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if log.electeur %}
+                            <span style="font-weight:500;">{{ log.electeur.nom_complet }}</span>
+                            <span style="font-size:0.75rem;color:var(--gris);display:block;">{{ log.electeur.numero_piece }}</span>
+                        {% else %}
+                            <span style="color:var(--gris);font-size:0.82rem;">—</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-size:0.82rem;color:var(--gris);max-width:220px;">
+                        {% if log.action == 'vote' %}
+                            <span style="background:#E8F5EC;color:#1A5C2A;padding:3px 10px;border-radius:50px;font-size:0.78rem;font-weight:600;">
+                                🎭 Vote anonyme — candidat masqué
+                            </span>
+                        {% elif log.action == 'otp_envoye' %}
+                            <span style="color:var(--gris);">Code OTP envoyé</span>
+                        {% else %}
+                            {{ log.details|default:"—" }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <code style="font-size:0.75rem;background:var(--gris-pale);padding:2px 6px;border-radius:4px;">
+                            {{ log.ip_address|default:"—" }}
+                        </code>
+                    </td>
+                    <td style="font-size:0.82rem;white-space:nowrap;">
+                        {{ log.timestamp|date:"d/m/Y H:i:s" }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center;padding:3rem;color:var(--gris);">
+                        Aucune action enregistrée.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

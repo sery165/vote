@@ -400,7 +400,6 @@
 
         <div class="portails">
 
-            <!-- ✅ CORRECTION : 'ancien_accueil' → 'serveurcei:ancien_accueil' -->
             <a class="portail portail-cei" href="{% url 'serveurcei:ancien_accueil' %}">
                 <div class="portail-body">
                     <div class="portail-icon">📋</div>
@@ -432,8 +431,8 @@
                 </div>
             </a>
 
-            <!-- ✅ INCHANGÉ : vote:page_vote déjà correct -->
-            <a class="portail portail-vote" href="{% url 'vote:page_vote' %}">
+            <!-- ✅ CORRIGÉ : vote:page_vote → serveurcei:page_vote -->
+            <a class="portail portail-vote" href="{% url 'serveurcei:page_vote' %}">
                 <div class="portail-body">
                     <div class="portail-icon">🗳️</div>
                     <div class="portail-tag">Espace Électeur</div>

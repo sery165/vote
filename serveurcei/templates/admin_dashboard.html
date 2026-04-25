@@ -1,0 +1,382 @@
+{% extends 'admin_base.html' %}
+{% block title %}Tableau de bord — CEI{% endblock %}
+{% block active_dashboard %}active{% endblock %}
+
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+  :root {
+    /* 🇨🇮 Drapeau Côte d'Ivoire — bleus remplacés par noir */
+    --orange:        #F77F00;
+    --orange-dark:   #D46A00;
+    --orange-light:  #FFB347;
+    --vert:          #009A44;
+    --vert-dark:     #007A35;
+    --vert-light:    #00C455;
+    --blanc:         #FFFFFF;
+    --blanc-2:       #FFF8F0;
+    --gris-bg:       #F5F5F5;
+    --gris-bord:     #E0E0E0;
+    --gris-texte:    #666666;
+    --gris-dark:     #333333;
+    --or:            #F0A500;
+    --rouge-alerte:  #D32F2F;
+    --noir:          #111111;   /* ← remplace tous les bleus */
+    --noir-2:        #222222;
+    --noir-3:        #1A1A1A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body, .admin-body {
+    background: var(--blanc-2) !important;
+    color: var(--gris-dark) !important;
+    font-family: 'IBM Plex Sans', sans-serif !important;
+  }
+
+  /* ── BANDE DRAPEAU ── */
+  .drapeau-bande {
+    display: flex; height: 6px; width: 100%;
+    margin-bottom: 2rem; border-radius: 3px; overflow: hidden;
+  }
+  .drapeau-bande .b1 { flex:1; background: var(--orange); }
+  .drapeau-bande .b2 { flex:1; background: var(--blanc); border-top:1px solid var(--gris-bord); border-bottom:1px solid var(--gris-bord); }
+  .drapeau-bande .b3 { flex:1; background: var(--vert); }
+
+  /* ── EN-TÊTE ── */
+  .page-header {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+    border-radius: 10px;
+    padding: 2rem 2rem 2rem 2.5rem;
+    margin-bottom: 2rem;
+    position: relative; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(247,127,0,0.25);
+  }
+  .page-header::before {
+    content: '🇨🇮';
+    position: absolute; right: 2rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 5rem; opacity: 0.15;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 8px; background: var(--vert);
+  }
+  .page-header .breadcrumb {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; color: rgba(255,255,255,0.8);
+    letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .page-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; letter-spacing: 0.08em;
+    color: var(--blanc); line-height: 1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .page-header p { color: rgba(255,255,255,0.85); font-size: 0.88rem; margin-top: 0.5rem; font-weight: 300; }
+
+  /* ── STATS ── */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+  .stat-card {
+    background: var(--blanc);
+    border: 1px solid var(--gris-bord);
+    border-top: 4px solid var(--orange);
+    border-radius: 10px; padding: 1.4rem 1.2rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stat-card::before {
+    content: ''; position: absolute;
+    bottom: -15px; right: -15px;
+    width: 60px; height: 60px;
+    background: var(--orange); opacity: 0.06; border-radius: 50%;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(247,127,0,0.15); }
+
+  /* Carte VERT */
+  .stat-card.vert  { border-top-color: var(--vert); }
+  .stat-card.vert::before { background: var(--vert); }
+  .stat-card.vert:hover { box-shadow: 0 8px 24px rgba(0,154,68,0.15); }
+
+  /* Carte OR */
+  .stat-card.or    { border-top-color: var(--or); }
+  .stat-card.or::before { background: var(--or); }
+
+  /* Carte NOIR (remplace bleu-info) */
+  .stat-card.noir  { border-top-color: var(--noir); }
+  .stat-card.noir::before { background: var(--noir); }
+  .stat-card.noir:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+
+  .stat-icon { font-size: 1.6rem; margin-bottom: 0.6rem; display: block; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem; letter-spacing: 0.05em;
+    color: var(--gris-dark); line-height: 1;
+  }
+  .stat-lbl {
+    font-size: 0.72rem; color: var(--gris-texte);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-top: 0.4rem; font-weight: 600;
+  }
+
+  /* ── GRILLE 2 COL ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--blanc) !important;
+    border: 1px solid var(--gris-bord) !important;
+    border-radius: 10px !important; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+  }
+  .card-header {
+    background: var(--blanc) !important;
+    border-bottom: 2px solid var(--orange) !important;
+    padding: 1rem 1.4rem !important;
+  }
+  .card-header h2 {
+    font-size: 0.9rem !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.1em !important;
+    color: var(--orange-dark) !important;
+  }
+  .card-header p { font-size: 0.78rem !important; color: var(--gris-texte) !important; margin-top: 0.15rem !important; }
+  .card-body { padding: 1.2rem 1.4rem !important; }
+
+  /* ── BARRE PROGRESSION ── */
+  .progress-wrap { background: var(--gris-bg); border-radius: 10px; height: 8px; overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), var(--vert));
+    border-radius: 10px;
+    transition: width 0.8s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--blanc-2); border-bottom: 2px solid var(--orange); }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--orange-dark); padding: 0.8rem 1rem; text-align: left;
+  }
+  td {
+    padding: 0.7rem 1rem; font-size: 0.83rem;
+    color: var(--gris-dark);
+    border-bottom: 1px solid var(--gris-bord);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #FFF8F0; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 0.68rem; font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .badge-green  { background: rgba(0,154,68,0.12);   color: var(--vert-dark);    border: 1px solid rgba(0,154,68,0.3); }
+  .badge-gold   { background: rgba(240,165,0,0.12);  color: #B07800;             border: 1px solid rgba(240,165,0,0.3); }
+  .badge-gray   { background: rgba(100,100,100,0.1); color: var(--gris-texte);   border: 1px solid rgba(100,100,100,0.2); }
+  .badge-red    { background: rgba(211,47,47,0.1);   color: var(--rouge-alerte); border: 1px solid rgba(211,47,47,0.25); }
+  .badge-orange { background: rgba(247,127,0,0.1);   color: var(--orange-dark);  border: 1px solid rgba(247,127,0,0.3); }
+  /* badge-noir remplace badge-bleu */
+  .badge-noir   { background: rgba(17,17,17,0.08);   color: var(--noir-2);       border: 1px solid rgba(17,17,17,0.2); }
+
+  /* ── CANDIDAT ROW ── */
+  .candidat-row { margin-bottom: 1.4rem; }
+  .candidat-row:last-child { margin-bottom: 0; }
+  .candidat-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .candidat-nom   { font-weight: 700; font-size: 0.9rem; color: var(--gris-dark); }
+  .candidat-parti { font-size: 0.75rem; color: var(--gris-texte); margin-left: 6px; }
+  .candidat-votes { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; font-weight: 700; color: var(--orange-dark); }
+
+  /* ── ÉLECTION BANNER ── */
+  .election-banner {
+    background: linear-gradient(135deg, #FFF8F0 0%, #F0FFF6 100%);
+    border: 1px solid var(--gris-bord);
+    border-left: 6px solid var(--vert);
+    border-radius: 10px;
+    padding: 1.4rem 1.8rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .election-banner .icon { font-size: 2.5rem; }
+  .election-banner h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem; letter-spacing: 0.06em; color: var(--vert-dark);
+  }
+  .election-banner p  { font-size: 0.83rem; color: var(--gris-texte); margin-top: 0.25rem; }
+  .election-banner strong { color: var(--gris-dark); }
+
+  .no-election {
+    background: #FFFDE7; border: 2px dashed #FFD600;
+    border-radius: 10px; padding: 1.4rem;
+    text-align: center; color: var(--gris-texte);
+    font-size: 0.85rem; margin-top: 1.5rem;
+  }
+  .no-election a { color: var(--orange); font-weight: 700; text-decoration: none; margin-left: 6px; }
+
+  /* ── SÉPARATEUR TRICOLORE ── */
+  .tricolore { display: flex; height: 4px; border-radius: 2px; overflow: hidden; margin: 1.5rem 0; }
+  .tricolore .t1 { flex:1; background: var(--orange); }
+  .tricolore .t2 { flex:1; background: var(--blanc); border: 1px solid var(--gris-bord); }
+  .tricolore .t3 { flex:1; background: var(--vert); }
+
+  @media (max-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2  { grid-template-columns: 1fr; }
+  }
+</style>
+
+<!-- BANDE DRAPEAU -->
+<div class="drapeau-bande">
+  <div class="b1"></div><div class="b2"></div><div class="b3"></div>
+</div>
+
+<!-- EN-TÊTE -->
+<div class="page-header">
+  <div class="breadcrumb">◈ Commission Électorale Indépendante</div>
+  <h1>Tableau de Bord</h1>
+  <p>Vue d'ensemble de l'élection en temps réel</p>
+</div>
+
+<!-- STATS — carte "noir" remplace l'ancienne carte "bleu-info" -->
+<div class="grid-4" style="margin-bottom:2rem;">
+  <div class="stat-card">
+    <span class="stat-icon">🗂️</span>
+    <div class="stat-num">{{ total_electeurs }}</div>
+    <div class="stat-lbl">Électeurs inscrits</div>
+  </div>
+  <div class="stat-card vert">
+    <span class="stat-icon">🗳️</span>
+    <div class="stat-num">{{ total_votes }}</div>
+    <div class="stat-lbl">Votes exprimés</div>
+  </div>
+  <div class="stat-card or">
+    <span class="stat-icon">📊</span>
+    <div class="stat-num">{{ taux|default:"0" }}%</div>
+    <div class="stat-lbl">Taux de participation</div>
+  </div>
+  <div class="stat-card noir">
+    <span class="stat-icon">🏛️</span>
+    <div class="stat-num">{{ total_candidats }}</div>
+    <div class="stat-lbl">Candidats actifs</div>
+  </div>
+</div>
+
+<!-- SÉPARATEUR -->
+<div class="tricolore"><div class="t1"></div><div class="t2"></div><div class="t3"></div></div>
+
+<!-- RÉSULTATS + JOURNAL -->
+<div class="grid-2" style="margin-bottom:1.5rem;">
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h2>🏆 Résultats en Direct</h2>
+        <p>Classement par nombre de votes</p>
+      </div>
+    </div>
+    <div class="card-body">
+      {% for c in candidats %}
+      <div class="candidat-row">
+        <div class="candidat-meta">
+          <div>
+            <span class="candidat-nom">{{ c.electeur.nom_complet }}</span>
+            <span class="candidat-parti">— {{ c.parti_politique }}</span>
+          </div>
+          <span class="candidat-votes">{{ c.nombre_votes }} votes</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-fill"
+               style="width:{% if total_votes > 0 %}{% widthratio c.nombre_votes total_votes 100 %}{% else %}0{% endif %}%;">
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div style="text-align:center;color:var(--gris-texte);padding:2rem;font-size:0.85rem;">
+        Aucun candidat enregistré.
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h2>📋 Activité Récente</h2>
+        <p>Dernières actions sur la plateforme</p>
+      </div>
+    </div>
+    <div class="card-body" style="padding:0 !important;">
+      <div style="max-height:340px;overflow-y:auto;">
+        <table>
+          <thead><tr><th>Action</th><th>Heure</th></tr></thead>
+          <tbody>
+            {% for log in logs_recents %}
+            <tr>
+              <td>
+                {% if log.action == 'vote' %}<span class="badge badge-green">🗳 Vote</span>
+                {% elif log.action == 'inscription' %}<span class="badge badge-orange">📝 Inscription</span>
+                {% elif log.action == 'connexion' %}<span class="badge badge-noir">🔐 Connexion</span>
+                {% elif log.action == 'suppression' %}<span class="badge badge-red">🗑 Suppression</span>
+                {% elif log.action == 'deces_detecte' %}<span class="badge badge-red">☠ Décès</span>
+                {% elif log.action == 'echec_connexion' %}<span class="badge badge-red">✕ Échec</span>
+                {% else %}<span class="badge badge-gray">{{ log.action }}</span>
+                {% endif %}
+                {% if log.electeur %}
+                <span style="font-size:0.78rem;color:var(--gris-texte);margin-left:6px;">
+                  {{ log.electeur.nom_complet }}
+                </span>
+                {% endif %}
+              </td>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;
+                         color:var(--gris-texte);white-space:nowrap;">
+                {{ log.timestamp|date:"d/m H:i" }}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="2" style="text-align:center;color:var(--gris-texte);
+                                     padding:2rem;font-size:0.83rem;">
+                Aucune activité enregistrée.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ÉLECTION -->
+{% if election %}
+<div class="election-banner">
+  <div class="icon">🗳️</div>
+  <div>
+    <h2>{{ election.titre }}</h2>
+    <p>Du <strong>{{ election.date_debut|date:"d/m/Y à H:i" }}</strong>
+       au <strong>{{ election.date_fin|date:"d/m/Y à H:i" }}</strong></p>
+  </div>
+  <div style="margin-left:auto;">
+    {% if election.est_en_cours %}
+    <span class="badge badge-green" style="font-size:0.82rem;padding:6px 16px;">● EN COURS</span>
+    {% else %}
+    <span class="badge badge-noir" style="font-size:0.82rem;padding:6px 16px;">⏸ INACTIVE</span>
+    {% endif %}
+  </div>
+</div>
+{% else %}
+<div class="no-election">
+  ⚠️ Aucune élection configurée.
+  <a href="/admin/">Configurer via Admin Django →</a>
+</div>
+{% endif %}
+
+{% endblock %}
