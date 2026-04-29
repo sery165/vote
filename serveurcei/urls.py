@@ -30,6 +30,9 @@ urlpatterns = [
     path('vote/soumettre/', views.voter, name='voter'),
     path('vote/succes/', views.vote_succes, name='vote_succes'),
 
+    path('felicitations-candidat/', views.felicitations_candidat, name='felicitations_candidat'),
+
+
     # ── Résultats & Stats ──
     path('resultats/', views.resultats, name='resultats'),
     path('votants/', views.votants, name='votants'),
@@ -37,6 +40,7 @@ urlpatterns = [
     path('api-resultats/', views.api_resultats, name='api_resultats'),
 
     # ── Reçus PDF ──
+
     path('telecharger-recu/<int:electeur_id>/', views.telecharger_recu_cei, name='telecharger_recu'),
     path('telecharger-recu-candidat/<int:candidat_id>/', views.telecharger_recu_candidat, name='telecharger_recu_candidat'),
 

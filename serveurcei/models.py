@@ -57,18 +57,23 @@ class Electeur(models.Model):
 class Candidat(models.Model):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
-    parti_politique = models.CharField(max_length=100)
     date_naissance = models.DateField()
-    cautionnement_valide = models.BooleanField(default=False, verbose_name="Caution de 50M payée")
-    photo = models.ImageField(upload_to='photos_candidats/')
-    extrait_naissance = models.FileField(upload_to='documents_candidats/')
-    casier_judiciaire = models.FileField(upload_to='documents_candidats/')
-
-    class Meta:
-        db_table = 'candidats'
+    parti_politique = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to='candidats/', blank=True, null=True)
+    extrait_naissance = models.FileField(upload_to='extraits/', blank=True, null=True)
+    casier_judiciaire = models.FileField(upload_to='casiers/', blank=True, null=True)
+    cautionnement_valide = models.BooleanField(default=False)
+    
+    # ✅ Lien vers son compte électeur
+    electeur = models.OneToOneField(
+        'Electeur', 
+        on_delete=models.SET_NULL, 
+        null=True, blank=True,
+        related_name='candidat'
+    )
 
     def __str__(self):
-        return f"{self.nom} {self.prenom} ({self.parti_politique})"
+        return f"{self.nom} {self.prenom}"
 
 
 class ParticipationVote(models.Model):

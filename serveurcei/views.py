@@ -1,6 +1,6 @@
 # serveurcei/views.py
 
-import uuid, hashlib, json
+import uuid, hashlib, json, random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Count, Q
@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -85,7 +86,7 @@ def inscription_electeur(request):
                     'numero': electeur.numero_electeur,
                     'nom': electeur.nom,
                     'prenom': electeur.prenom,
-                    'url_recu': f'/cei/telecharger-recu/{electeur.id}/'
+                    'url_recu': reverse('serveurcei:telecharger_recu', args=[electeur.id])
                 }
                 return redirect('serveurcei:felicitations')
             else:
@@ -125,15 +126,51 @@ def inscription_candidat(request):
     if request.method == 'POST':
         form = CandidatForm(request.POST, request.FILES)
         if form.is_valid():
-            candidat = form.save()
-            return render(request, 'inscription_candidat.html', {
-                'inscription_reussie': True,
-                'candidat': candidat,
-                'url_recu': f'/cei/telecharger-recu-candidat/{candidat.id}/',
-            })
+            candidat = form.save(commit=False)
+
+            # ✅ Générer CNI et téléphone uniques automatiquement
+            numero_cni_auto = f"CAND-{uuid.uuid4().hex[:8].upper()}"
+            telephon_auto   = f"00{random.randint(1000000000, 9999999999)}"
+
+            # ✅ Créer l'électeur automatiquement
+            electeur = Electeur.objects.create(
+                nom=candidat.nom,
+                prenom=candidat.prenom,
+                date_naissance=candidat.date_naissance,
+                numero_cni=numero_cni_auto,
+                telephon=telephon_auto,
+                empreinte_hash='',
+            )
+
+            candidat.electeur = electeur
+            candidat.save()
+
+            request.session['candidat_success'] = {
+                'id': candidat.id,
+                'nom': candidat.nom,
+                'prenom': candidat.prenom,
+                'parti_politique': candidat.parti_politique,
+                'date_naissance': str(candidat.date_naissance),
+                'cautionnement_valide': candidat.cautionnement_valide,
+                # ✅ Numéro électeur généré automatiquement
+                'numero_electeur': electeur.numero_electeur,
+                'url_recu': reverse('serveurcei:telecharger_recu_candidat', args=[candidat.id])
+            }
+            return redirect('serveurcei:felicitations_candidat')
     else:
         form = CandidatForm()
     return render(request, 'inscription_candidat.html', {'form': form})
+
+
+def felicitations_candidat(request):
+    if not request.session.get('candidat_success'):
+        return redirect('serveurcei:inscription_candidat')
+    context = {
+        'candidat': request.session['candidat_success'],
+        'url_recu': request.session['candidat_success']['url_recu']
+    }
+    del request.session['candidat_success']
+    return render(request, 'felicitations_candidat.html', context)
 
 
 # ══════════════════════════════════════════════════
@@ -347,9 +384,9 @@ def telecharger_recu_cei(request, electeur_id):
     p.rect(0.5*cm, 0.5*cm, width - 1*cm, height - 1*cm, stroke=1, fill=0)
 
     p.setFont("Helvetica-Bold", 12)
-    p.drawCentredString(width/2, height - 1.5*cm, "RÉPUBLIQUE DE CÔTE D'IVOIRE")
+    p.drawCentredString(width/2, height - 1.5*cm, "REPUBLIQUE DE COTE D'IVOIRE")
     p.setFont("Helvetica", 8)
-    p.drawCentredString(width/2, height - 2*cm, "Commission Électorale Indépendante (CEI)")
+    p.drawCentredString(width/2, height - 2*cm, "Commission Electorale Independante (CEI)")
 
     p.setStrokeColorRGB(0.97, 0.45, 0.08)
     p.line(1*cm, height - 2.5*cm, width - 1*cm, height - 2.5*cm)
@@ -357,23 +394,23 @@ def telecharger_recu_cei(request, electeur_id):
     p.setFillColorRGB(0, 0, 0)
     p.setFont("Helvetica-Bold", 10)
     p.drawString(1*cm, height - 3.5*cm, f"NOM       : {electeur.nom.upper()}")
-    p.drawString(1*cm, height - 4.3*cm, f"PRÉNOMS   : {electeur.prenom}")
+    p.drawString(1*cm, height - 4.3*cm, f"PRENOMS   : {electeur.prenom}")
     p.drawString(1*cm, height - 5.1*cm, f"CNI       : {electeur.numero_cni}")
-    p.drawString(1*cm, height - 5.9*cm, f"TÉL       : {electeur.telephon}")
+    p.drawString(1*cm, height - 5.9*cm, f"TEL       : {electeur.telephon}")
 
     p.setFillColorRGB(0.97, 0.45, 0.08)
     p.setFont("Helvetica-Bold", 11)
-    p.drawCentredString(width/2, 4.2*cm, "NUMÉRO ÉLECTEUR CEI :")
+    p.drawCentredString(width/2, 4.2*cm, "NUMERO ELECTEUR CEI :")
     p.setFont("Helvetica-Bold", 20)
     p.drawCentredString(width/2, 3.2*cm, f"{electeur.numero_electeur}")
 
     p.setFillColorRGB(0, 0.62, 0.38)
     p.setFont("Helvetica-Bold", 8)
-    p.drawCentredString(width/2, 2.2*cm, "✔ ÉLECTEUR INSCRIT")
+    p.drawCentredString(width/2, 2.2*cm, "ELECTEUR INSCRIT")
 
     p.setFillColorRGB(0.4, 0.4, 0.4)
     p.setFont("Helvetica-Oblique", 7)
-    p.drawCentredString(width/2, 1*cm, "Gardez ce numéro précieusement pour le jour du vote.")
+    p.drawCentredString(width/2, 1*cm, "Gardez ce numero precieusement pour le jour du vote.")
 
     p.showPage()
     p.save()
@@ -427,7 +464,6 @@ def admin_electeurs(request):
 
     electeurs = Electeur.objects.all().order_by('nom')
 
-    # ── Recherche texte ──
     if search:
         electeurs = electeurs.filter(
             Q(nom__icontains=search) |
@@ -436,7 +472,6 @@ def admin_electeurs(request):
             Q(numero_electeur__icontains=search)
         )
 
-    # ── Filtres ──
     if filtre == 'vivants':
         electeurs = electeurs.filter(is_alive=True)
     elif filtre == 'decedes':
@@ -494,11 +529,11 @@ def admin_statistiques(request):
     if not is_admin(request):
         return redirect('serveurcei:admin_login')
 
-    total_inscrits    = Electeur.objects.count()
-    total_votes       = BulletinVote.objects.count()
-    abstentions       = total_inscrits - total_votes
+    total_inscrits     = Electeur.objects.count()
+    total_votes        = BulletinVote.objects.count()
+    abstentions        = total_inscrits - total_votes
     taux_participation = round((total_votes / total_inscrits * 100), 2) if total_inscrits > 0 else 0
-    ont_vote          = total_votes
+    ont_vote           = total_votes
 
     candidats = Candidat.objects.annotate(total=Count('bulletinvote')).order_by('-total')
     data_candidats = []
@@ -525,13 +560,13 @@ def admin_statistiques(request):
 
     import json as json_mod
     return render(request, 'admin_statistiques.html', {
-        'total_inscrits':     total_inscrits,
-        'total_votes':        total_votes,
-        'abstentions':        max(0, abstentions),
-        'taux_participation': taux_participation,
-        'ont_vote':           ont_vote,
+        'total_inscrits':      total_inscrits,
+        'total_votes':         total_votes,
+        'abstentions':         max(0, abstentions),
+        'taux_participation':  taux_participation,
+        'ont_vote':            ont_vote,
         'data_candidats_json': json_mod.dumps(data_candidats),
-        'votes_par_jour':     votes_par_jour_json,
+        'votes_par_jour':      votes_par_jour_json,
     })
 
 
@@ -589,37 +624,57 @@ def telecharger_recu_candidat(request, candidat_id):
     p = canvas.Canvas(response, pagesize=A6)
     width, height = A6
 
+    # Bordure verte
     p.setStrokeColorRGB(0, 0.62, 0.38)
     p.rect(0.5*cm, 0.5*cm, width - 1*cm, height - 1*cm, stroke=1, fill=0)
 
+    # En-tête
     p.setFont("Helvetica-Bold", 12)
-    p.drawCentredString(width/2, height - 1.5*cm, "RÉPUBLIQUE DE CÔTE D'IVOIRE")
+    p.drawCentredString(width/2, height - 1.5*cm, "REPUBLIQUE DE COTE D'IVOIRE")
     p.setFont("Helvetica", 8)
-    p.drawCentredString(width/2, height - 2*cm, "Commission Électorale Indépendante (CEI)")
+    p.drawCentredString(width/2, height - 2*cm, "Commission Electorale Independante (CEI)")
 
+    # Ligne orange
     p.setStrokeColorRGB(0.97, 0.45, 0.08)
     p.line(1*cm, height - 2.5*cm, width - 1*cm, height - 2.5*cm)
 
+    # ✅ Photo du candidat
+    if candidat.photo:
+        try:
+            from reportlab.lib.utils import ImageReader
+            img = ImageReader(candidat.photo.path)
+            p.drawImage(img, width - 4*cm, height - 5.8*cm,
+                        width=3*cm, height=3*cm,
+                        preserveAspectRatio=True, mask='auto')
+        except Exception:
+            pass
+
+    # Informations
     p.setFillColorRGB(0, 0, 0)
     p.setFont("Helvetica-Bold", 10)
     p.drawString(1*cm, height - 3.5*cm, f"NOM       : {candidat.nom.upper()}")
-    p.drawString(1*cm, height - 4.3*cm, f"PRÉNOMS   : {candidat.prenom}")
+    p.drawString(1*cm, height - 4.3*cm, f"PRENOMS   : {candidat.prenom}")
     p.drawString(1*cm, height - 5.1*cm, f"PARTI     : {candidat.parti_politique}")
-    p.drawString(1*cm, height - 5.9*cm, f"CAUTION   : {'✔ Validée' if candidat.cautionnement_valide else '✘ En attente'}")
+    p.drawString(1*cm, height - 5.9*cm, f"CAUTION   : {'Validee' if candidat.cautionnement_valide else 'En attente'}")
+    p.drawString(1*cm, height - 6.7*cm, f"NE(E) LE  : {candidat.date_naissance}")
 
+    # ✅ Numéro électeur
+    numero_electeur = candidat.electeur.numero_electeur if candidat.electeur else "NON ASSIGNE"
     p.setFillColorRGB(0.97, 0.45, 0.08)
     p.setFont("Helvetica-Bold", 11)
-    p.drawCentredString(width/2, 4.2*cm, "DOSSIER DE CANDIDATURE :")
-    p.setFont("Helvetica-Bold", 14)
-    p.drawCentredString(width/2, 3.2*cm, f"{candidat.nom.upper()} {candidat.prenom}")
+    p.drawCentredString(width/2, 4.2*cm, "NUMERO ELECTEUR CEI :")
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width/2, 3.2*cm, numero_electeur)
 
+    # Statut
     p.setFillColorRGB(0, 0.62, 0.38)
     p.setFont("Helvetica-Bold", 8)
-    p.drawCentredString(width/2, 2.2*cm, "✔ CANDIDATURE ENREGISTRÉE")
+    p.drawCentredString(width/2, 2.2*cm, "CANDIDAT & ELECTEUR INSCRIT")
 
+    # Pied de page
     p.setFillColorRGB(0.4, 0.4, 0.4)
     p.setFont("Helvetica-Oblique", 7)
-    p.drawCentredString(width/2, 1*cm, "La CEI vous contactera pour la validation finale.")
+    p.drawCentredString(width/2, 1*cm, "Gardez ce numero precieusement pour le jour du vote.")
 
     p.showPage()
     p.save()

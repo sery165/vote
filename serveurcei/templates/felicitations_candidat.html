@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEI — Candidature Validée</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', Arial, sans-serif; background: linear-gradient(to right, #FF8200 33%, white 33%, white 66%, #009E60 66%); min-height: 100vh; padding: 40px 16px; }
+
+        .header { background: white; padding: 20px 40px; border-bottom: 5px solid #009E60; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 0 auto 40px; border-radius: 12px; max-width: 660px; display: flex; align-items: center; justify-content: space-between; }
+        .header-logo { background: linear-gradient(135deg, #FF8200, #009E60); color: white; font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .header-title h1 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: #1a1a1a; }
+        .header-title p { font-size: 11px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+        .tri-flag { display: flex; width: 60px; height: 40px; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .tri-flag .band { flex: 1; }
+        .tri-flag .b1 { background: #FF8200; }
+        .tri-flag .b2 { background: white; border-left: 1px solid #eee; border-right: 1px solid #eee; }
+        .tri-flag .b3 { background: #009E60; }
+
+        .success-box { background: white; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.12); max-width: 660px; margin: 0 auto; padding: 40px; text-align: center; }
+        .success-icon { font-size: 80px; margin-bottom: 20px; }
+
+        .numero-badge { background: #f0fff8; border: 3px solid #009E60; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .numero-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .numero-value { font-family: 'Courier New', monospace; font-size: 28px; font-weight: 900; color: #009E60; letter-spacing: 3px; }
+
+        .info-grid { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+        .info-item { flex: 1; min-width: 140px; background: #f9f9f9; border-radius: 10px; padding: 14px; text-align: left; }
+        .info-item .lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .info-item .val { font-size: 14px; font-weight: 700; color: #333; }
+
+        .warning { background: #fff8f0; border: 2px solid #FF8200; border-radius: 10px; padding: 14px 20px; margin: 20px 0; color: #c05000; font-weight: 600; font-size: 14px; line-height: 1.6; }
+
+        .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 15px; text-decoration: none; transition: all 0.25s; }
+        .btn-home { background: #2c3e50; color: white; }
+        .btn-pdf { background: linear-gradient(135deg, #FF8200, #e07000); color: white; box-shadow: 0 4px 16px rgba(255,130,0,0.35); }
+        .btn:hover { transform: translateY(-2px); }
+
+        .footer { text-align: center; margin-top: 30px; font-size: 13px; color: #999; }
+        .footer span.o { color: #FF8200; font-weight: 700; }
+        .footer span.g { color: #009E60; font-weight: 700; }
+
+        @media (max-width: 600px) { .header { padding: 16px; } .success-box { padding: 24px; } .btn-row { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-logo">C</div>
+    <div class="header-title">
+        <h1>Commission Électorale Indépendante</h1>
+        <p>République de Côte d'Ivoire</p>
+    </div>
+    <div class="tri-flag">
+        <div class="band b1"></div>
+        <div class="band b2"></div>
+        <div class="band b3"></div>
+    </div>
+</div>
+
+<div class="success-box">
+    <div class="success-icon">🎉</div>
+
+    <h2 style="font-family:'Playfair Display';color:#009E60;font-size:28px;margin-bottom:10px;">
+        Candidature Enregistrée !
+    </h2>
+    <p style="color:#555;font-size:15px;margin-bottom:4px;">
+        Félicitations <strong>{{ candidat.prenom }} {{ candidat.nom }}</strong>,<br>
+        votre dossier de candidature a été soumis avec succès.
+    </p>
+
+    <!-- Numéro électeur généré automatiquement -->
+    <div class="numero-badge">
+        <div class="numero-label">🗳️ Votre numéro électeur CEI</div>
+        <div class="numero-value">{{ candidat.numero_electeur }}</div>
+        <div style="font-size:12px;color:#888;margin-top:8px;">
+            Utilisez ce numéro pour voter le jour du scrutin
+        </div>
+    </div>
+
+    <!-- Infos candidat -->
+    <div class="info-grid">
+        <div class="info-item">
+            <div class="lbl">Parti politique</div>
+            <div class="val">{{ candidat.parti_politique }}</div>
+        </div>
+        <div class="info-item">
+            <div class="lbl">Date de naissance</div>
+            <div class="val">{{ candidat.date_naissance }}</div>
+        </div>
+        <div class="info-item">
+            <div class="lbl">Cautionnement</div>
+            <div class="val">
+                {% if candidat.cautionnement_valide %}
+                    ✔ Validé
+                {% else %}
+                    ⏳ En attente
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="warning">
+        ⚠️ Conservez précieusement votre numéro électeur.<br>
+        Il vous sera indispensable pour voter le jour du scrutin.<br>
+        La CEI vous contactera pour la validation finale de votre candidature.
+    </div>
+
+    <div class="btn-row">
+        <a href="/" class="btn btn-home">🏠 Retour à l'accueil</a>
+        <a href="{{ url_recu }}" class="btn btn-pdf">📄 Télécharger mon reçu PDF</a>
+    </div>
+</div>
+
+<div class="footer">
+    © 2025 <span class="o">CEI</span> — Commission Électorale Indépendante de <span class="g">Côte d'Ivoire</span>
+</div>
+
+</body>
+</html>
