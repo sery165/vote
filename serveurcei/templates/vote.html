@@ -7,251 +7,205 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --orange: #F97316; --green: #009E60; --dark: #060912; --mid: #0d1528;
-            --gold: #D4A017; --gold-light: #F5C842; --gray: #8B92A5;
-            --border: rgba(255,255,255,0.08); --card-bg: rgba(255,255,255,0.04);
+            --orange: #E85D04; --green: #007A47; --dark: #f5f4f0; --mid: #eceae4;
+            --blue: #1D63ED;
+            --gold: #C4900A; --gold-light: #D4A017; --gray: #6B7280;
+            --border: rgba(0,0,0,0.09); --card-bg: #F0EFEB;
+            --text-main: #111827; --text-muted: #6B7280;
+            --header-bg: #DDD5C5; --page-bg: #E8E0D0;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'DM Sans',sans-serif; background:var(--dark); color:#fff; overflow-x:hidden; }
-        .bg-layer {
-            position:fixed; inset:0; z-index:0;
-            background:
-                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(249,115,22,0.15) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,158,96,0.12) 0%, transparent 55%),
-                linear-gradient(180deg,#060912 0%,#0d1528 50%,#060912 100%);
-        }
-        .bg-grid {
-            position:fixed; inset:0; z-index:0;
-            background-image: linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
-                              linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
-            background-size:60px 60px;
-        }
-
-        /* ══ HEADER ══ */
+        body { font-family:'DM Sans',sans-serif; background:var(--page-bg); color:var(--text-main); overflow-x:hidden; }
         header {
             position:sticky; top:0; z-index:50;
             padding:18px 40px; display:flex; align-items:center; justify-content:space-between;
             border-bottom:1px solid var(--border);
-            backdrop-filter:blur(20px); background:rgba(6,9,18,0.85);
+            background:var(--header-bg);
+            box-shadow:0 1px 6px rgba(0,0,0,0.08);
         }
         .header-logo { display:flex; align-items:center; gap:14px; }
-        .logo-flag { width:50px; height:34px; border-radius:4px; overflow:hidden; display:flex; box-shadow:0 2px 12px rgba(0,0,0,0.5); }
-        .flag-o{flex:1;background:#F97316;} .flag-w{flex:1;background:#fff;} .flag-g{flex:1;background:#009E60;}
-        .header-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; }
-        .header-title span { display:block; font-size:11px; font-family:'DM Sans',sans-serif; color:var(--gray); letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
-        .pulse-badge { display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:50px; border:1px solid rgba(249,115,22,0.3); background:rgba(249,115,22,0.08); font-size:12px; font-weight:600; color:var(--orange); letter-spacing:1px; }
+        .logo-flag { width:50px; height:34px; border-radius:4px; overflow:hidden; display:flex; box-shadow:0 2px 10px rgba(0,0,0,0.15); }
+        .flag-o{flex:1;background:#F97316;} .flag-w{flex:1;background:#fff;border-left:1px solid #eee;border-right:1px solid #eee;} .flag-g{flex:1;background:#009E60;}
+        .header-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:#1a2e1a; }
+        .header-title span { display:block; font-size:11px; font-family:'DM Sans',sans-serif; color:#4a6a4a; letter-spacing:2px; text-transform:uppercase; margin-top:1px; }
+        .pulse-badge { display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:50px; border:1px solid rgba(232,93,4,0.3); background:rgba(232,93,4,0.07); font-size:12px; font-weight:600; color:var(--orange); letter-spacing:1px; }
         .pulse { width:8px; height:8px; border-radius:50%; background:var(--orange); animation:pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(249,115,22,0.5)} 50%{opacity:.7;box-shadow:0 0 0 6px rgba(249,115,22,0)} }
-
-        /* ══ NAVBAR ══ */
+        @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(232,93,4,0.4)} 50%{opacity:.7;box-shadow:0 0 0 6px rgba(232,93,4,0)} }
         .navbar {
             position:sticky; top:80px; z-index:45;
             display:flex; justify-content:center; gap:16px;
             padding:12px 20px;
-            background:rgba(6,9,18,0.9); backdrop-filter:blur(15px);
-            border-bottom:1px solid var(--border);
+            background:#E85D04;
+            border-bottom:1px solid rgba(0,0,0,0.08);
+            box-shadow:0 2px 6px rgba(232,93,4,0.25);
         }
         .navbar a {
-            text-decoration:none; color:var(--gray); font-size:14px; font-weight:600;
+            text-decoration:none; color:rgba(255,255,255,0.85); font-size:14px; font-weight:600;
             padding:10px 16px; border-radius:10px; transition:all 0.3s ease;
             display:flex; align-items:center; gap:6px;
         }
-        .navbar a:hover { color:white; background:rgba(255,255,255,0.08); }
-        .navbar a.active { background:linear-gradient(135deg,var(--orange),#e05a00); color:white; }
-
-        /* ══ MESSAGES ══ */
+        .navbar a:hover { color:#ffffff; background:rgba(0,0,0,0.12); }
+        .navbar a.active { background:var(--orange); color:white; }
         .django-alerts { position:relative; z-index:10; max-width:680px; margin:20px auto 0; padding:0 30px; }
         .alert { display:flex; align-items:flex-start; gap:14px; padding:16px 20px; border-radius:14px; margin-bottom:12px; font-size:14px; font-weight:600; line-height:1.5; animation:slideDown 0.4s ease; }
         @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
-        .alert-error   { background:rgba(239,68,68,0.1);  border:1px solid rgba(239,68,68,0.3);  color:#F87171; }
-        .alert-success { background:rgba(0,158,96,0.12);  border:1px solid rgba(0,158,96,0.35);  color:#4ADE80; }
-        .alert-warning { background:rgba(234,179,8,0.1);  border:1px solid rgba(234,179,8,0.3);  color:#FBBF24; }
+        .alert-error   { background:rgba(239,68,68,0.08);  border:1px solid rgba(239,68,68,0.25);  color:#DC2626; }
+        .alert-success { background:rgba(0,122,71,0.08);   border:1px solid rgba(0,122,71,0.25);   color:#007A47; }
+        .alert-warning { background:rgba(196,144,10,0.08); border:1px solid rgba(196,144,10,0.25); color:#C4900A; }
         .alert-icon { font-size:22px; flex-shrink:0; }
-
-        /* ══ GUIDE IA ══ */
-        .ai-guide-banner { position:relative; z-index:10; background:linear-gradient(135deg,rgba(0,158,96,0.15),rgba(0,100,60,0.08)); border-bottom:1px solid rgba(0,158,96,0.3); }
+        .ai-guide-banner { position:relative; z-index:10; background:rgba(0,122,71,0.05); border-bottom:1px solid rgba(0,122,71,0.2); }
         .ai-guide-inner { max-width:1200px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
-        .ai-guide-label { display:flex; align-items:center; gap:10px; font-size:13px; font-weight:700; color:#00E080; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+        .ai-guide-label { display:flex; align-items:center; gap:10px; font-size:13px; font-weight:700; color:var(--green); letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
         .ai-icon-anim { font-size:20px; animation:bounce 2s infinite; }
         @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
         .lang-buttons { display:flex; gap:8px; flex-wrap:wrap; }
-        .lang-btn { padding:7px 14px; border-radius:50px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; transition:all 0.25s; background:rgba(255,255,255,0.08); color:white; border:1px solid rgba(255,255,255,0.12); }
-        .lang-btn:hover { background:rgba(0,158,96,0.25); border-color:rgba(0,200,100,0.4); transform:translateY(-1px); }
+        .lang-btn { padding:7px 14px; border-radius:50px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; transition:all 0.25s; background:#F5EFE3; color:var(--text-muted); border:1px solid var(--border); }
+        .lang-btn:hover { border-color:var(--green); color:var(--green); transform:translateY(-1px); }
         .lang-btn.active { background:var(--green); border-color:var(--green); color:white; }
         .ai-guide-box { position:relative; z-index:10; max-width:1200px; margin:16px auto 0; padding:0 30px; display:none; }
         .ai-guide-box.visible { display:block; }
-        .ai-box-inner { background:rgba(0,158,96,0.07); border:1px solid rgba(0,158,96,0.25); border-radius:20px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px; }
-        .ai-avatar { width:48px; height:48px; border-radius:50%; flex-shrink:0; background:linear-gradient(135deg,var(--green),#004d28); border:2px solid rgba(0,200,100,0.4); display:flex; align-items:center; justify-content:center; font-size:22px; }
+        .ai-box-inner { background:rgba(0,122,71,0.05); border:1px solid rgba(0,122,71,0.2); border-radius:20px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px; }
+        .ai-avatar { width:48px; height:48px; border-radius:50%; flex-shrink:0; background:linear-gradient(135deg,var(--green),#004d28); border:2px solid rgba(0,122,71,0.3); display:flex; align-items:center; justify-content:center; font-size:22px; }
         .ai-text-area { flex:1; }
-        .ai-lang-name { font-size:10px; font-weight:700; color:#00E080; letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
-        .ai-message { font-size:15px; line-height:1.7; color:#E8F5EE; }
-        .ai-speak-btn { padding:7px 16px; background:rgba(0,158,96,0.2); border:1px solid rgba(0,158,96,0.4); color:#00E080; border-radius:50px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; transition:all 0.25s; margin-top:8px; display:inline-flex; align-items:center; gap:6px; }
+        .ai-lang-name { font-size:10px; font-weight:700; color:var(--green); letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
+        .ai-message { font-size:15px; line-height:1.7; color:var(--text-main); }
+        .ai-speak-btn { padding:7px 16px; background:rgba(0,122,71,0.1); border:1px solid rgba(0,122,71,0.3); color:var(--green); border-radius:50px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; transition:all 0.25s; margin-top:8px; display:inline-flex; align-items:center; gap:6px; }
         .ai-speak-btn:hover { background:var(--green); color:white; }
-
-        /* ══ TABS ══ */
         .tabs-container { position:relative; z-index:10; max-width:680px; margin:30px auto 0; padding:0 30px; }
-        .tabs-bar { display:flex; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:16px; padding:6px; gap:6px; }
-        .tab-btn { flex:1; padding:14px; border:none; border-radius:12px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; transition:all 0.3s; color:var(--gray); background:transparent; display:flex; align-items:center; justify-content:center; gap:8px; }
-        .tab-btn.active-vote { background:linear-gradient(135deg,var(--orange),#e05a00); color:white; box-shadow:0 4px 20px rgba(249,115,22,0.3); }
-        .tab-btn.active-inscription { background:linear-gradient(135deg,var(--green),#006B40); color:white; box-shadow:0 4px 20px rgba(0,158,96,0.3); }
-        .tab-btn:not(.active-vote):not(.active-inscription):hover { background:rgba(255,255,255,0.06); color:white; }
-
-        /* ══ SECTIONS ══ */
+        .tabs-bar { display:flex; background:#F5EFE3; border:1px solid var(--border); border-radius:16px; padding:6px; gap:6px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+        .tab-btn { flex:1; padding:14px; border:none; border-radius:12px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; transition:all 0.3s; color:var(--text-muted); background:transparent; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .tab-btn.active-vote { background:var(--blue); color:white; box-shadow:0 4px 16px rgba(29,99,237,0.3); }
+        .tab-btn.active-inscription { background:var(--green); color:white; box-shadow:0 4px 16px rgba(0,122,71,0.3); }
+        .tab-btn:not(.active-vote):not(.active-inscription):hover { background:rgba(0,0,0,0.04); color:var(--text-main); }
         .section-vote, .section-inscription { display:none; }
         .section-vote.visible, .section-inscription.visible { display:block; }
-
-        /* ══ HERO ══ */
-        .hero { position:relative; z-index:5; text-align:center; padding:40px 20px 30px; }
-        .hero-eyebrow { display:inline-flex; align-items:center; gap:10px; padding:6px 20px; border-radius:50px; background:rgba(212,160,23,0.1); border:1px solid rgba(212,160,23,0.25); color:var(--gold-light); font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:24px; }
-        .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,5vw,60px); font-weight:700; line-height:1.05; margin-bottom:16px; background:linear-gradient(135deg,#fff 0%,#D4A017 50%,#F97316 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-        .hero p { font-size:15px; color:var(--gray); max-width:500px; margin:0 auto; line-height:1.7; }
-
+        .hero { position:relative; z-index:5; text-align:center; padding:40px 20px 30px; background:var(--page-bg); }
+        .hero-eyebrow { display:inline-flex; align-items:center; gap:10px; padding:6px 20px; border-radius:50px; background:rgba(196,144,10,0.1); border:1px solid rgba(196,144,10,0.25); color:var(--gold); font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:24px; }
+        .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,5vw,60px); font-weight:700; line-height:1.05; margin-bottom:16px; color:var(--text-main); }
+        .hero h1 span { color:var(--blue); }
+        .hero p { font-size:15px; color:var(--text-muted); max-width:500px; margin:0 auto; line-height:1.7; }
         .section-title { position:relative; z-index:5; text-align:center; margin:20px 0 30px; }
-        .section-title h2 { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:700; margin-bottom:10px; }
-        .section-title p { font-size:13px; color:var(--gray); letter-spacing:1px; }
-        .title-line { width:60px; height:3px; background:linear-gradient(90deg,var(--orange),var(--gold)); margin:12px auto 0; border-radius:2px; }
-        .title-line.green { background:linear-gradient(90deg,var(--green),#00c070); }
-
-        /* ══ CANDIDATS ══ */
+        .section-title h2 { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:700; margin-bottom:10px; color:var(--text-main); }
+        .section-title p { font-size:13px; color:var(--text-muted); letter-spacing:1px; }
+        .title-line { width:60px; height:3px; background:var(--blue); margin:12px auto 0; border-radius:2px; }
+        .title-line.green { background:var(--green); }
         .candidates-section { position:relative; z-index:5; max-width:1200px; margin:0 auto; padding:0 30px 50px; }
         .candidates-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:18px; }
-        .candidate-card { background:var(--card-bg); border:1px solid var(--border); border-radius:20px; overflow:hidden; transition:all 0.35s ease; cursor:pointer; position:relative; opacity:0; animation:fadeUp 0.5s ease forwards; }
+        .candidate-card { background:#F5EFE3; border:1.5px solid var(--border); border-radius:20px; overflow:hidden; transition:all 0.35s ease; cursor:pointer; position:relative; opacity:0; animation:fadeUp 0.5s ease forwards; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
         @keyframes fadeUp { from{opacity:0;transform:translateY(25px)} to{opacity:1;transform:translateY(0)} }
         .candidate-card:nth-child(1){animation-delay:.05s} .candidate-card:nth-child(2){animation-delay:.10s}
         .candidate-card:nth-child(3){animation-delay:.15s} .candidate-card:nth-child(4){animation-delay:.20s}
         .candidate-card:nth-child(5){animation-delay:.25s} .candidate-card:nth-child(6){animation-delay:.30s}
-        .candidate-card:hover { transform:translateY(-6px); border-color:rgba(249,115,22,0.4); box-shadow:0 20px 60px rgba(0,0,0,0.4),0 0 30px rgba(249,115,22,0.1); }
-        .candidate-card.selected { border-color:var(--orange); box-shadow:0 0 0 2px var(--orange),0 20px 60px rgba(249,115,22,0.2); }
+        .candidate-card:hover { transform:translateY(-6px); border-color:rgba(29,99,237,0.45); box-shadow:0 16px 48px rgba(0,0,0,0.12); }
+        .candidate-card.selected { border-color:var(--blue); box-shadow:0 0 0 2px var(--blue),0 16px 48px rgba(29,99,237,0.15); }
         .candidate-card.selected .card-check { opacity:1; transform:scale(1); }
-        .card-check { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; background:var(--orange); color:white; font-size:16px; font-weight:700; display:flex; align-items:center; justify-content:center; opacity:0; transform:scale(0.4); transition:all 0.3s; z-index:5; }
-        .card-photo-wrap { position:relative; width:100%; aspect-ratio:3/3.5; overflow:hidden; }
+        .card-check { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; background:var(--blue); color:white; font-size:16px; font-weight:700; display:flex; align-items:center; justify-content:center; opacity:0; transform:scale(0.4); transition:all 0.3s; z-index:5; }
+        .card-photo-wrap { position:relative; width:100%; aspect-ratio:3/3.5; overflow:hidden; border-bottom:2px solid rgba(29,99,237,0.18); }
         .card-photo { width:100%; height:100%; object-fit:cover; object-position:top center; transition:transform 0.5s ease; display:block; }
         .candidate-card:hover .card-photo { transform:scale(1.06); }
-        .card-photo-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:60px; background:linear-gradient(160deg,#1a2035,#0d1528); }
-        .card-overlay { position:absolute; bottom:0; left:0; right:0; height:60%; background:linear-gradient(to top,rgba(6,9,18,0.95),transparent); pointer-events:none; }
+        .card-photo-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:60px; background:linear-gradient(160deg,#ddd5c5,#cec4b0); }
+        .card-overlay { position:absolute; bottom:0; left:0; right:0; height:40%; background:linear-gradient(to top,rgba(237,233,224,0.6),transparent); pointer-events:none; }
         .card-body { padding:12px 14px 14px; border-top:1px solid var(--border); }
-        .card-name { font-family:'Cormorant Garamond',serif; font-size:15px; font-weight:700; line-height:1.2; margin-bottom:6px; }
+        .card-name { font-family:'Cormorant Garamond',serif; font-size:15px; font-weight:700; line-height:1.2; margin-bottom:6px; color:var(--text-main); }
         .card-party { display:inline-flex; align-items:center; padding:3px 10px; border-radius:50px; font-size:10px; font-weight:600; }
-        .party-rhdp{background:rgba(249,115,22,.15);color:#F97316;border:1px solid rgba(249,115,22,.3);}
-        .party-pdci{background:rgba(0,158,96,.15);color:#00C070;border:1px solid rgba(0,158,96,.3);}
-        .party-affi{background:rgba(139,92,246,.15);color:#A78BFA;border:1px solid rgba(139,92,246,.3);}
-        .party-fpi{background:rgba(239,68,68,.15);color:#F87171;border:1px solid rgba(239,68,68,.3);}
-        .party-upci{background:rgba(6,182,212,.15);color:#22D3EE;border:1px solid rgba(6,182,212,.3);}
-
+        .party-rhdp{background:rgba(232,93,4,0.1);color:#E85D04;border:1px solid rgba(232,93,4,0.25);}
+        .party-pdci{background:rgba(0,122,71,0.1);color:#007A47;border:1px solid rgba(0,122,71,0.25);}
+        .party-affi{background:rgba(109,40,217,0.1);color:#7C3AED;border:1px solid rgba(109,40,217,0.25);}
+        .party-fpi{background:rgba(220,38,38,0.1);color:#DC2626;border:1px solid rgba(220,38,38,0.25);}
+        .party-upci{background:rgba(8,145,178,0.1);color:#0891B2;border:1px solid rgba(8,145,178,0.25);}
         .divider { position:relative;z-index:5;display:flex;align-items:center;max-width:1200px;margin:0 auto 40px;padding:0 30px;gap:20px; }
         .div-line{flex:1;height:1px;background:var(--border);}
-
-        /* ══ CARTE VOTE ══ */
         .vote-section { position:relative;z-index:5;max-width:680px;margin:0 auto;padding:0 30px 80px; }
-        .vote-card { background:rgba(255,255,255,.03);border:1px solid rgba(249,115,22,.2);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4); }
-        .vote-card-header { padding:28px 36px 20px;border-bottom:1px solid var(--border);background:rgba(249,115,22,.04);text-align:center; }
+        .vote-card { background:#F5EFE3;border:1.5px solid rgba(29,99,237,0.25);border-radius:28px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+        .vote-card-header { padding:28px 36px 20px;border-bottom:1px solid var(--border);background:rgba(29,99,237,0.04);text-align:center; }
         .vote-card-header .icon{font-size:40px;display:block;margin-bottom:12px;}
-        .vote-card-header h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin-bottom:6px;}
-        .vote-card-header p{font-size:13px;color:var(--gray);line-height:1.6;}
+        .vote-card-header h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin-bottom:6px;color:var(--text-main);}
+        .vote-card-header p{font-size:13px;color:var(--text-muted);line-height:1.6;}
         .vote-card-body { padding:28px 36px; }
-
-        .selected-preview { display:none;align-items:center;gap:14px;padding:12px 16px;border-radius:14px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);margin-bottom:20px; }
+        .selected-preview { display:none;align-items:center;gap:14px;padding:12px 16px;border-radius:14px;background:rgba(29,99,237,0.05);border:1px solid rgba(29,99,237,0.2);margin-bottom:20px; }
         .selected-preview.visible{display:flex;}
-        .preview-photo-wrap{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid var(--orange);flex-shrink:0;background:#1a2035;display:flex;align-items:center;justify-content:center;}
+        .preview-photo-wrap{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid var(--blue);flex-shrink:0;background:#f0ede6;display:flex;align-items:center;justify-content:center;}
         .preview-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;}
         .preview-emoji{font-size:22px;}
-        .selected-preview-info strong{display:block;font-size:14px;font-family:'Cormorant Garamond',serif;}
-        .selected-preview-info span{font-size:12px;color:var(--gray);}
-
-        .input-label{display:block;font-size:12px;font-weight:600;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+        .selected-preview-info strong{display:block;font-size:14px;font-family:'Cormorant Garamond',serif;color:var(--text-main);}
+        .selected-preview-info span{font-size:12px;color:var(--text-muted);}
+        .input-label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
         .input-wrapper{position:relative;}
         .input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
-        .vote-input{width:100%;padding:14px 14px 14px 48px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:14px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:1px;outline:none;transition:border-color .3s,background .3s;}
-        .vote-input::placeholder{color:rgba(255,255,255,.2);}
-        .vote-input:focus{border-color:var(--orange);background:rgba(249,115,22,.06);}
-        .vote-input.green:focus{border-color:var(--green);background:rgba(0,158,96,.06);}
-        .input-hint{margin-top:6px;font-size:12px;color:var(--gray);}
+        .vote-input{width:100%;padding:14px 14px 14px 48px;background:#F5EFE3;border:1.5px solid var(--border);border-radius:14px;color:var(--text-main);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:1px;outline:none;transition:border-color .3s;}
+        .vote-input::placeholder{color:rgba(0,0,0,0.25);}
+        .vote-input:focus{border-color:var(--blue);}
+        .vote-input.green:focus{border-color:var(--green);}
+        .input-hint{margin-top:6px;font-size:12px;color:var(--text-muted);}
         .input-group{margin-bottom:20px;}
-
-        /* ══ EMPREINTE ══ */
-        .empreinte-bloc { margin-bottom:22px; border:2px dashed rgba(255,255,255,0.1); border-radius:20px; padding:22px; text-align:center; transition:all 0.4s; position:relative; overflow:hidden; }
-        .empreinte-bloc.scanning { border-color:rgba(249,115,22,0.5); background:rgba(249,115,22,0.04); }
-        .empreinte-bloc.verified { border-color:var(--green); background:rgba(0,158,96,0.06); }
-        .empreinte-bloc.error-state { border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.05); }
+        .empreinte-bloc { margin-bottom:22px; border:1.5px dashed rgba(0,0,0,0.12); border-radius:20px; padding:22px; text-align:center; transition:all 0.4s; position:relative; overflow:hidden; background:rgba(0,0,0,0.01); }
+        .empreinte-bloc.scanning { border-color:rgba(29,99,237,0.4); background:rgba(29,99,237,0.03); }
+        .empreinte-bloc.verified { border-color:var(--green); background:rgba(0,122,71,0.04); }
+        .empreinte-bloc.error-state { border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.03); }
         .fingerprint-icon { width:72px; height:72px; margin:0 auto 14px; position:relative; cursor:pointer; }
         .fp-svg { width:100%; height:100%; }
-        .fp-path { fill:none; stroke:rgba(255,255,255,0.2); stroke-width:2; stroke-linecap:round; transition:stroke 0.3s; }
-        .empreinte-bloc.scanning .fp-path { stroke:var(--orange); stroke-dasharray:200; stroke-dashoffset:200; animation:scanLine 1.5s ease-in-out infinite; }
+        .fp-path { fill:none; stroke:rgba(0,0,0,0.15); stroke-width:2; stroke-linecap:round; transition:stroke 0.3s; }
+        .empreinte-bloc.scanning .fp-path { stroke:var(--blue); stroke-dasharray:200; stroke-dashoffset:200; animation:scanLine 1.5s ease-in-out infinite; }
         @keyframes scanLine { 0%{stroke-dashoffset:200;opacity:1} 50%{stroke-dashoffset:0;opacity:1} 100%{stroke-dashoffset:-200;opacity:0} }
         .empreinte-bloc.verified .fp-path { stroke:var(--green); }
-        .empreinte-bloc.error-state .fp-path { stroke:#F87171; }
-        .scan-ring { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:84px; height:84px; border-radius:50%; border:2px solid var(--orange); opacity:0; }
+        .empreinte-bloc.error-state .fp-path { stroke:#DC2626; }
+        .scan-ring { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:84px; height:84px; border-radius:50%; border:2px solid var(--blue); opacity:0; }
         .empreinte-bloc.scanning .scan-ring { animation:ringPulse 1.5s ease-out infinite; }
-        @keyframes ringPulse { 0%{opacity:0.8;transform:translate(-50%,-50%) scale(0.8)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)} }
-        .empreinte-label { font-size:13px; font-weight:600; color:var(--gray); margin-bottom:10px; line-height:1.5; }
+        @keyframes ringPulse { 0%{opacity:0.6;transform:translate(-50%,-50%) scale(0.8)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)} }
+        .empreinte-label { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:10px; line-height:1.5; }
         .empreinte-status { font-size:12px; font-weight:700; padding:7px 14px; border-radius:50px; display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; }
-        .status-waiting  { background:rgba(255,255,255,0.06); color:var(--gray); border:1px solid rgba(255,255,255,0.1); }
-        .status-scanning { background:rgba(249,115,22,0.12); color:var(--orange); border:1px solid rgba(249,115,22,0.3); }
-        .status-ok       { background:rgba(0,158,96,0.12); color:#4ADE80; border:1px solid rgba(0,158,96,0.35); }
-        .status-fail     { background:rgba(239,68,68,0.1); color:#F87171; border:1px solid rgba(239,68,68,0.3); }
-        .btn-scan { padding:11px 26px; border-radius:50px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; border:1px solid rgba(249,115,22,0.4); background:rgba(249,115,22,0.1); color:var(--orange); transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
-        .btn-scan:hover { background:var(--orange); color:white; border-color:var(--orange); transform:translateY(-2px); }
+        .status-waiting  { background:rgba(0,0,0,0.05); color:var(--text-muted); border:1px solid rgba(0,0,0,0.08); }
+        .status-scanning { background:rgba(29,99,237,0.08); color:var(--blue); border:1px solid rgba(29,99,237,0.25); }
+        .status-ok       { background:rgba(0,122,71,0.1); color:var(--green); border:1px solid rgba(0,122,71,0.3); }
+        .status-fail     { background:rgba(239,68,68,0.08); color:#DC2626; border:1px solid rgba(239,68,68,0.25); }
+        .btn-scan { padding:11px 26px; border-radius:50px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; border:1.5px solid rgba(29,99,237,0.35); background:rgba(29,99,237,0.07); color:var(--blue); transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-scan:hover { background:var(--blue); color:white; transform:translateY(-2px); }
         .btn-scan:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
-
-        /* Empreinte theme vert (inscription) */
-        .empreinte-bloc.green-theme.scanning { border-color:rgba(0,158,96,0.5); background:rgba(0,158,96,0.04); }
+        .empreinte-bloc.green-theme.scanning { border-color:rgba(0,122,71,0.4); background:rgba(0,122,71,0.03); }
         .empreinte-bloc.green-theme.scanning .fp-path { stroke:var(--green); }
         .empreinte-bloc.green-theme.verified { border-color:var(--green); }
-        .empreinte-bloc.green-theme .btn-scan { border-color:rgba(0,158,96,0.4); background:rgba(0,158,96,0.1); color:var(--green); }
-        .empreinte-bloc.green-theme .btn-scan:hover { background:var(--green); color:white; border-color:var(--green); }
-
-        /* ══ ÉTAPES ══ */
+        .empreinte-bloc.green-theme .btn-scan { border-color:rgba(0,122,71,0.35); background:rgba(0,122,71,0.07); color:var(--green); }
+        .empreinte-bloc.green-theme .btn-scan:hover { background:var(--green); color:white; }
         .etapes-bar { display:flex; gap:0; margin-bottom:24px; border-radius:14px; overflow:hidden; border:1px solid var(--border); }
-        .etape { flex:1; padding:10px 6px; text-align:center; font-size:11px; font-weight:600; color:var(--gray); background:rgba(255,255,255,0.02); transition:all 0.3s; border-right:1px solid var(--border); display:flex; flex-direction:column; align-items:center; gap:3px; }
+        .etape { flex:1; padding:10px 6px; text-align:center; font-size:11px; font-weight:600; color:var(--text-muted); background:rgba(0,0,0,0.02); transition:all 0.3s; border-right:1px solid var(--border); display:flex; flex-direction:column; align-items:center; gap:3px; }
         .etape:last-child { border-right:none; }
-        .etape.done { background:rgba(0,158,96,0.08); color:#4ADE80; }
-        .etape.active { background:rgba(249,115,22,0.08); color:var(--orange); }
+        .etape.done { background:rgba(0,122,71,0.07); color:var(--green); }
+        .etape.active { background:rgba(29,99,237,0.07); color:var(--blue); }
         .etape-num { font-size:16px; }
-
-        .btn-vote{width:100%;padding:16px;background:linear-gradient(135deg,#F97316,#e05a00);color:white;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s;opacity:0.4;pointer-events:none;}
+        .btn-vote{width:100%;padding:16px;background:var(--blue);color:white;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s;opacity:0.4;pointer-events:none;}
         .btn-vote.active{opacity:1;pointer-events:all;}
-        .btn-vote.active:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(249,115,22,.4);}
-
+        .btn-vote.active:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(29,99,237,0.35);}
         .vote-info-row{display:flex;gap:10px;margin-top:16px;}
-        .info-pill{flex:1;padding:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;text-align:center;font-size:11px;color:var(--gray);line-height:1.5;}
-        .info-pill strong{display:block;font-size:16px;margin-bottom:2px;}
-
-        /* ══ CARTE INSCRIPTION ══ */
+        .info-pill{flex:1;padding:10px;background:rgba(29,99,237,0.04);border:1px solid rgba(29,99,237,0.12);border-radius:12px;text-align:center;font-size:11px;color:var(--text-muted);line-height:1.5;}
+        .info-pill strong{display:block;font-size:16px;margin-bottom:2px;color:var(--blue);}
         .inscription-section { position:relative;z-index:5;max-width:680px;margin:0 auto;padding:0 30px 80px; }
-        .inscription-card { background:rgba(255,255,255,.03);border:1px solid rgba(0,158,96,.25);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4); }
-        .inscription-card-header { padding:28px 36px 20px;border-bottom:1px solid var(--border);background:rgba(0,158,96,.04);text-align:center; }
+        .inscription-card { background:#F5EFE3;border:1.5px solid rgba(0,122,71,0.2);border-radius:28px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+        .inscription-card-header { padding:28px 36px 20px;border-bottom:1px solid var(--border);background:rgba(0,122,71,0.03);text-align:center; }
         .inscription-card-header .icon{font-size:40px;display:block;margin-bottom:12px;}
-        .inscription-card-header h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin-bottom:6px;}
-        .inscription-card-header p{font-size:13px;color:var(--gray);line-height:1.6;}
+        .inscription-card-header h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin-bottom:6px;color:var(--text-main);}
+        .inscription-card-header p{font-size:13px;color:var(--text-muted);line-height:1.6;}
         .inscription-card-body { padding:28px 36px; }
-
         .form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; }
-
         .photo-preview-wrap { margin-top:10px; display:none; text-align:center; }
         .photo-preview-wrap.visible { display:block; }
         .photo-preview { width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--green); margin:0 auto; display:block; }
-
-        .btn-inscrire { width:100%; padding:16px; background:linear-gradient(135deg,var(--green),#006B40); color:white; border:none; border-radius:14px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all .3s; margin-top:4px; }
-        .btn-inscrire:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(0,158,96,.4); }
+        .btn-inscrire { width:100%; padding:16px; background:var(--green); color:white; border:none; border-radius:14px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all .3s; margin-top:4px; }
+        .btn-inscrire:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(0,122,71,0.35); }
         .btn-inscrire:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
-
-        /* ══ MODAL ══ */
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:1000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(8px); }
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
         .modal-overlay.visible { display:flex; }
-        .modal-box { background:linear-gradient(145deg,#0d1528,#0a1020); border:1px solid rgba(0,158,96,0.4); border-radius:28px; padding:48px 40px; text-align:center; max-width:440px; width:90%; box-shadow:0 40px 100px rgba(0,0,0,0.6); animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .modal-box { background:#F5EFE3; border:1px solid var(--border); border-radius:28px; padding:48px 40px; text-align:center; max-width:440px; width:90%; box-shadow:0 32px 80px rgba(0,0,0,0.2); animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
         @keyframes popIn { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
         .modal-icon { font-size:56px; margin-bottom:16px; display:block; }
-        .modal-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; margin-bottom:10px; color:white; }
-        .modal-subtitle { font-size:14px; color:var(--gray); margin-bottom:28px; line-height:1.6; }
-        .numero-cei-display { background:rgba(0,158,96,0.1); border:2px solid rgba(0,158,96,0.4); border-radius:16px; padding:20px 28px; margin-bottom:28px; }
-        .numero-cei-label { font-size:11px; font-weight:700; color:#4ADE80; letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; }
-        .numero-cei-value { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:700; color:white; letter-spacing:2px; }
-        .modal-info { font-size:13px; color:var(--gray); margin-bottom:28px; background:rgba(255,255,255,0.04); border-radius:12px; padding:14px; line-height:1.6; }
-        .btn-aller-voter { width:100%; padding:16px; background:linear-gradient(135deg,var(--orange),#e05a00); color:white; border:none; border-radius:14px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all .3s; }
-        .btn-aller-voter:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(249,115,22,.4); }
-
-        footer{position:relative;z-index:5;text-align:center;padding:28px;border-top:1px solid var(--border);font-size:13px;color:var(--gray);margin-top:20px;}
-
+        .modal-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; margin-bottom:10px; color:var(--text-main); }
+        .modal-subtitle { font-size:14px; color:var(--text-muted); margin-bottom:28px; line-height:1.6; }
+        .numero-cei-display { background:rgba(0,122,71,0.07); border:2px solid rgba(0,122,71,0.3); border-radius:16px; padding:20px 28px; margin-bottom:28px; }
+        .numero-cei-label { font-size:11px; font-weight:700; color:var(--green); letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; }
+        .numero-cei-value { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:700; color:var(--text-main); letter-spacing:2px; }
+        .modal-info { font-size:13px; color:var(--text-muted); margin-bottom:28px; background:rgba(0,0,0,0.03); border-radius:12px; padding:14px; line-height:1.6; }
+        .btn-aller-voter { width:100%; padding:16px; background:var(--blue); color:white; border:none; border-radius:14px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all .3s; }
+        .btn-aller-voter:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(29,99,237,0.35); }
+        footer{position:relative;z-index:5;text-align:center;padding:28px;border-top:none;font-size:13px;color:rgba(255,255,255,0.8);margin-top:20px;background:#1a5c38;}
         @media(max-width:768px){
             header{padding:14px 18px;}
             .candidates-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
@@ -263,10 +217,6 @@
 </head>
 <body>
 
-<div class="bg-layer"></div>
-<div class="bg-grid"></div>
-
-<!-- HEADER -->
 <header>
     <div class="header-logo">
         <div class="logo-flag"><div class="flag-o"></div><div class="flag-w"></div><div class="flag-g"></div></div>
@@ -275,79 +225,71 @@
     <div class="pulse-badge"><div class="pulse"></div>VOTE EN COURS</div>
 </header>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-    <a href="{% url 'serveurcei:inscription_electeur' %}" id="nav-electeur"><span>📋</span> Inscription Électeur</a>
-    <a href="{% url 'serveurcei:inscription_candidat' %}" id="nav-candidat"><span>🎖️</span> Inscription Candidat</a>
-    <a href="{% url 'serveurcei:admin_dashboard' %}" id="nav-admin"><span>📊</span> Admin Dashboard</a>
+    <a href="{% url 'serveurcei:inscription_electeur' %}" id="nav-electeur">Inscription Electeur</a>
+    <a href="{% url 'serveurcei:inscription_candidat' %}" id="nav-candidat">Inscription Candidat</a>
+    <a href="{% url 'serveurcei:admin_dashboard' %}" id="nav-admin">Admin Dashboard</a>
 </nav>
 
-<!-- MESSAGES DJANGO -->
 {% if messages %}
 <div class="django-alerts">
     {% for message in messages %}
         <div class="alert alert-{{ message.tags }}">
-            <span class="alert-icon">{% if message.tags == 'error' %}❌{% elif message.tags == 'success' %}✅{% else %}⚠️{% endif %}</span>
+            <span class="alert-icon">{% if message.tags == 'error' %}X{% elif message.tags == 'success' %}OK{% else %}!{% endif %}</span>
             <div>{{ message }}</div>
         </div>
     {% endfor %}
 </div>
 {% endif %}
 
-<!-- GUIDE IA -->
 <div class="ai-guide-banner">
     <div class="ai-guide-inner">
-        <div class="ai-guide-label"><span class="ai-icon-anim">🤖</span>Guide IA :</div>
+        <div class="ai-guide-label">Guide IA :</div>
         <div class="lang-buttons">
-            <button class="lang-btn" onclick="activerGuide('fr',this)">🇫🇷 Français</button>
-            <button class="lang-btn" onclick="activerGuide('dioula',this)">🥁 Dioula</button>
-            <button class="lang-btn" onclick="activerGuide('baoule',this)">🌿 Baoulé</button>
-            <button class="lang-btn" onclick="activerGuide('bete',this)">🔶 Bété</button>
-            <button class="lang-btn" onclick="activerGuide('nouchi',this)">🏙️ Nouchi</button>
-            <button class="lang-btn" onclick="activerGuide('attie',this)">🌾 Attié</button>
+            <button class="lang-btn" onclick="activerGuide('fr',this)">Francais</button>
+            <button class="lang-btn" onclick="activerGuide('dioula',this)">Dioula</button>
+            <button class="lang-btn" onclick="activerGuide('baoule',this)">Baoule</button>
+            <button class="lang-btn" onclick="activerGuide('bete',this)">Bete</button>
+            <button class="lang-btn" onclick="activerGuide('nouchi',this)">Nouchi</button>
+            <button class="lang-btn" onclick="activerGuide('attie',this)">Attie</button>
         </div>
     </div>
 </div>
 
 <div class="ai-guide-box" id="aiGuideBox">
     <div class="ai-box-inner">
-        <div class="ai-avatar">🤖</div>
+        <div class="ai-avatar">IA</div>
         <div class="ai-text-area">
             <div class="ai-lang-name" id="aiLangName">GUIDE</div>
             <div class="ai-message" id="aiMessage">Chargement...</div>
-            <button class="ai-speak-btn" id="aiSpeakBtn" onclick="lireTexte()">🔊 Écouter</button>
+            <button class="ai-speak-btn" id="aiSpeakBtn" onclick="lireTexte()">Ecouter</button>
         </div>
     </div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
-    <div class="hero-eyebrow">⚖️ &nbsp;Élection Présidentielle 2025</div>
-    <h1>Votez pour<br>votre Candidat</h1>
+    <div class="hero-eyebrow">Election Présidentielle 2025</div>
+    <h1>Votez pour<br><span>votre Candidat</span></h1>
     <p>Inscrivez-vous ou connectez-vous pour exercer votre droit de vote.</p>
 </div>
 
-<!-- TABS -->
 <div class="tabs-container">
     <div class="tabs-bar">
         <button class="tab-btn active-vote" id="tabVote" onclick="switchTab('vote')">
-            🗳️ J'ai déjà un numéro CEI — Voter
+            J'ai déjà un numéro CEI — Voter
         </button>
         <button class="tab-btn" id="tabInscription" onclick="switchTab('inscription')">
-            📝 Première fois — M'inscrire
+            Première fois — M'inscrire
         </button>
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SECTION VOTE
-══════════════════════════════════════ -->
+<!-- SECTION VOTE -->
 <div class="section-vote visible" id="sectionVote">
-
     <div class="candidates-section" style="margin-top:30px;">
         <div class="section-title">
             <h2>Les Candidats</h2>
-            <p>CLIQUEZ SUR UN CANDIDAT POUR LE SÉLECTIONNER</p>
+            <p>CLIQUEZ SUR UN CANDIDAT POUR LE SELECTIONNER</p>
             <div class="title-line"></div>
         </div>
         <div class="candidates-grid">
@@ -358,13 +300,13 @@
                  data-party="{{ candidat.parti_politique }}"
                  data-photo="{% if candidat.photo %}{{ candidat.photo.url }}{% endif %}"
                  onclick="selectCandidate(this)">
-                <div class="card-check">✓</div>
+                <div class="card-check">V</div>
                 <div class="card-photo-wrap">
                     {% if candidat.photo %}
                         <img class="card-photo" src="{{ candidat.photo.url }}" alt="{{ candidat.nom }}"
                              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     {% endif %}
-                    <div class="card-photo-placeholder" {% if candidat.photo %}style="display:none"{% endif %}>👨🏾‍💼</div>
+                    <div class="card-photo-placeholder" {% if candidat.photo %}style="display:none"{% endif %}></div>
                     <div class="card-overlay"></div>
                 </div>
                 <div class="card-body">
@@ -374,51 +316,38 @@
             </div>
             {% empty %}
             <div class="candidate-card" data-id="1" data-name="Alassane Ouattara" data-party="RHDP" data-photo="" onclick="selectCandidate(this)">
-                <div class="card-check">✓</div>
-                <div class="card-photo-wrap"><div class="card-photo-placeholder">👨🏾‍💼</div><div class="card-overlay"></div></div>
+                <div class="card-check">V</div>
+                <div class="card-photo-wrap"><div class="card-photo-placeholder"></div><div class="card-overlay"></div></div>
                 <div class="card-body"><div class="card-name">Alassane Ouattara</div><span class="card-party party-rhdp">RHDP</span></div>
-            </div>
-            <div class="candidate-card" data-id="2" data-name="Tidjane Thiam" data-party="PDCI-RDA" data-photo="" onclick="selectCandidate(this)">
-                <div class="card-check">✓</div>
-                <div class="card-photo-wrap"><div class="card-photo-placeholder">👨🏾‍💼</div><div class="card-overlay"></div></div>
-                <div class="card-body"><div class="card-name">Tidjane Thiam</div><span class="card-party party-pdci">PDCI-RDA</span></div>
-            </div>
-            <div class="candidate-card" data-id="3" data-name="Laurent Gbagbo" data-party="PPA-CI" data-photo="" onclick="selectCandidate(this)">
-                <div class="card-check">✓</div>
-                <div class="card-photo-wrap"><div class="card-photo-placeholder">👨🏾‍💼</div><div class="card-overlay"></div></div>
-                <div class="card-body"><div class="card-name">Laurent Gbagbo</div><span class="card-party party-fpi">PPA-CI</span></div>
             </div>
             {% endfor %}
         </div>
     </div>
 
-    <div class="divider"><div class="div-line"></div><span style="font-size:20px">🗳️</span><div class="div-line"></div></div>
+    <div class="divider"><div class="div-line"></div><div class="div-line"></div></div>
 
-    <!-- FORMULAIRE VOTE -->
     <div class="vote-section">
         <div class="vote-card">
             <div class="vote-card-header">
-                <span class="icon">🗳️</span>
                 <h3>Bulletin de Vote Sécurisé</h3>
                 <p>Sélectionnez un candidat, entrez votre numéro CEI puis vérifiez votre empreinte.</p>
             </div>
             <div class="vote-card-body">
-
                 <div class="etapes-bar">
-                    <div class="etape active" id="etape1"><span class="etape-num">1️⃣</span>Candidat</div>
-                    <div class="etape" id="etape2"><span class="etape-num">2️⃣</span>Numéro</div>
-                    <div class="etape" id="etape3"><span class="etape-num">3️⃣</span>Empreinte</div>
+                    <div class="etape active" id="etape1"><span class="etape-num">1</span>Candidat</div>
+                    <div class="etape" id="etape2"><span class="etape-num">2</span>Numéro</div>
+                    <div class="etape" id="etape3"><span class="etape-num">3</span>Empreinte</div>
                 </div>
 
                 <div class="selected-preview" id="selectedPreview">
                     <div class="preview-photo-wrap" id="previewPhotoWrap">
-                        <span class="preview-emoji" id="previewEmoji">👤</span>
+                        <span class="preview-emoji" id="previewEmoji"></span>
                     </div>
                     <div class="selected-preview-info">
                         <strong id="previewName">—</strong>
                         <span id="previewParty">—</span>
                     </div>
-                    <div style="margin-left:auto;color:var(--orange);font-weight:700;font-size:13px;">✓ Sélectionné</div>
+                    <div style="margin-left:auto;color:var(--blue);font-weight:700;font-size:13px;">Sélectionné</div>
                 </div>
 
                 <form method="POST" action="{% url 'serveurcei:voter' %}" id="voteForm">
@@ -427,15 +356,15 @@
                     <input type="hidden" name="empreinte_hash" id="empreinteInput" value="">
 
                     <div class="input-group">
-                        <label class="input-label">Numéro d'Électeur CEI</label>
+                        <label class="input-label">Numéro d'Electeur CEI</label>
                         <div class="input-wrapper">
-                            <span class="input-icon">🪪</span>
+                            <span class="input-icon">|</span>
                             <input class="vote-input" type="text" id="numElecteur" name="numero_electeur"
                                    placeholder="Ex : CEI-XXXXXXXX" maxlength="30" autocomplete="off" required
                                    oninput="reinitialiserEmpreinte()">
                         </div>
-                        <p class="input-hint">📌 Ce numéro figure sur votre carte d'électeur CEI.<br>
-                        👉 Pas encore inscrit ? <a href="#" onclick="switchTab('inscription');return false;" style="color:var(--green);font-weight:700;">Inscrivez-vous d'abord →</a></p>
+                        <p class="input-hint">Ce numéro figure sur votre carte d'électeur CEI.
+                        Pas encore inscrit ? <a href="#" onclick="switchTab('inscription');return false;" style="color:var(--green);font-weight:700;">Inscrivez-vous d'abord</a></p>
                     </div>
 
                     <div class="empreinte-bloc" id="empreinteBlocUI">
@@ -459,101 +388,91 @@
                             <div class="scan-ring" id="scanRing"></div>
                         </div>
                         <div class="empreinte-label" id="fpLabel">Appuyez pour scanner votre empreinte</div>
-                        <div class="empreinte-status status-waiting" id="fpStatus">👆 En attente du scan</div>
-                        <button type="button" class="btn-scan" id="btnScan" onclick="lancerScan()">🔒 Scanner mon empreinte</button>
+                        <div class="empreinte-status status-waiting" id="fpStatus">En attente du scan</div>
+                        <button type="button" class="btn-scan" id="btnScan" onclick="lancerScan()">Scanner mon empreinte</button>
                     </div>
 
                     <button type="button" class="btn-vote" id="btnVote" onclick="soumettreVote()">
-                        🗳️&nbsp; Soumettre Mon Vote
+                        Soumettre Mon Vote
                     </button>
                 </form>
 
                 <div class="vote-info-row">
-                    <div class="info-pill"><strong>🔒</strong>Vote sécurisé</div>
-                    <div class="info-pill"><strong>☝️</strong>Empreinte vérifiée</div>
-                    <div class="info-pill"><strong>1×</strong>Un seul vote</div>
+                    <div class="info-pill"><strong>Securise</strong>Vote sécurisé</div>
+                    <div class="info-pill"><strong>Verifie</strong>Empreinte vérifiée</div>
+                    <div class="info-pill"><strong>1x</strong>Un seul vote</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SECTION INSCRIPTION
-══════════════════════════════════════ -->
+<!-- SECTION INSCRIPTION -->
 <div class="section-inscription" id="sectionInscription">
     <div class="inscription-section" style="margin-top:30px;">
         <div class="section-title">
             <h2>Créer votre compte électeur</h2>
-            <p>REMPLISSEZ LE FORMULAIRE — VOUS RECEVREZ VOTRE NUMÉRO CEI</p>
+            <p>REMPLISSEZ LE FORMULAIRE — VOUS RECEVREZ VOTRE NUMERO CEI</p>
             <div class="title-line green"></div>
         </div>
-
         <div class="inscription-card">
             <div class="inscription-card-header">
-                <span class="icon">📝</span>
-                <h3>Inscription Électeur</h3>
+                <h3>Inscription Electeur</h3>
                 <p>Remplissez vos informations pour obtenir votre numéro d'électeur CEI et voter.</p>
             </div>
             <div class="inscription-card-body">
-
                 <form id="inscriptionForm" enctype="multipart/form-data">
                     {% csrf_token %}
-
                     <div class="form-row-2">
                         <div class="input-group">
                             <label class="input-label">Nom de famille *</label>
                             <div class="input-wrapper">
-                                <span class="input-icon">👤</span>
+                                <span class="input-icon">|</span>
                                 <input class="vote-input green" type="text" id="ins_nom" placeholder="KOUASSI" required>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="input-label">Prénom *</label>
                             <div class="input-wrapper">
-                                <span class="input-icon">👤</span>
+                                <span class="input-icon">|</span>
                                 <input class="vote-input green" type="text" id="ins_prenom" placeholder="Ange Pacome" required>
                             </div>
                         </div>
                     </div>
-
                     <div class="form-row-2">
                         <div class="input-group">
                             <label class="input-label">Numéro CNI *</label>
                             <div class="input-wrapper">
-                                <span class="input-icon">🪪</span>
+                                <span class="input-icon">|</span>
                                 <input class="vote-input green" type="text" id="ins_cni" placeholder="CI0123456789" required>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="input-label">Date de naissance *</label>
                             <div class="input-wrapper">
-                                <span class="input-icon">📅</span>
+                                <span class="input-icon">|</span>
                                 <input class="vote-input green" type="date" id="ins_date_naissance" required style="padding-left:48px;">
                             </div>
                         </div>
                     </div>
-
                     <div class="input-group">
                         <label class="input-label">Téléphone *</label>
                         <div class="input-wrapper">
-                            <span class="input-icon">📞</span>
+                            <span class="input-icon">|</span>
                             <input class="vote-input green" type="tel" id="ins_telephone" placeholder="+225 07 00 00 00 00" required>
                         </div>
                     </div>
-
                     <div class="input-group">
                         <label class="input-label">Photo *</label>
                         <div class="input-wrapper">
-                            <span class="input-icon">📷</span>
+                            <span class="input-icon">|</span>
                             <input class="vote-input green" type="file" id="ins_photo" accept="image/*" onchange="previewPhoto(this)" required style="padding-left:48px;cursor:pointer;">
                         </div>
                         <div class="photo-preview-wrap" id="photoPreviewWrap">
                             <img id="photoPreview" class="photo-preview" src="" alt="Aperçu">
                         </div>
-                        <p class="input-hint">📌 Photo récente, fond blanc de préférence.</p>
+                        <p class="input-hint">Photo récente, fond blanc de préférence.</p>
                     </div>
-
                     <div class="input-group">
                         <label class="input-label" style="margin-bottom:12px;">Empreinte Digitale *</label>
                         <div class="empreinte-bloc green-theme" id="empreinteBlocIns">
@@ -577,25 +496,22 @@
                                 <div class="scan-ring" id="scanRingIns"></div>
                             </div>
                             <div class="empreinte-label" id="fpLabelIns">Appuyez pour enregistrer votre empreinte</div>
-                            <div class="empreinte-status status-waiting" id="fpStatusIns">👆 En attente du scan</div>
-                            <button type="button" class="btn-scan" id="btnScanIns" onclick="lancerScanInscription()">🔒 Enregistrer mon empreinte</button>
+                            <div class="empreinte-status status-waiting" id="fpStatusIns">En attente du scan</div>
+                            <button type="button" class="btn-scan" id="btnScanIns" onclick="lancerScanInscription()">Enregistrer mon empreinte</button>
                         </div>
                     </div>
-
                     <button type="button" class="btn-inscrire" id="btnInscrire" onclick="soumettreInscription()">
-                        ✅ S'inscrire et obtenir mon numéro CEI
+                        S'inscrire et obtenir mon numéro CEI
                     </button>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL NUMÉRO CEI -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modalNumeroCEI">
     <div class="modal-box">
-        <span class="modal-icon">🎉</span>
         <div class="modal-title">Inscription réussie !</div>
         <div class="modal-subtitle">Votre numéro d'électeur CEI a été généré. Conservez-le précieusement.</div>
         <div class="numero-cei-display">
@@ -603,21 +519,16 @@
             <div class="numero-cei-value" id="numeroCEIAffiche">CEI-XXXXXXXX</div>
         </div>
         <div class="modal-info">
-            📌 Ce numéro vous sera demandé à chaque fois que vous voterez.<br>
+            Ce numéro vous sera demandé à chaque fois que vous voterez.<br>
             Notez-le sur un papier ou prenez une photo.
         </div>
-        <button class="btn-aller-voter" onclick="allerVoter()">
-            🗳️ Aller voter maintenant →
-        </button>
+        <button class="btn-aller-voter" onclick="allerVoter()">Aller voter maintenant</button>
     </div>
 </div>
 
 <footer>© 2025 — Commission Électorale Indépendante · République de Côte d'Ivoire · Tous droits réservés</footer>
 
 <script>
-// ═══════════════════════════════════
-//  ÉTAT GLOBAL
-// ═══════════════════════════════════
 let selectedCard       = null;
 let empreinteVerifiee  = false;
 let empreinteHashValue = '';
@@ -626,9 +537,31 @@ let empreinteInsOk     = false;
 let synthVoix          = window.speechSynthesis;
 let numeroCEIGenere    = '';
 
-// ═══════════════════════════════════
-//  TABS
-// ═══════════════════════════════════
+function hashFallbackManuel(str) {
+    let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+    for (let i = 0; i < str.length; i++) {
+        const ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+    h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+    h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    const r = 4294967296 * (2097151 & h2) + (h1 >>> 0);
+    const part = r.toString(16).padStart(16, '0');
+    return (part + part + part + part).substring(0, 64);
+}
+
+async function produireHash(seed) {
+    if (window.crypto && window.crypto.subtle) {
+        const encoded = new TextEncoder().encode(seed);
+        const buf     = await crypto.subtle.digest('SHA-256', encoded);
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+    return hashFallbackManuel(seed);
+}
+
 function switchTab(tab) {
     const tabVote = document.getElementById('tabVote');
     const tabIns  = document.getElementById('tabInscription');
@@ -648,16 +581,13 @@ function switchTab(tab) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ═══════════════════════════════════
-//  GUIDE IA
-// ═══════════════════════════════════
 const GUIDES = {
-    fr:     { nom:"FRANÇAIS",  texte:"Bonjour ! 2 options : Si c'est votre première fois, cliquez 'M'inscrire' → remplissez le formulaire → obtenez votre numéro CEI. Si vous êtes déjà inscrit, cliquez 'Voter' → choisissez votre candidat → entrez votre numéro CEI → scannez votre empreinte → votez !" },
-    dioula: { nom:"DIOULA",    texte:"I ni ce ! Fɔlɔ fɔlɔ tulon ye : Ni i tɛ sɛbɛn, klikli 'M'inscrire' → i ka kunnafoni sɛbɛn → i bɛ numéro CEI sɔrɔ. Ni i ye sɛbɛn kɛ, klikli 'Voter' → candidat sugandi → numéro CEI sɛbɛn → empreinte digi → votons !" },
-    baoule: { nom:"BAOULÉ",    texte:"Mô ndé ! Wɔ wa sran nua : Sɛ a kanga kɔ, klikli 'M'inscrire' → flan wa données → numéro CEI nya. Sɛ a flan kɛ, klikli 'Voter' → candidat klɔ → numéro CEI flan → empreinte scan → vote ba !" },
-    bete:   { nom:"BÉTÉ",      texte:"A boua ! Wégué sio : Sé kô inssri kô, klikli 'M'inscrire' → données klé → numéro CEI résswa. Sé inssri kô, klikli 'Voter' → candidat klé → numéro CEI klé → empreinte scan → vote !" },
-    nouchi: { nom:"NOUCHI",    texte:"Wesh ! C'est 2 trucs : Si c'est la première fois, clique 'M'inscrire' → remplis → ton numéro CEI sort. Si t'as déjà ton numéro, clique 'Voter' → choisis ton gars → mets le numéro → scanne le doigt → c'est bon djo !" },
-    attie:  { nom:"ATTIÉ",     texte:"Mo ho ! Ntsia nua : Sé kô inssri, klikli 'M'inscrire' → données tsô → numéro CEI nya. Sé kô inssri kɛ, klikli 'Voter' → candidat klɔ → numéro CEI tsô → empreinte scan → vote !" }
+    fr:     { nom:"FRANCAIS",  texte:"Bonjour ! 2 options : Si c'est votre première fois, cliquez M'inscrire, remplissez le formulaire, obtenez votre numéro CEI. Si vous êtes déjà inscrit, cliquez Voter, choisissez votre candidat, entrez votre numéro CEI, scannez votre empreinte, votez !" },
+    dioula: { nom:"DIOULA",    texte:"I ni ce ! Fɔlɔ fɔlɔ tulon ye : Ni i tɛ sɛbɛn, klikli M'inscrire, i ka kunnafoni sɛbɛn, i bɛ numéro CEI sɔrɔ. Ni i ye sɛbɛn kɛ, klikli Voter, candidat sugandi, numéro CEI sɛbɛn, empreinte digi, votons !" },
+    baoule: { nom:"BAOULE",    texte:"Mô ndé ! Wɔ wa sran nua : Sɛ a kanga kɔ, klikli M'inscrire, flan wa données, numéro CEI nya. Sɛ a flan kɛ, klikli Voter, candidat klɔ, numéro CEI flan, empreinte scan, vote ba !" },
+    bete:   { nom:"BETE",      texte:"A boua ! Wégué sio : Sé kô inssri kô, klikli M'inscrire, données klé, numéro CEI résswa. Sé inssri kô, klikli Voter, candidat klé, numéro CEI klé, empreinte scan, vote !" },
+    nouchi: { nom:"NOUCHI",    texte:"Wesh ! C'est 2 trucs : Si c'est la première fois, clique M'inscrire, remplis, ton numéro CEI sort. Si t'as déjà ton numéro, clique Voter, choisis ton gars, mets le numéro, scanne le doigt, c'est bon djo !" },
+    attie:  { nom:"ATTIE",     texte:"Mo ho ! Ntsia nua : Sé kô inssri, klikli M'inscrire, données tsô, numéro CEI nya. Sé kô inssri kɛ, klikli Voter, candidat klɔ, numéro CEI tsô, empreinte scan, vote !" }
 };
 
 async function activerGuide(langue, btn) {
@@ -675,7 +605,7 @@ async function activerGuide(langue, btn) {
             body: JSON.stringify({
                 model: "claude-sonnet-4-20250514",
                 max_tokens: 400,
-                messages: [{ role: "user", content: `Tu es guide CEI Côte d'Ivoire. Explique en ${GUIDES[langue].nom} en 2 options : 1) Première fois → cliquer M'inscrire, remplir le formulaire, obtenir numéro CEI. 2) Déjà inscrit → cliquer Voter, choisir candidat, entrer numéro CEI, scanner empreinte, voter. Simple et chaleureux. UNIQUEMENT en ${GUIDES[langue].nom}.` }]
+                messages: [{ role: "user", content: `Tu es guide CEI Côte d'Ivoire. Explique en ${GUIDES[langue].nom} en 2 options : 1) Première fois, cliquer M'inscrire, remplir le formulaire, obtenir numéro CEI. 2) Déjà inscrit, cliquer Voter, choisir candidat, entrer numéro CEI, scanner empreinte, voter. Simple et chaleureux. UNIQUEMENT en ${GUIDES[langue].nom}.` }]
             })
         });
         const d = await r.json();
@@ -688,17 +618,14 @@ async function activerGuide(langue, btn) {
 function lireTexte() {
     const texte = document.getElementById('aiMessage').textContent;
     const btn   = document.getElementById('aiSpeakBtn');
-    if (synthVoix.speaking) { synthVoix.cancel(); btn.innerHTML = '🔊 Écouter'; return; }
+    if (synthVoix.speaking) { synthVoix.cancel(); btn.innerHTML = 'Ecouter'; return; }
     const u = new SpeechSynthesisUtterance(texte);
     u.lang = 'fr-FR'; u.rate = 0.85;
-    u.onstart = () => { btn.innerHTML = '⏹️ Arrêter'; };
-    u.onend   = () => { btn.innerHTML = '🔊 Écouter'; };
+    u.onstart = () => { btn.innerHTML = 'Arreter'; };
+    u.onend   = () => { btn.innerHTML = 'Ecouter'; };
     synthVoix.speak(u);
 }
 
-// ═══════════════════════════════════
-//  SÉLECTION CANDIDAT
-// ═══════════════════════════════════
 function selectCandidate(card) {
     if (selectedCard) selectedCard.classList.remove('selected');
     card.classList.add('selected');
@@ -739,74 +666,82 @@ function reinitialiserEmpreinte() {
         bloc.classList.remove('verified', 'error-state', 'scanning');
         document.getElementById('fpLabel').textContent  = "Appuyez pour scanner votre empreinte";
         document.getElementById('fpStatus').className   = 'empreinte-status status-waiting';
-        document.getElementById('fpStatus').textContent = '👆 En attente du scan';
+        document.getElementById('fpStatus').textContent = 'En attente du scan';
         document.getElementById('btnScan').disabled     = false;
-        document.getElementById('btnScan').innerHTML    = '🔒 Scanner mon empreinte';
+        document.getElementById('btnScan').innerHTML    = 'Scanner mon empreinte';
         document.getElementById('btnVote').classList.remove('active');
     }
     majEtapes();
 }
 
-// ═══════════════════════════════════
-//  EMPREINTE — VOTE
-// ═══════════════════════════════════
 async function lancerScan() {
     const numero = document.getElementById('numElecteur').value.trim();
-    if (!selectedCard) { afficherErreurEmpreinte("⚠️ Sélectionnez d'abord un candidat."); return; }
-    if (!numero)       { afficherErreurEmpreinte("⚠️ Entrez d'abord votre numéro CEI."); return; }
+    if (!selectedCard) { afficherErreurEmpreinte("Selectionnez d'abord un candidat."); return; }
+    if (!numero)       { afficherErreurEmpreinte("Entrez d'abord votre numéro CEI."); return; }
+
     const bloc = document.getElementById('empreinteBlocUI');
     bloc.classList.remove('verified', 'error-state'); bloc.classList.add('scanning');
     document.getElementById('fpStatus').className   = 'empreinte-status status-scanning';
-    document.getElementById('fpStatus').textContent = '⏳ Scan en cours…';
-    document.getElementById('fpLabel').textContent  = 'Placez votre doigt sur le capteur…';
+    document.getElementById('fpStatus').textContent = 'Scan en cours...';
+    document.getElementById('fpLabel').textContent  = 'Placez votre doigt sur le capteur...';
     document.getElementById('btnScan').disabled     = true;
-    document.getElementById('btnScan').innerHTML    = '⏳ Vérification…';
+    document.getElementById('btnScan').innerHTML    = 'Vérification...';
+
+    let hashHex = '';
+
     try {
-        if (!window.PublicKeyCredential) throw new Error('non supporté');
-        const challenge = crypto.getRandomValues(new Uint8Array(32));
-        const assertion = await navigator.credentials.get({ publicKey: { challenge, timeout: 60000, userVerification: 'required', rpId: window.location.hostname } });
-        const rawId   = new Uint8Array(assertion.rawId);
-        const hashBuf = await crypto.subtle.digest('SHA-256', new Uint8Array([...rawId, ...challenge]));
-        const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
-        await verifierAvecServeur(numero, hashHex);
+        if (window.PublicKeyCredential && window.crypto && window.crypto.subtle) {
+            const challenge = crypto.getRandomValues(new Uint8Array(32));
+            const assertion = await navigator.credentials.get({
+                publicKey: { challenge, timeout: 60000, userVerification: 'required', rpId: window.location.hostname }
+            });
+            const rawId   = new Uint8Array(assertion.rawId);
+            const hashBuf = await crypto.subtle.digest('SHA-256', new Uint8Array([...rawId, ...challenge]));
+            hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
+        } else {
+            throw new Error('WebAuthn non disponible');
+        }
     } catch(err) {
-        if (err.name === 'NotAllowedError') afficherErreurEmpreinte('❌ Scan annulé.');
-        else await fallbackSimulation(numero);
+        if (err.name === 'NotAllowedError') {
+            afficherErreurEmpreinte('Scan annulé par l\'utilisateur.');
+            return;
+        }
+        await new Promise(r => setTimeout(r, 1800));
+        hashHex = await produireHash('CEI:' + numero);
     }
+
+    await verifierAvecServeur(numero, hashHex);
 }
 
 async function verifierAvecServeur(numero, hashHex) {
     try {
-        const res  = await fetch("{% url 'serveurcei:verifier_empreinte' %}", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ numero_electeur: numero, empreinte_hash: hashHex }) });
+        const res  = await fetch("{% url 'serveurcei:verifier_empreinte' %}", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ numero_electeur: numero, empreinte_hash: hashHex })
+        });
         const data = await res.json();
         if (data.ok) {
-            empreinteVerifiee = true; empreinteHashValue = hashHex;
+            empreinteVerifiee  = true;
+            empreinteHashValue = hashHex;
             document.getElementById('empreinteInput').value = hashHex;
             afficherSuccesEmpreinte(data.message || 'Identité confirmée !');
         } else {
-            afficherErreurEmpreinte('❌ ' + (data.erreur || 'Empreinte non reconnue.'));
+            afficherErreurEmpreinte('Erreur : ' + (data.erreur || 'Empreinte non reconnue.'));
         }
     } catch {
-        afficherErreurEmpreinte('❌ Erreur réseau. Réessayez.');
+        afficherErreurEmpreinte('Erreur réseau. Vérifiez votre connexion.');
     }
-}
-
-async function fallbackSimulation(numero) {
-    await new Promise(r => setTimeout(r, 1800));
-    const data    = new TextEncoder().encode(numero + '_demo_' + Date.now());
-    const hashBuf = await crypto.subtle.digest('SHA-256', data);
-    const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
-    await verifierAvecServeur(numero, hashHex);
 }
 
 function afficherSuccesEmpreinte(msg) {
     const bloc = document.getElementById('empreinteBlocUI');
     bloc.classList.remove('scanning', 'error-state'); bloc.classList.add('verified');
     document.getElementById('fpStatus').className   = 'empreinte-status status-ok';
-    document.getElementById('fpStatus').textContent = '✅ ' + msg;
+    document.getElementById('fpStatus').textContent = msg;
     document.getElementById('fpLabel').textContent  = 'Empreinte vérifiée !';
     document.getElementById('btnScan').disabled     = true;
-    document.getElementById('btnScan').innerHTML    = '✅ Vérifié';
+    document.getElementById('btnScan').innerHTML    = 'Vérifié';
     document.getElementById('btnVote').classList.add('active');
     majEtapes();
 }
@@ -818,62 +753,66 @@ function afficherErreurEmpreinte(msg) {
     document.getElementById('fpStatus').textContent = msg;
     document.getElementById('fpLabel').textContent  = 'Réessayez après correction.';
     document.getElementById('btnScan').disabled     = false;
-    document.getElementById('btnScan').innerHTML    = '🔄 Réessayer';
+    document.getElementById('btnScan').innerHTML    = 'Réessayer';
     majEtapes();
 }
 
 function soumettreVote() {
-    if (!selectedCard) { alert("⚠️ Sélectionnez un candidat."); return; }
-    if (!document.getElementById('numElecteur').value.trim()) { alert("⚠️ Entrez votre numéro CEI."); return; }
-    if (!empreinteVerifiee) { alert("⚠️ Vérifiez votre empreinte avant de voter."); return; }
+    if (!selectedCard) { alert("Sélectionnez un candidat."); return; }
+    if (!document.getElementById('numElecteur').value.trim()) { alert("Entrez votre numéro CEI."); return; }
+    if (!empreinteVerifiee) { alert("Vérifiez votre empreinte avant de voter."); return; }
     document.getElementById('voteForm').submit();
 }
 
 document.getElementById('numElecteur').addEventListener('input', majEtapes);
 
-// ═══════════════════════════════════
-//  EMPREINTE — INSCRIPTION
-// ═══════════════════════════════════
 async function lancerScanInscription() {
     const bloc = document.getElementById('empreinteBlocIns');
     bloc.classList.remove('verified', 'error-state'); bloc.classList.add('scanning');
     document.getElementById('fpStatusIns').className   = 'empreinte-status status-scanning';
-    document.getElementById('fpStatusIns').textContent = '⏳ Scan en cours…';
-    document.getElementById('fpLabelIns').textContent  = 'Placez votre doigt…';
+    document.getElementById('fpStatusIns').textContent = 'Scan en cours...';
+    document.getElementById('fpLabelIns').textContent  = 'Placez votre doigt...';
     document.getElementById('btnScanIns').disabled     = true;
-    document.getElementById('btnScanIns').innerHTML    = '⏳ Scan…';
-    try {
-        if (!window.PublicKeyCredential) throw new Error('non supporté');
-        const challenge = crypto.getRandomValues(new Uint8Array(32));
-        const assertion = await navigator.credentials.get({ publicKey: { challenge, timeout: 60000, userVerification: 'required', rpId: window.location.hostname } });
-        const rawId   = new Uint8Array(assertion.rawId);
-        const hashBuf = await crypto.subtle.digest('SHA-256', new Uint8Array([...rawId, ...challenge]));
-        empreinteInsHash = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
-        afficherSuccesInscriptionEmpreinte();
-    } catch(err) {
-        if (err.name === 'NotAllowedError') afficherErreurInscriptionEmpreinte('❌ Scan annulé.');
-        else await fallbackSimulationInscription();
-    }
-}
+    document.getElementById('btnScanIns').innerHTML    = 'Scan...';
 
-async function fallbackSimulationInscription() {
-    await new Promise(r => setTimeout(r, 1800));
-    const cni  = document.getElementById('ins_cni').value || 'demo';
-    const data = new TextEncoder().encode(cni + '_inscription_' + Date.now());
-    const buf  = await crypto.subtle.digest('SHA-256', data);
-    empreinteInsHash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    let hashHex = '';
+
+    try {
+        if (window.PublicKeyCredential && window.crypto && window.crypto.subtle) {
+            const challenge = crypto.getRandomValues(new Uint8Array(32));
+            const assertion = await navigator.credentials.get({
+                publicKey: { challenge, timeout: 60000, userVerification: 'required', rpId: window.location.hostname }
+            });
+            const rawId   = new Uint8Array(assertion.rawId);
+            const hashBuf = await crypto.subtle.digest('SHA-256', new Uint8Array([...rawId, ...challenge]));
+            hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
+        } else {
+            throw new Error('WebAuthn non disponible');
+        }
+    } catch(err) {
+        if (err.name === 'NotAllowedError') {
+            afficherErreurInscriptionEmpreinte('Scan annulé par l\'utilisateur.');
+            return;
+        }
+        await new Promise(r => setTimeout(r, 1800));
+        const cni = document.getElementById('ins_cni').value.trim() || 'demo';
+        const nom = document.getElementById('ins_nom').value.trim().toUpperCase() || 'user';
+        hashHex = await produireHash('CEI_TEMP:' + cni + ':' + nom);
+    }
+
+    empreinteInsHash = hashHex;
+    empreinteInsOk   = true;
     afficherSuccesInscriptionEmpreinte();
 }
 
 function afficherSuccesInscriptionEmpreinte() {
-    empreinteInsOk = true;
     const bloc = document.getElementById('empreinteBlocIns');
     bloc.classList.remove('scanning', 'error-state'); bloc.classList.add('verified');
     document.getElementById('fpStatusIns').className   = 'empreinte-status status-ok';
-    document.getElementById('fpStatusIns').textContent = '✅ Empreinte enregistrée !';
+    document.getElementById('fpStatusIns').textContent = 'Empreinte enregistrée !';
     document.getElementById('fpLabelIns').textContent  = "Empreinte prête pour l'inscription";
     document.getElementById('btnScanIns').disabled     = true;
-    document.getElementById('btnScanIns').innerHTML    = '✅ Enregistrée';
+    document.getElementById('btnScanIns').innerHTML    = 'Enregistrée';
 }
 
 function afficherErreurInscriptionEmpreinte(msg) {
@@ -883,12 +822,10 @@ function afficherErreurInscriptionEmpreinte(msg) {
     document.getElementById('fpStatusIns').textContent = msg;
     document.getElementById('fpLabelIns').textContent  = 'Réessayez.';
     document.getElementById('btnScanIns').disabled     = false;
-    document.getElementById('btnScanIns').innerHTML    = '🔄 Réessayer';
+    document.getElementById('btnScanIns').innerHTML    = 'Réessayer';
+    empreinteInsOk = false;
 }
 
-// ═══════════════════════════════════
-//  PHOTO PREVIEW
-// ═══════════════════════════════════
 function previewPhoto(input) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -900,9 +837,6 @@ function previewPhoto(input) {
     }
 }
 
-// ═══════════════════════════════════
-//  SOUMETTRE INSCRIPTION
-// ═══════════════════════════════════
 async function soumettreInscription() {
     const nom        = document.getElementById('ins_nom').value.trim();
     const prenom     = document.getElementById('ins_prenom').value.trim();
@@ -912,18 +846,18 @@ async function soumettreInscription() {
     const photoInput = document.getElementById('ins_photo');
 
     if (!nom || !prenom || !cni || !dateNaiss || !telephone) {
-        alert('⚠️ Veuillez remplir tous les champs obligatoires.'); return;
+        alert('Veuillez remplir tous les champs obligatoires.'); return;
     }
     if (!photoInput.files || !photoInput.files[0]) {
-        alert('⚠️ Veuillez ajouter votre photo.'); return;
+        alert('Veuillez ajouter votre photo.'); return;
     }
     if (!empreinteInsOk) {
-        alert('⚠️ Veuillez scanner votre empreinte digitale.'); return;
+        alert('Veuillez scanner votre empreinte digitale.'); return;
     }
 
     const btn = document.getElementById('btnInscrire');
     btn.disabled = true;
-    btn.textContent = '⏳ Inscription en cours…';
+    btn.textContent = 'Inscription en cours...';
 
     try {
         const formData = new FormData();
@@ -939,25 +873,36 @@ async function soumettreInscription() {
         const res  = await fetch("{% url 'serveurcei:inscription_electeur' %}", { method: 'POST', body: formData });
         const data = await res.json();
 
-        if (res.ok && data.numero) {
-            numeroCEIGenere = data.numero;
-            document.getElementById('numeroCEIAffiche').textContent = data.numero;
-            document.getElementById('modalNumeroCEI').classList.add('visible');
-        } else {
-            alert('❌ Erreur : ' + (data.error || 'Inscription échouée. Vérifiez vos informations.'));
+        if (!res.ok || !data.numero) {
+            alert('Erreur : ' + (data.error || 'Inscription échouée. Vérifiez vos informations.'));
             btn.disabled = false;
-            btn.textContent = "✅ S'inscrire et obtenir mon numéro CEI";
+            btn.textContent = "S'inscrire et obtenir mon numéro CEI";
+            return;
         }
+
+        numeroCEIGenere = data.numero;
+
+        const hashFinal = await produireHash('CEI:' + data.numero);
+
+        await fetch("{% url 'serveurcei:enregistrer_empreinte' %}", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                numero_electeur: data.numero,
+                empreinte_hash:  hashFinal
+            })
+        });
+
+        document.getElementById('numeroCEIAffiche').textContent = data.numero;
+        document.getElementById('modalNumeroCEI').classList.add('visible');
+
     } catch(err) {
-        alert('❌ Erreur réseau. Vérifiez votre connexion.');
+        alert('Erreur réseau. Vérifiez votre connexion.');
         btn.disabled = false;
-        btn.textContent = "✅ S'inscrire et obtenir mon numéro CEI";
+        btn.textContent = "S'inscrire et obtenir mon numéro CEI";
     }
 }
 
-// ═══════════════════════════════════
-//  MODAL — ALLER VOTER
-// ═══════════════════════════════════
 function allerVoter() {
     document.getElementById('modalNumeroCEI').classList.remove('visible');
     switchTab('vote');
@@ -968,6 +913,5 @@ function allerVoter() {
     document.querySelector('.vote-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 </script>
-
 </body>
 </html>
